@@ -28,13 +28,23 @@ namespace API
 
                     options.Audience = "api1";
                 });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("default", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5003")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("default");
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
