@@ -3,17 +3,12 @@
 # Declare variables to be passed into your templates.
 fullnameOverride: identity-api
 replicaCount: 1
-image:
-  repository: identity-api
-  tag: stable
+ image:
+  repository: danscontainerregistry.azurecr.io/app/identity.api.master
+  tag: v1
   pullPolicy: IfNotPresent
-imagePullSecrets: []
-  # Optionally specify an array of imagePullSecrets.
-  # Secrets must be manually created in the namespace.
-  # ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  #
-  # This uses credentials from secret "myRegistryKeySecretName".
-  # - name: myRegistryKeySecretName
+imagePullSecrets:
+  - name: dansregistrykey
 service:
   type: ClusterIP
   port: 80
