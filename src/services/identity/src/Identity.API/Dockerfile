@@ -1,11 +1,12 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
 COPY ["Identity.API/Identity.API.csproj", "Identity.API/"]
+
 RUN dotnet restore "Identity.API/Identity.API.csproj"
 COPY . .
 WORKDIR "/src/Identity.API"
