@@ -11,7 +11,7 @@
 $gitContext = "https://github.com/$gitUser/$repoName.git#$gitBranch"
 
 $services = @(
-    @{ Image="app/identity.api.$gitBranch`:$tag"; Context="src/services/identity/src"; File="Identity.API/Dockerfile" }
+    @{ Image="app/identity.api.$gitBranch`:$tag"; Context="src/services/identity"; File="src/Identity.API/Dockerfile" }
 )
 
 Write-Host "Setting subscription..." -ForegroundColor Yellow
