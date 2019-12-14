@@ -12,7 +12,7 @@ export const IDENTITY_CONFIG = {
 };
 
 export const METADATA_OIDC = {
-  issuer: "http://localhost:5000",
+  issuer: process.env.REACT_APP_AUTH_URL,
   jwks_uri:
     process.env.REACT_APP_AUTH_URL + "/.well-known/openid-configuration/jwks",
   authorization_endpoint: process.env.REACT_APP_AUTH_URL + "/connect/authorize",
