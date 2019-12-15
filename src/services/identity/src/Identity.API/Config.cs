@@ -73,9 +73,9 @@ namespace Identity.API
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    RedirectUris =           { "http://localhost:5003/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:5003/logout/callback" },
-                    AllowedCorsOrigins =     { "http://localhost:5003" },
+                    RedirectUris =           { "http://localhost:5003/signin-oidc", "https://dansappstorage.z33.web.core.windows.net/signin-oidc", "https://dansapp.azureedge.net/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:5003/logout/callback", "https://dansappstorage.z33.web.core.windows.net/logout/callback", "https://dansapp.azureedge.net/logout/callback" },
+                    AllowedCorsOrigins =     { "http://localhost:5003", "https://dansappstorage.z33.web.core.windows.net", "https://dansapp.azureedge.net" },
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,

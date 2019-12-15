@@ -14,7 +14,10 @@ namespace Identity.API
         {
             services.AddControllersWithViews();
 
-            var builder = services.AddIdentityServer()
+            var builder = services.AddIdentityServer(options =>
+                {
+                    options.PublicOrigin = "https://dansidentityservice.azurewebsites.net";
+                })
                 .AddInMemoryIdentityResources(Config.Ids)
                 .AddInMemoryApiResources(Config.Apis)
                 .AddInMemoryClients(Config.Clients)
