@@ -1,6 +1,8 @@
+using Identity.API.Configuration;
 using IdentityServer4.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -8,6 +10,13 @@ namespace Identity.API
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -16,7 +25,8 @@ namespace Identity.API
 
             var builder = services.AddIdentityServer(options =>
                 {
-                    options.PublicOrigin = "https://dansidentityservice.azurewebsites.net";
+                    var settings = Configuration.GetSection("IdentityServer").Get<IdentityServerSettings>();
+                    options.PublicOrigin = settings?.PublicOrigin;
                 })
                 .AddInMemoryIdentityResources(Config.Ids)
                 .AddInMemoryApiResources(Config.Apis)

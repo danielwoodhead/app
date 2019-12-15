@@ -32,9 +32,31 @@
     },
     "dockerRegistryPassword": {
       "type": "securestring"
+    },
+    "appSettings": {
+      "type": "array"
     }
   },
-  "variables": {},
+  "variables": {
+    "defaultAppSettings": [
+      {
+        "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+        "value": "false"
+      },
+      {
+        "name": "DOCKER_REGISTRY_SERVER_URL",
+        "value": "[parameters('dockerRegistryUrl')]"
+      },
+      {
+        "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+        "value": "[parameters('dockerRegistryUsername')]"
+      },
+      {
+        "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+        "value": "[parameters('dockerRegistryPassword')]"
+      }
+    ]
+  },
   "resources": [
     {
       "type": "Microsoft.Web/sites",
@@ -48,24 +70,7 @@
         "siteConfig": {
           "linuxFxVersion": "[concat('DOCKER|', parameters('dockerImageName'))]",
           "alwaysOn": true,
-          "appSettings": [
-            {
-              "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
-              "value": "false"
-            },
-            {
-              "name": "DOCKER_REGISTRY_SERVER_URL",
-              "value": "[parameters('dockerRegistryUrl')]"
-            },
-            {
-              "name": "DOCKER_REGISTRY_SERVER_USERNAME",
-              "value": "[parameters('dockerRegistryUsername')]"
-            },
-            {
-              "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
-              "value": "[parameters('dockerRegistryPassword')]"
-            }
-          ]
+          "appSettings": "[union(parameters('appSettings'), variables('defaultAppSettings'))]"
         },
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('existingPlanName'))]"
       }
