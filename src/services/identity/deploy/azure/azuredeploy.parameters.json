@@ -22,6 +22,14 @@
     },
     "dockerRegistryPassword": {
       "value": ""
+    },
+    "appSettings": {
+      "value": [
+        {
+          "name": "IdentityServer__PublicOrigin",
+          "value": "https://dansidentityservice.azurewebsites.net"
+        }
+      ]
     }
   }
 }
