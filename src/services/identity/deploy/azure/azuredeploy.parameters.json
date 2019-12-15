@@ -12,7 +12,7 @@
       "value": "dans-app-service-plan"
     },
     "dockerImageName": {
-      "value": "danscontainerregistry.azurecr.io/app/identity.api.identity_docker:v1"
+      "value": "danscontainerregistry.azurecr.io/app/identity.api.master:v0.0.1"
     },
     "dockerRegistryUrl": {
       "value": "https://danscontainerregistry.azurecr.io"
