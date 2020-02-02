@@ -10,6 +10,7 @@
             viewModelBase:ViewModelLocator.AutoWireViewModel="true">
 
     <views:NotesView x:Name="NotesView">
+        <views:NotesView.Title>Notes</views:NotesView.Title>
     </views:NotesView>
 
 </TabbedPage>

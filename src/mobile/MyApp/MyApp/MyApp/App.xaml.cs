@@ -1,17 +1,20 @@
 ﻿using MyApp.Services.Navigation;
+using MyApp.Services.Settings;
 using MyApp.ViewModels.Base;
-using MyApp.Views;
 using Xamarin.Forms;
 
 namespace MyApp
 {
     public partial class App : Application
     {
+        private readonly ISettingsService _settingsService;
+
         public App()
         {
             InitializeComponent();
 
-            MainPage = new MainView();
+            _settingsService = ViewModelLocator.Resolve<ISettingsService>();
+            ViewModelLocator.UpdateDependencies(_settingsService.UseMocks);
         }
 
         protected override async void OnStart()
