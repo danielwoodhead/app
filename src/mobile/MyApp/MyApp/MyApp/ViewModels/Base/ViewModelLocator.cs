@@ -29,6 +29,7 @@ namespace MyApp.ViewModels.Base
             _container = new TinyIoCContainer();
 
             _container.Register<MainViewModel>();
+            _container.Register<NotesViewModel>();
 
             _container.Register<INavigationService, NavigationService>();
         }
