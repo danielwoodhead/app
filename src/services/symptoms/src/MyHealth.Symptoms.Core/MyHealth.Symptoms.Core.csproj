@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MyHealth.Symptoms.Models\MyHealth.Symptoms.Models.csproj" />
+  </ItemGroup>
+
 </Project>

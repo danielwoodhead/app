@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace MyHealth.Symptoms.Api
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1052:Static holder types should be Static or NotInheritable", Justification = "Standard dotnet pattern")]
     public class Program
     {
         public static void Main(string[] args)

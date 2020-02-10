@@ -2,5 +2,6 @@
 {
     public class Symptom
     {
+        public string Id { get; set; }
     }
 }

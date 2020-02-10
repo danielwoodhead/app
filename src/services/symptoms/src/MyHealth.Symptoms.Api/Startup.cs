@@ -24,6 +24,7 @@ namespace MyHealth.Symptoms.Api
         {
             services.AddControllers();
             services.AddApiVersioning();
+            services.AddHealthChecks();
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
             services.AddVersionAwareSwagger();
 
@@ -51,8 +52,11 @@ namespace MyHealth.Symptoms.Api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
+
+            // TODO: health checks
         }
     }
 }
