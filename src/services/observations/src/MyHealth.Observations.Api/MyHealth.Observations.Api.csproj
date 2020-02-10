@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -20,8 +21,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyHealth.Observations.Core\MyHealth.Observations.Core.csproj" />
-    <ProjectReference Include="..\MyHealth.Observations.Fhir\MyHealth.Observations.Fhir.csproj" />
+    <ProjectReference Include="..\MyHealth.Observations.Integration.Events\MyHealth.Observations.Integration.Events.csproj" />
+    <ProjectReference Include="..\MyHealth.Observations.Integration.Fhir\MyHealth.Observations.Integration.Fhir.csproj" />
     <ProjectReference Include="..\MyHealth.Observations.Models\MyHealth.Observations.Models.csproj" />
+    <ProjectReference Include="..\MyHealth.Observations.Utility\MyHealth.Observations.Utility.csproj" />
   </ItemGroup>
 
 
