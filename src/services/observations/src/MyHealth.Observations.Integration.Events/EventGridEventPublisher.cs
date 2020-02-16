@@ -17,7 +17,7 @@ namespace MyHealth.Observations.Integration.Events
     public class EventGridEventPublisher : IEventPublisher, IDisposable
     {
         private const string EventDataVersion = "1.0";
-        private const string EventSourceSystem = "myhealth:observations";
+        private const string EventSourceSystem = "myhealth:observations:api";
         private readonly EventGridSettings _settings;
         private readonly EventGridClient _eventGridClient;
         private readonly IOperationContext _operationContext;
@@ -54,7 +54,7 @@ namespace MyHealth.Observations.Integration.Events
                 {
                     OperationId = _operationContext.OperationId,
                     SourceSystem = EventSourceSystem,
-                    SubjectSystem = ""
+                    SubjectSystem = EventSourceSystem
                 });
 
         private async Task PublishEventAsync(EventGridEvent eventGridEvent)

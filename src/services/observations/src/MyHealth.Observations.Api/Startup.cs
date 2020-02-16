@@ -36,8 +36,11 @@ namespace MyHealth.Observations.Api
 
             services.AddSingleton<IOperationContext, OperationContext>();
             services.AddTransient<IObservationsService, ObservationsService>();
+
+            services.Configure<FhirServerSettings>(Configuration.GetSection("FhirServerSettings"));
             services.AddTransient<IObservationsRepository, FhirObservationsRepository>();
 
+            services.Configure<EventGridSettings>(Configuration.GetSection("EventGridSettings"));
             if (Configuration.GetSection("EventGridSettings").GetValue("Enabled", defaultValue: false))
                 services.AddSingleton<IEventPublisher, EventGridEventPublisher>();
             else

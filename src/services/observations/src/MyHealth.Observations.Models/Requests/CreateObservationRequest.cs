@@ -2,5 +2,6 @@
 {
     public class CreateObservationRequest
     {
+        public string UserId { get; set; }
     }
 }
