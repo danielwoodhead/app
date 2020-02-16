@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MyHealth.Observations.Models.Events.Base
 {
@@ -49,5 +50,10 @@ namespace MyHealth.Observations.Models.Events.Base
         /// The event data.
         /// </summary>
         EventData Data { get; }
+
+        /// <summary>
+        /// A dictionary representation of the event.
+        /// </summary>
+        IDictionary<string, string> Properties { get; }
     }
 }

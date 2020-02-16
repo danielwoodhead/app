@@ -1,4 +1,6 @@
-﻿namespace MyHealth.Observations.Models.Events.Base
+﻿using System.Collections.Generic;
+
+namespace MyHealth.Observations.Models.Events.Base
 {
     /// <summary>
     /// The minimum required event data.
@@ -19,5 +21,15 @@
         /// An identifier for the system that owns the event subject.
         /// </summary>
         public string SubjectSystem { get; set; }
+
+        /// <summary>
+        /// Dictionary representation of the event data.
+        /// </summary>
+        public virtual IDictionary<string, string> Properties => new Dictionary<string, string>
+        {
+            { nameof(OperationId), OperationId },
+            { nameof(SourceSystem), SourceSystem },
+            { nameof(SubjectSystem), SubjectSystem }
+        };
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace MyHealth.Observations.Models.Events.Base
 {
     /// <summary>
-    /// Base class for all Patient Platform events with custom properties.
+    /// Base class for all domain events with custom properties.
     /// </summary>
     /// <typeparam name="TData">A type derived from EventData that contains custom properties for this event.</typeparam>
-    public abstract class MyHealthEvent<TData> : MyHealthEvent, IEvent<TData>
+    public abstract class DomainEvent<TData> : DomainEvent, IEvent<TData>
          where TData : EventData
     {
         /// <summary>
@@ -19,7 +19,7 @@ namespace MyHealth.Observations.Models.Events.Base
         /// <param name="eventTime">The time the event occurred.</param>
         /// <param name="dataVersion">The data version of the event.</param>
         /// <param name="data">Event data.</param>
-        protected MyHealthEvent(string id, string subject, DateTime eventTime, string dataVersion, TData data)
+        protected DomainEvent(string id, string subject, DateTime eventTime, string dataVersion, TData data)
             : base(id, subject, eventTime, dataVersion, data)
         {
         }
@@ -35,9 +35,9 @@ namespace MyHealth.Observations.Models.Events.Base
     }
 
     /// <summary>
-    /// Base class for all Patient Platform events with no custom properties.
+    /// Base class for all domain events with no custom properties.
     /// </summary>
-    public abstract class MyHealthEvent : IEvent
+    public abstract class DomainEvent : IEvent
     {
         /// <inheritdoc />
         public string Id { get; }
@@ -57,6 +57,18 @@ namespace MyHealth.Observations.Models.Events.Base
         /// <inheritdoc />
         public EventData Data { get; }
 
+        /// <inheritdoc />
+        public virtual IDictionary<string, string> Properties => new Dictionary<string, string>
+        {
+            { nameof(Id), Id },
+            { nameof(EventType), EventType },
+            { nameof(Subject), Subject },
+#pragma warning disable CA1305 // Specify IFormatProvider
+            { nameof(EventTime), EventTime.ToString("s") },
+#pragma warning restore CA1305 // Specify IFormatProvider
+            { nameof(DataVersion), DataVersion },
+        }.Union(Data.Properties).ToDictionary(x => x.Key, x => x.Value);
+
         /// <summary>
         /// Should be called from the constructors of types derived from Event.
         /// </summary>
@@ -65,7 +77,7 @@ namespace MyHealth.Observations.Models.Events.Base
         /// <param name="eventTime">The time the event occurred.</param>
         /// <param name="dataVersion">The data version of the event.</param>
         /// <param name="data">Event data.</param>
-        protected MyHealthEvent(string id, string subject, DateTime eventTime, string dataVersion, EventData data)
+        protected DomainEvent(string id, string subject, DateTime eventTime, string dataVersion, EventData data)
         {
             Id = id;
             Subject = subject;

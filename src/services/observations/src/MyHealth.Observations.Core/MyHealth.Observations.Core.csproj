@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyHealth.Observations.Models\MyHealth.Observations.Models.csproj" />
+    <ProjectReference Include="..\MyHealth.Observations.Utility\MyHealth.Observations.Utility.csproj" />
   </ItemGroup>
 
 </Project>

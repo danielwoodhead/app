@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Observations.Integ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Observations.Core", "src\MyHealth.Observations.Core\MyHealth.Observations.Core.csproj", "{8BE5D426-DF6F-44EB-A02C-212D8678CB9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Observations.Integration.Events", "src\MyHealth.Observations.Integration.Events\MyHealth.Observations.Integration.Events.csproj", "{FBAFAA76-09C5-4CB9-B55B-1E327FECE705}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Observations.Integration.Events", "src\MyHealth.Observations.Integration.Events\MyHealth.Observations.Integration.Events.csproj", "{FBAFAA76-09C5-4CB9-B55B-1E327FECE705}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Observations.Utility", "src\MyHealth.Observations.Utility\MyHealth.Observations.Utility.csproj", "{499EACF2-95DE-4EB0-BBE8-752B3B323A3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Observations.Utility", "src\MyHealth.Observations.Utility\MyHealth.Observations.Utility.csproj", "{499EACF2-95DE-4EB0-BBE8-752B3B323A3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

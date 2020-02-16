@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyHealth.Observations.Integration.Events
+namespace MyHealth.Observations.Integration.Events.EventGrid
 {
     public class EventGridSettings
     {

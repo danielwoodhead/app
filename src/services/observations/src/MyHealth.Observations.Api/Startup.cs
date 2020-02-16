@@ -1,13 +1,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyHealth.Observations.Api.Extensions;
 using MyHealth.Observations.Api.Swagger;
 using MyHealth.Observations.Core;
 using MyHealth.Observations.Core.Events;
 using MyHealth.Observations.Core.Repository;
 using MyHealth.Observations.Integration.Events;
+using MyHealth.Observations.Integration.Events.ApplicationInsights;
+using MyHealth.Observations.Integration.Events.EventGrid;
 using MyHealth.Observations.Integration.Fhir;
 using MyHealth.Observations.Utility;
 
@@ -29,7 +33,12 @@ namespace MyHealth.Observations.Api
         {
             services.AddApplicationInsightsTelemetry();
             services.AddControllers();
-            services.AddApiVersioning();
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+            });
             services.AddHealthChecks();
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
             services.AddVersionAwareSwagger();
@@ -45,6 +54,9 @@ namespace MyHealth.Observations.Api
                 services.AddSingleton<IEventPublisher, EventGridEventPublisher>();
             else
                 services.AddSingleton<IEventPublisher, DisabledEventPublisher>();
+
+            services.AddTransient<IEventPublisher, ApplicationInsightsEventPublisher>();
+            services.AddComposite<IEventPublisher, CompositeEventPublisher>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
