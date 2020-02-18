@@ -261,9 +261,9 @@
                         "collation": "SQL_Latin1_General_CP1_CI_AS"
                     },
                     "sku": {
-                        "name": "Standard",
-                        "tier": "Standard",
-                        "capacity": 20
+                        "name": "Basic",
+                        "tier": "Basic",
+                        "capacity": 5
                       },
                     "type": "databases"
                 },
