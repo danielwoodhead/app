@@ -19,7 +19,7 @@ resource "azurerm_container_registry" "cr" {
 }
 
 resource "azurerm_application_insights" "ai" {
-  name                = "${var.prefix}insights"
+  name                = "${var.prefix}-insights"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg.name
   application_type    = "web"
