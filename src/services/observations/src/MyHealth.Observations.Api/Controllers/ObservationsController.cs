@@ -48,7 +48,8 @@ namespace MyHealth.Observations.Api.Controllers
         {
             Observation observation = await _observationsService.CreateObservationAsync(request);
 
-            return CreatedAtRoute("Get", observation.Id, observation);
+            // TODO: find better way of dealing with the api version here
+            return CreatedAtRoute("Get", new { id = observation.Id, version = "v1" }, observation);
         }
 
         // PUT: api/observations/5
