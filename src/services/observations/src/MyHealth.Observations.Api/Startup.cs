@@ -40,7 +40,11 @@ namespace MyHealth.Observations.Api
                 options.ReportApiVersions = true;
             });
             services.AddHealthChecks();
-            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
+            services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
             services.AddVersionAwareSwagger();
 
             services.AddSingleton<IOperationContext, OperationContext>();
