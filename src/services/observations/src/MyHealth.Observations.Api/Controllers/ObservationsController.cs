@@ -8,7 +8,8 @@ using MyHealth.Observations.Models.Responses;
 
 namespace MyHealth.Observations.Api.Controllers
 {
-    [Route("api/observations")]
+    [Route("api/v{version:apiVersion}/observations")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class ObservationsController : ControllerBase
     {
