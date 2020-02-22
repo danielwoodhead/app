@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "9b5e9caa-d74f-4a2c-9c2d-1ce5c9974eea",
+		"name": "MyHealth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Observations",
+			"item": [
+				{
+					"name": "Create observation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"test1\",\r\n  \"content\": \"headache\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{observationsAddress}}/api/observations",
+							"host": [
+								"{{observationsAddress}}"
+							],
+							"path": [
+								"api",
+								"observations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update observation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"content\": \"headache\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{observationsAddress}}/api/observations/7fc836d6-0233-4dd3-b7f1-2e3a69f080ea",
+							"host": [
+								"{{observationsAddress}}"
+							],
+							"path": [
+								"api",
+								"observations",
+								"7fc836d6-0233-4dd3-b7f1-2e3a69f080ea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get observation",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{observationsAddress}}/api/observations/7fc836d6-0233-4dd3-b7f1-2e3a69f080ea",
+							"host": [
+								"{{observationsAddress}}"
+							],
+							"path": [
+								"api",
+								"observations",
+								"7fc836d6-0233-4dd3-b7f1-2e3a69f080ea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete observation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"test1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{observationsAddress}}/api/observations/7fc836d6-0233-4dd3-b7f1-2e3a69f080ea",
+							"host": [
+								"{{observationsAddress}}"
+							],
+							"path": [
+								"api",
+								"observations",
+								"7fc836d6-0233-4dd3-b7f1-2e3a69f080ea"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
