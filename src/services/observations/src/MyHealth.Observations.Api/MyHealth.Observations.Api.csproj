@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>7b50ef4c-1c72-4d31-964d-0b173461398f</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyHealth.Observations.Core\MyHealth.Observations.Core.csproj" />
+    <ProjectReference Include="..\MyHealth.Observations.Integration.Events\MyHealth.Observations.Integration.Events.csproj" />
+    <ProjectReference Include="..\MyHealth.Observations.Integration.Fhir\MyHealth.Observations.Integration.Fhir.csproj" />
+    <ProjectReference Include="..\MyHealth.Observations.Models\MyHealth.Observations.Models.csproj" />
+    <ProjectReference Include="..\MyHealth.Observations.Utility\MyHealth.Observations.Utility.csproj" />
+  </ItemGroup>
+
+
+</Project>

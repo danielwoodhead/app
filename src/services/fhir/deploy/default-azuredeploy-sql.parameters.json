@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serviceName": {
+      "value": "myhealth-fhir"
+    },
+    "appServicePlanSku": {
+        "value": "F1"
+    },
+    "applicationInsightsLocation": {
+        "value": "uksouth"
+    },
+    "additionalFhirServerConfigProperties": {
+      "value": {
+        "FhirServer:Security:Authorization:Roles:0:name": "admin",
+        "FhirServer:Security:Authorization:Roles:0:resourcePermissions:0:actions:0": "Read",
+        "FhirServer:Security:Authorization:Roles:0:resourcePermissions:0:actions:1": "Write",
+        "FhirServer:Security:Authorization:Roles:0:resourcePermissions:0:actions:2": "HardDelete",
+        "FhirServer:CoreFeatures:SupportsBatch": true,
+        "FhirServer:CoreFeatures:SupportsTransaction": true
+      }
+    },
+    "fhirVersion": {
+        "value": "R4"
+    }
+  }
+}
