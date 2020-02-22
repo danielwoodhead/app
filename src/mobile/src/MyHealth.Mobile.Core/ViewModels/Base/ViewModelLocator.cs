@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Reflection;
 using MyHealth.Mobile.Core.Services.Api;
 using MyHealth.Mobile.Core.Services.Navigation;
-using MyHealth.Mobile.Core.Services.Notes;
+using MyHealth.Mobile.Core.Services.Observations;
 using MyHealth.Mobile.Core.Services.Settings;
 using TinyIoC;
 using Xamarin.Forms;
@@ -33,12 +33,12 @@ namespace MyHealth.Mobile.Core.ViewModels.Base
 
             // View models - by default, TinyIoC will register concrete classes as multi-instance.
             _container.Register<MainViewModel>();
-            _container.Register<NotesViewModel>();
+            _container.Register<ObservationsViewModel>();
 
             // Services - by default, TinyIoC will register interface registrations as singletons.
             _container.Register<IApiClient, ApiClient>();
             _container.Register<INavigationService, NavigationService>();
-            _container.Register<INotesService, NotesService>();
+            _container.Register<IObservationsService, ObservationsService>();
             _container.Register<ISettingsService, SettingsService>();
         }
 
@@ -46,11 +46,11 @@ namespace MyHealth.Mobile.Core.ViewModels.Base
         {
             if (useMockServices)
             {
-                _container.Register<INotesService, NotesMockService>();
+                _container.Register<IObservationsService, ObservationsMockService>();
             }
             else
             {
-                _container.Register<INotesService, NotesService>();
+                _container.Register<IObservationsService, ObservationsService>();
             }
         }
 

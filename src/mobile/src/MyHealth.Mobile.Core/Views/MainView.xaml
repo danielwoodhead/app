@@ -9,8 +9,8 @@
             x:Class="MyHealth.Mobile.Core.Views.MainView"
             viewModelBase:ViewModelLocator.AutoWireViewModel="true">
 
-    <views:NotesView x:Name="NotesView">
-        <views:NotesView.Title>Notes</views:NotesView.Title>
-    </views:NotesView>
+    <views:ObservationsView x:Name="ObservationsView">
+        <views:ObservationsView.Title>Observations</views:ObservationsView.Title>
+    </views:ObservationsView>
 
 </TabbedPage>

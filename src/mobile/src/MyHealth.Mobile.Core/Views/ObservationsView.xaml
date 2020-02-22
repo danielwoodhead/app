@@ -5,18 +5,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModelBase="clr-namespace:MyHealth.Mobile.Core.ViewModels.Base;assembly=MyHealth.Mobile.Core"
              mc:Ignorable="d"
-             x:Class="MyHealth.Mobile.Core.Views.NotesView"
+             x:Class="MyHealth.Mobile.Core.Views.ObservationsView"
              viewModelBase:ViewModelLocator.AutoWireViewModel="true">
     <ContentPage.Content>
         <StackLayout>
-            <CollectionView ItemsSource="{Binding Notes, Mode=TwoWay}"
+            <CollectionView ItemsSource="{Binding Observations, Mode=TwoWay}"
                             VerticalOptions="StartAndExpand"
                             HorizontalOptions="FillAndExpand"/>
-            <Editor Text="{Binding Note.Value, Mode=TwoWay}" 
+            <Editor Text="{Binding Observation.Value, Mode=TwoWay}" 
                     VerticalOptions="FillAndExpand"
                     HorizontalOptions="FillAndExpand" />
             <Button Text="Add"
-                    Command="{Binding AddNoteCommand}"
+                    Command="{Binding AddObservationCommand}"
                     VerticalOptions="End"
                     HorizontalOptions="Center"/>
         </StackLayout>

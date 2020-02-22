@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace MyHealth.Mobile.Core.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class NotesView : ContentPage
+    public partial class ObservationsView : ContentPage
     {
-        public NotesView()
+        public ObservationsView()
         {
             InitializeComponent();
         }

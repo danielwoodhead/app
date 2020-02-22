@@ -22,7 +22,7 @@ namespace MyHealth.Mobile.Core.Views
                 switch (arg)
                 {
                     case 0:
-                        CurrentPage = NotesView;
+                        CurrentPage = ObservationsView;
                         break;
                     //case 1:
                     //    CurrentPage = ProfileView;
@@ -36,7 +36,7 @@ namespace MyHealth.Mobile.Core.Views
                 }
             });
 
-            await ((NotesViewModel)NotesView.BindingContext).InitializeAsync(null);
+            await ((ObservationsViewModel)ObservationsView.BindingContext).InitializeAsync(null);
             //await ((BasketViewModel)BasketView.BindingContext).InitializeAsync(null);
             //await ((ProfileViewModel)ProfileView.BindingContext).InitializeAsync(null);
             //await ((CampaignViewModel)CampaignView.BindingContext).InitializeAsync(null);
