@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace MyHealth.Observations.Models.Events.Base
 {
     /// <summary>
-    /// A Patient Platform event.
+    /// An event.
     /// </summary>
     /// <typeparam name="TData">The event data type.</typeparam>
     public interface IEvent<TData> : IEvent
@@ -17,7 +17,7 @@ namespace MyHealth.Observations.Models.Events.Base
     }
 
     /// <summary>
-    /// A Patient Platform event.
+    /// An event.
     /// </summary>
     public interface IEvent
     {
