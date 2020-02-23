@@ -23,7 +23,7 @@ namespace API
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://localhost:5000";
+                    options.Authority = "https://localhost:44382";
                     options.RequireHttpsMetadata = false;
 
                     options.Audience = "api1";
