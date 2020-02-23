@@ -32,3 +32,26 @@ variable "container_registry_name" {
 variable "application_insights_name" {
   description = "The Application Insights instance name"
 }
+
+variable "sql_server_version" {
+  description = "The SQL Server version"
+  default     = "12.0"
+}
+
+variable "sql_admin_username" {
+  description = "The SQL admin username"
+}
+
+variable "sql_admin_password" {
+  description = "The SQL admin password"
+}
+
+variable "database_name" {
+  description = "The database name"
+  default     = "MyHealthIdentity"
+}
+
+variable "sql_edition" {
+  description = "The SQL edition e.g. Basic, Standard, Premium etc."
+  default     = "Basic"
+}

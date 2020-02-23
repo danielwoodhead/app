@@ -32,11 +32,38 @@ resource "azurerm_app_service" "as" {
   }
 
   app_settings = {
-    APPINSIGHTS_INSTRUMENTATIONKEY      = data.azurerm_application_insights.ai.instrumentation_key
-    ASPNETCORE_ENVIRONMENT              = var.environment
-    DOCKER_REGISTRY_SERVER_URL          = "https://${data.azurerm_container_registry.cr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.cr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.cr.admin_password
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+    APPINSIGHTS_INSTRUMENTATIONKEY       = data.azurerm_application_insights.ai.instrumentation_key
+    ASPNETCORE_ENVIRONMENT               = var.environment
+    DOCKER_REGISTRY_SERVER_URL           = "https://${data.azurerm_container_registry.cr.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME      = data.azurerm_container_registry.cr.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD      = data.azurerm_container_registry.cr.admin_password
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE  = false
+    ConnectionStrings__DefaultConnection = "Server=tcp:${azurerm_sql_server.sql.fully_qualified_domain_name},1433;Initial Catalog=${azurerm_sql_database.db.name};Persist Security Info=False;User ID=${azurerm_sql_server.sql.administrator_login};Password=${azurerm_sql_server.sql.administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   }
+}
+
+resource "azurerm_sql_server" "sql" {
+  name                         = "${var.prefix}-sqlserver"
+  resource_group_name          = var.resource_group_name
+  location                     = var.location
+  version                      = var.sql_server_version
+  administrator_login          = var.sql_admin_username
+  administrator_login_password = var.sql_admin_password
+}
+
+resource "azurerm_sql_database" "db" {
+  name                = var.database_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  server_name         = azurerm_sql_server.sql.name
+  edition             = var.sql_edition
+}
+
+resource "azurerm_sql_firewall_rule" "sql-fw-rules" {
+  count               = length(split(",", azurerm_app_service.as.possible_outbound_ip_addresses))
+  name                = "${azurerm_app_service.as.name}_${count.index}"
+  resource_group_name = var.resource_group_name
+  server_name         = azurerm_sql_server.sql.name
+  start_ip_address    = split(",", azurerm_app_service.as.possible_outbound_ip_addresses)[count.index]
+  end_ip_address      = split(",", azurerm_app_service.as.possible_outbound_ip_addresses)[count.index]
 }
