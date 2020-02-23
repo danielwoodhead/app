@@ -38,3 +38,12 @@ resource "azurerm_app_service_plan" "asp" {
     size = var.app_service_plan_size
   }
 }
+
+resource "azurerm_sql_server" "sql" {
+  name                         = "${var.prefix}-sqlserver"
+  resource_group_name          = var.resource_group_name
+  location                     = var.location
+  version                      = var.sql_server_version
+  administrator_login          = var.sql_admin_username
+  administrator_login_password = var.sql_admin_password
+}

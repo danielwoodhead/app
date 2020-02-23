@@ -26,3 +26,16 @@ variable "app_service_plan_size" {
   description = "The app serivce plan size"
   default     = "B1"
 }
+
+variable "sql_server_version" {
+  description = "The SQL Server version"
+  default     = "12.0"
+}
+
+variable "sql_admin_username" {
+  description = "The SQL admin username"
+}
+
+variable "sql_admin_password" {
+  description = "The SQL admin password"
+}

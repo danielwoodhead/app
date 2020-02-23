@@ -33,17 +33,12 @@ variable "application_insights_name" {
   description = "The Application Insights instance name"
 }
 
-variable "sql_server_version" {
-  description = "The SQL Server version"
-  default     = "12.0"
-}
-
-variable "sql_admin_username" {
-  description = "The SQL admin username"
+variable "sql_server_name" {
+  description = "The SQL Server name"
 }
 
 variable "sql_admin_password" {
-  description = "The SQL admin password"
+  description = "The SQL Server admin password"
 }
 
 variable "database_name" {
