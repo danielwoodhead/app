@@ -7,10 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["src/MyHealth.Identity.Api/MyHealth.Identity.Api.csproj", "src/MyHealth.Identity.Api/"]
-RUN dotnet restore "src/MyHealth.Identity.Api/MyHealth.Identity.Api.csproj"
+COPY ["MyHealth.Identity.Api/MyHealth.Identity.Api.csproj", "MyHealth.Identity.Api/"]
+RUN dotnet restore "MyHealth.Identity.Api/MyHealth.Identity.Api.csproj"
 COPY . .
-WORKDIR "/src/src/MyHealth.Identity.Api"
+WORKDIR "/src/MyHealth.Identity.Api"
 RUN dotnet build "MyHealth.Identity.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
