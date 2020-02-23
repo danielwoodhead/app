@@ -6,15 +6,8 @@ namespace MyHealth.Mobile.Core.Services.Settings
 {
     public class SettingsService : ISettingsService
     {
-        #region Setting Constants
-
         private const string IdUseMocks = "use_mocks";
-
-        private readonly bool UseMocksDefault = true;
-
-        #endregion
-
-        #region Settings Properties
+        private const bool UseMocksDefault = false;
 
         public bool UseMocks
         {
@@ -22,18 +15,10 @@ namespace MyHealth.Mobile.Core.Services.Settings
             set => AddOrUpdateValue(IdUseMocks, value);
         }
 
-        #endregion
-
-        #region Public Methods
-
         public Task AddOrUpdateValue(string key, bool value) => AddOrUpdateValueInternal(key, value);
         public Task AddOrUpdateValue(string key, string value) => AddOrUpdateValueInternal(key, value);
         public bool GetValueOrDefault(string key, bool defaultValue) => GetValueOrDefaultInternal(key, defaultValue);
         public string GetValueOrDefault(string key, string defaultValue) => GetValueOrDefaultInternal(key, defaultValue);
-
-        #endregion
-
-        #region Internal Implementation
 
         async Task AddOrUpdateValueInternal<T>(string key, T value)
         {
@@ -78,7 +63,5 @@ namespace MyHealth.Mobile.Core.Services.Settings
                 Console.WriteLine("Unable to remove: " + key, " Message: " + ex.Message);
             }
         }
-
-        #endregion
     }
 }

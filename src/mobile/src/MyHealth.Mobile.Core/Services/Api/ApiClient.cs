@@ -39,7 +39,7 @@ namespace MyHealth.Mobile.Core.Services.Api
             return result;
         }
 
-        public async Task<TResult> PostAsync<TResult>(string uri, TResult data, string token = "", string header = "")
+        public async Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data, string token = "", string header = "")
         {
             HttpClient httpClient = CreateHttpClient(token);
 
@@ -149,7 +149,7 @@ namespace MyHealth.Mobile.Core.Services.Api
         {
             if (!response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadAsStringAsync();
+                string content = await response.Content.ReadAsStringAsync();
 
                 if (response.StatusCode == HttpStatusCode.Forbidden ||
                     response.StatusCode == HttpStatusCode.Unauthorized)
