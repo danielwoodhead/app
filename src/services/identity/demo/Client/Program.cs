@@ -11,7 +11,7 @@ namespace Client
         static async Task Main(string[] args)
         {
             var client = new HttpClient();
-            var disco = await client.GetDiscoveryDocumentAsync("http://localhost:5000");
+            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:44382");
             if (disco.IsError)
             {
                 Console.WriteLine(disco.Error);
