@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyHealth.Identity.Api.Data;
+using MyHealth.Identity.Api.Settings;
 
 namespace MyHealth.Identity.Api
 {
@@ -27,19 +28,14 @@ namespace MyHealth.Identity.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry();
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options =>
-                {
-                    options.SignIn.RequireConfirmedAccount = true;
-                })
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            IIdentityServerBuilder builder = services.AddIdentityServer(options =>
+            services.AddIdentityServer(options =>
                 {
-                    //var settings = Configuration.GetSection("IdentityServer").Get<IdentityServerSettings>();
-                    //options.PublicOrigin = settings?.PublicOrigin;
+                    IdentityServerSettings settings = Configuration.GetSection("IdentityServer").Get<IdentityServerSettings>();
+                    options.PublicOrigin = settings?.PublicOrigin;
 
                     options.Events.RaiseErrorEvents = true;
                     options.Events.RaiseInformationEvents = true;
@@ -59,10 +55,9 @@ namespace MyHealth.Identity.Api
                         sql => sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
                     options.EnableTokenCleanup = true;
                 })
-                .AddAspNetIdentity<IdentityUser>();
-
-            // not recommended for production - you need to store your key material somewhere secure
-            builder.AddDeveloperSigningCredential();
+                .AddAspNetIdentity<IdentityUser>()
+                // not recommended for production - you need to store your key material somewhere secure
+                .AddDeveloperSigningCredential();
 
             services.AddRazorPages();
         }
