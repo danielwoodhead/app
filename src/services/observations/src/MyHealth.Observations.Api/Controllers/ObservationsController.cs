@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyHealth.Observations.Core;
@@ -11,6 +12,7 @@ namespace MyHealth.Observations.Api.Controllers
     [Route("api/v{version:apiVersion}/observations")]
     [ApiVersion("1.0")]
     [ApiController]
+    [Authorize]
     public class ObservationsController : ControllerBase
     {
         private readonly IObservationsService _observationsService;

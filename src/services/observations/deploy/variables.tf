@@ -32,3 +32,11 @@ variable "container_registry_name" {
 variable "application_insights_name" {
   description = "The Application Insights instance name"
 }
+
+variable "authentication_authority" {
+  description = "The authentication authority"
+}
+
+variable "authentication_audience" {
+  description = "The authentication audience"
+}

@@ -46,6 +46,12 @@ namespace MyHealth.Observations.Api
                 options.SubstituteApiVersionInUrl = true;
             });
             services.AddVersionAwareSwagger();
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = Configuration["Authentication:Authority"];
+                    options.Audience = Configuration["Authentication:Audience"];
+                });
 
             services.AddSingleton<IOperationContext, OperationContext>();
             services.AddTransient<IObservationsService, ObservationsService>();
@@ -80,6 +86,7 @@ namespace MyHealth.Observations.Api
             }
 
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

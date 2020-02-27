@@ -43,7 +43,13 @@ resource "azurerm_app_service" "as" {
     DOCKER_REGISTRY_SERVER_USERNAME      = data.azurerm_container_registry.cr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD      = data.azurerm_container_registry.cr.admin_password
     WEBSITES_ENABLE_APP_SERVICE_STORAGE  = false
-    ConnectionStrings__DefaultConnection = "Server=tcp:${data.azurerm_sql_server.sql.fqdn},1433;Initial Catalog=${azurerm_sql_database.db.name};Persist Security Info=False;User ID=${data.azurerm_sql_server.sql.administrator_login};Password=${var.sql_admin_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    IdentityServer__PublicOrigin = "https://${var.prefix}-api.azurewebsites.net"
+  }
+
+  connection_string {
+    name  = "DefaultConnection"
+    type  = "SQLAzure"
+    value = "Server=tcp:${data.azurerm_sql_server.sql.fqdn},1433;Initial Catalog=${azurerm_sql_database.db.name};Persist Security Info=False;User ID=${data.azurerm_sql_server.sql.administrator_login};Password=${var.sql_admin_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   }
 }
 
