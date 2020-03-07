@@ -71,8 +71,7 @@ namespace MyHealth.Identity.Api
             services.AddRazorPages()
                 .AddRazorPagesOptions(options =>
                 {
-                    // TODO: uncomment
-                    //options.Conventions.AuthorizeAreaFolder("Admin", "/", "RequireAdministratorRole");
+                    options.Conventions.AuthorizeAreaFolder("Admin", "/", "RequireAdministratorRole");
                 });
 
             services.AddTransient<IApiResourceRepository, ApiResourceRepository>();

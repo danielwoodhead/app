@@ -38,7 +38,7 @@ namespace MyHealth.Identity.Api.Areas.Admin.Pages.Clients
 
             Client.AllowedGrantTypes = AllowedGrantTypes.Split(Environment.NewLine);
             Client.AllowedScopes = AllowedScopes.Split(Environment.NewLine);
-            Client.ClientSecrets = ClientSecrets.Split(Environment.NewLine).Select(x => new Secret(x)).ToList();
+            Client.ClientSecrets = ClientSecrets.Split(Environment.NewLine).Select(x => new Secret(x.Sha256())).ToList();
             await _repository.CreateClientAsync(Client);
 
             return RedirectToPage("./Index");

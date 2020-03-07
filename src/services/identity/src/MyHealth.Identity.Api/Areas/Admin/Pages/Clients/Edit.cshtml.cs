@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +25,6 @@ namespace MyHealth.Identity.Api.Areas.Admin.Pages.Clients
         [BindProperty]
         public string AllowedScopes { get; set; }
 
-        [BindProperty]
-        public string ClientSecrets { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -40,7 +37,6 @@ namespace MyHealth.Identity.Api.Areas.Admin.Pages.Clients
 
             AllowedGrantTypes = string.Join(Environment.NewLine, Client.AllowedGrantTypes);
             AllowedScopes = string.Join(Environment.NewLine, Client.AllowedScopes);
-            ClientSecrets = string.Join(Environment.NewLine, Client.ClientSecrets.Select(x => x.Value));
 
             return Page();
         }
@@ -54,7 +50,6 @@ namespace MyHealth.Identity.Api.Areas.Admin.Pages.Clients
 
             Client.AllowedGrantTypes = AllowedGrantTypes.Split(Environment.NewLine);
             Client.AllowedScopes = AllowedScopes.Split(Environment.NewLine);
-            Client.ClientSecrets = ClientSecrets.Split(Environment.NewLine).Select(x => new Secret(x)).ToList();
             await _repository.UpdateClientAsync(Client);
 
             return RedirectToPage("./Index");

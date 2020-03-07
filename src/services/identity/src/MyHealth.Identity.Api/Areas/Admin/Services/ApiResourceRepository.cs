@@ -28,7 +28,8 @@ namespace MyHealth.Identity.Api.Areas.Admin.Services
 
         public async Task DeleteApiResourceAsync(string name)
         {
-            Entities.ApiResource apiResource = await _context.ApiResources.AsNoTracking()
+            Entities.ApiResource apiResource = await _context.ApiResources
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Name == name);
 
             if (apiResource != null)

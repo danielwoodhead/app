@@ -18,9 +18,8 @@ namespace MyHealth.Identity.Api.Areas.Admin.Pages.Clients
         }
 
         public Client Client { get; set; }
-        public string AllowedGrantTypes => string.Join(Environment.NewLine, Client.AllowedGrantTypes);
-        public string AllowedScopes => string.Join(Environment.NewLine, Client.AllowedScopes);
-        public string ClientSecrets => string.Join(Environment.NewLine, Client.ClientSecrets.Select(x => x.Value));
+        public string AllowedGrantTypes => string.Join(", ", Client.AllowedGrantTypes);
+        public string AllowedScopes => string.Join(", ", Client.AllowedScopes);
 
         public async Task<IActionResult> OnGetAsync(string id)
         {

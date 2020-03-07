@@ -20,7 +20,7 @@ namespace MyHealth.Identity.Api.Areas.Admin.Services
             _context = context;
         }
 
-        public async Task CreateClientAsync(IdentityServer4.Models.Client client)
+        public async Task CreateClientAsync(Client client)
         {
             _context.Clients.Add(client.ToEntity());
             await _context.SaveChangesAsync();
@@ -28,7 +28,8 @@ namespace MyHealth.Identity.Api.Areas.Admin.Services
 
         public async Task DeleteClientAsync(string clientId)
         {
-            Entities.Client client = await _context.Clients.AsNoTracking()
+            Entities.Client client = await _context.Clients
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.ClientId == clientId);
 
             if (client != null)
@@ -90,7 +91,8 @@ namespace MyHealth.Identity.Api.Areas.Admin.Services
                 .Include(x => x.AllowedGrantTypes)
                 .Include(x => x.AllowedScopes)
                 .Include(x => x.ClientSecrets)
-                .FirstOrDefaultAsync();
+                .Where(x => x.ClientId == client.ClientId)
+                .SingleOrDefaultAsync();
 
             if (entity == null)
             {
