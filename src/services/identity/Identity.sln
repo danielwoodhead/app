@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcClient", "demo\MvcClient
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsClient", "demo\JsClient\JsClient.csproj", "{684BDB15-5455-4E77-B700-E71FA9E6586B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Identity.Api", "src\MyHealth.Identity.Api\MyHealth.Identity.Api.csproj", "{0E01F79F-3BAA-42BC-A13A-0D9CF2972D3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Identity.Api", "src\MyHealth.Identity.Api\MyHealth.Identity.Api.csproj", "{0E01F79F-3BAA-42BC-A13A-0D9CF2972D3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

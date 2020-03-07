@@ -1,0 +1,37 @@
+﻿@page
+@model EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h4>Edit API Resource - @Model.ApiResource.Name</h4>
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <input asp-for="ApiResource.Name" type="hidden" />
+    <div class="form-group">
+        <label asp-for="ApiResource.Name"></label>
+        <div>
+            <input asp-for="ApiResource.Name" class="form-control"/>
+            <span asp-validation-for="ApiResource.Name"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="ApiResource.DisplayName"></label>
+        <div>
+            <input asp-for="ApiResource.DisplayName" class="form-control"/>
+            <span asp-validation-for="ApiResource.DisplayName"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Scopes"></label>
+        <div>
+            <textarea asp-for="Scopes" class="form-control"></textarea>
+            <span asp-validation-for="Scopes"></span>
+        </div>
+    </div>
+
+    <div>
+        <button type="submit">Save</button>
+    </div>
+</form>

@@ -37,13 +37,13 @@ resource "azurerm_app_service" "as" {
   }
 
   app_settings = {
-    APPINSIGHTS_INSTRUMENTATIONKEY       = data.azurerm_application_insights.ai.instrumentation_key
-    ASPNETCORE_ENVIRONMENT               = var.environment
-    DOCKER_REGISTRY_SERVER_URL           = "https://${data.azurerm_container_registry.cr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME      = data.azurerm_container_registry.cr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD      = data.azurerm_container_registry.cr.admin_password
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE  = false
-    IdentityServer__PublicOrigin = "https://${var.prefix}-api.azurewebsites.net"
+    APPINSIGHTS_INSTRUMENTATIONKEY      = data.azurerm_application_insights.ai.instrumentation_key
+    ASPNETCORE_ENVIRONMENT              = var.environment
+    DOCKER_REGISTRY_SERVER_URL          = "https://${data.azurerm_container_registry.cr.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.cr.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.cr.admin_password
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+    IdentityServer__PublicOrigin        = "https://${var.prefix}-api.azurewebsites.net"
   }
 
   connection_string {
