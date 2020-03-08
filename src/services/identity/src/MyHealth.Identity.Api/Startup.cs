@@ -159,11 +159,11 @@ namespace MyHealth.Identity.Api
                     await roleManager.CreateAsync(new IdentityRole("Administrator"));
 
                 UserManager<IdentityUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-                IdentityUser user = await userManager.FindByEmailAsync("admin@admin.com");
+                string identityAdminEmail = Configuration["IdentityAdmin:Email"];
+                IdentityUser user = await userManager.FindByEmailAsync(identityAdminEmail);
 
                 if (user == null)
                 {
-                    string identityAdminEmail = Configuration["IdentityAdmin:Email"];
                     user = new IdentityUser(identityAdminEmail)
                     {
                         Email = identityAdminEmail,
