@@ -1,0 +1,29 @@
+﻿@page
+@model EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h4>Edit Client - @Model.Client.ClientId</h4>
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <input asp-for="Client.ClientId" type="hidden" />
+    <div class="form-group">
+        <label asp-for="AllowedGrantTypes"></label>
+        <div>
+            <textarea asp-for="AllowedGrantTypes" class="form-control"></textarea>
+            <span asp-validation-for="AllowedGrantTypes"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="AllowedScopes"></label>
+        <div>
+            <textarea asp-for="AllowedScopes" class="form-control"></textarea>
+            <span asp-validation-for="AllowedScopes"></span>
+        </div>
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
