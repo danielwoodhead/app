@@ -59,7 +59,6 @@ variable "identity_admin_email" {
   description =  "The identity admin user email"
 }
 
-
 variable "identity_admin_password" {
  description = "The identity admin user password" 
 }
