@@ -6,3 +6,7 @@ terraform apply -var-file="dev.tfvars"
 
 # since we're not using different tags at this stage, restart the web app to pick up the new image
 az webapp restart --name myhealth-observations-api --resource-group DansApp
+
+# delete untagged images
+az acr repository show-manifests --name myhealthregistry --repository myhealth/observations.api --query "[?tags[0]==null].digest" -o tsv `
+  | ForEach-Object{ az acr repository delete --name myhealthregistry --image myhealth/observations.api@$_ --yes }

@@ -14,7 +14,7 @@ variable "prefix" {
 
 variable "environment" {
   description = "The ASPNETCORE_ENVIRONMENT environment variable"
-  default     = "Development"
+  default     = "Staging"
 }
 
 variable "app_service_plan_name" {
@@ -37,10 +37,6 @@ variable "sql_server_name" {
   description = "The SQL Server name"
 }
 
-variable "sql_admin_password" {
-  description = "The SQL Server admin password"
-}
-
 variable "database_name" {
   description = "The database name"
   default     = "MyHealthIdentity"
@@ -49,4 +45,21 @@ variable "database_name" {
 variable "sql_edition" {
   description = "The SQL edition e.g. Basic, Standard, Premium etc."
   default     = "Basic"
+}
+
+variable "key_vault_name" {
+  description = "The name of the Azure Key Vault containing the SQL admin password"
+}
+
+variable "sql_admin_password_secret_name" {
+  description = "The name of the SQL admin password secret in Azure Key Vault"
+}
+
+variable "identity_admin_email" {
+  description =  "The identity admin user email"
+}
+
+
+variable "identity_admin_password" {
+ description = "The identity admin user password" 
 }

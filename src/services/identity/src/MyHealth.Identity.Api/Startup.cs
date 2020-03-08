@@ -149,27 +149,28 @@ namespace MyHealth.Identity.Api
             }
         }
 
-        private static async Task InitializeAdminUserAsync(IApplicationBuilder app)
+        private async Task InitializeAdminUserAsync(IApplicationBuilder app)
         {
             using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                RoleManager<IdentityRole> roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
                 if (!await roleManager.RoleExistsAsync("Administrator"))
                     await roleManager.CreateAsync(new IdentityRole("Administrator"));
 
-                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-                var user = await userManager.FindByEmailAsync("admin@admin.com");
+                UserManager<IdentityUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                IdentityUser user = await userManager.FindByEmailAsync("admin@admin.com");
 
                 if (user == null)
                 {
-                    user = new IdentityUser("admin@admin.com");
-                    user.Email = "admin@admin.com";
-                    user.EmailConfirmed = true;
+                    string identityAdminEmail = Configuration["IdentityAdmin:Email"];
+                    user = new IdentityUser(identityAdminEmail)
+                    {
+                        Email = identityAdminEmail,
+                        EmailConfirmed = true
+                    };
 
-                    // TODO: get email and password from config (key vault in prod)
-
-                    await userManager.CreateAsync(user, "Password1!"); 
+                    await userManager.CreateAsync(user, Configuration["IdentityAdmin:Password"]); 
                 }
 
                 if (!await userManager.IsInRoleAsync(user, "Administrator"))

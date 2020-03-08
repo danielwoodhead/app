@@ -23,10 +23,6 @@ namespace MyHealth.Identity.Api.Areas.Admin.Pages.ApiResources
         [BindProperty]
         public string Scopes { get; set; }
 
-        public void OnGet()
-        {
-        }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

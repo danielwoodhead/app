@@ -12,9 +12,19 @@ variable "prefix" {
   default     = "myhealth"
 }
 
+variable "admin_user" {
+  description = "The admin user"
+}
+
+
 variable "container_registry_sku" {
   description = "The container registry SKU"
   default     = "Basic"
+}
+
+variable "key_vault_sku" {
+  description = "The key vault pricing tier"
+  default     = "standard"
 }
 
 variable "app_service_plan_tier" {
