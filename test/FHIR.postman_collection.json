@@ -1,0 +1,811 @@
+{
+	"info": {
+		"_postman_id": "4ca3e291-f971-4714-832d-650ad5e661a2",
+		"name": "FHIR",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Patient",
+			"item": [
+				{
+					"name": "Get patients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Patient",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete patient",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Patient/2e58ff23-fe7c-4835-abc1-a1c9eb00ec88",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Patient",
+								"2e58ff23-fe7c-4835-abc1-a1c9eb00ec88"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get patient",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Patient/468208bf-5157-4555-a2d3-a11fde5f36b2",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Patient",
+								"468208bf-5157-4555-a2d3-a11fde5f36b2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create patient",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"resourceType\" : \"Patient\",\r\n  \"name\": [\r\n    {\r\n      \"use\": \"official\",\r\n      \"family\": \"Chalmers\",\r\n      \"given\": [\r\n        \"Peter\",\r\n        \"James\"\r\n      ]\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "{{fhir_address}}/Patient",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Observation",
+			"item": [
+				{
+					"name": "Create observation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"resourceType\": \"Observation\",\r\n  \"id\": \"bmi\",\r\n  \"meta\": {\r\n    \"profile\": [\r\n      \"http://hl7.org/fhir/StructureDefinition/vitalsigns\"\r\n    ]\r\n  },\r\n  \"status\": \"final\",\r\n  \"category\": [\r\n    {\r\n      \"coding\": [\r\n        {\r\n          \"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\",\r\n          \"code\": \"vital-signs\",\r\n          \"display\": \"Vital Signs\"\r\n        }\r\n      ],\r\n      \"text\": \"Vital Signs\"\r\n    }\r\n  ],\r\n  \"code\": {\r\n    \"coding\": [\r\n      {\r\n        \"system\": \"http://loinc.org\",\r\n        \"code\": \"39156-5\",\r\n        \"display\": \"Body mass index (BMI) [Ratio]\"\r\n      }\r\n    ],\r\n    \"text\": \"BMI\"\r\n  },\r\n  \"subject\": {\r\n    \"reference\": \"Patient/468208bf-5157-4555-a2d3-a11fde5f36b2\"\r\n  },\r\n  \"effectiveDateTime\": \"1999-07-02\",\r\n  \"valueQuantity\": {\r\n    \"value\": 16.2,\r\n    \"unit\": \"kg/m2\",\r\n    \"system\": \"http://unitsofmeasure.org\",\r\n    \"code\": \"kg/m2\"\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{fhir_address}}/Observation",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Observation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete observation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Observation/3c5dd756-c583-4221-b810-6bde25171285",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Observation",
+								"3c5dd756-c583-4221-b810-6bde25171285"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get observation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Observation/83e21f4f-9f42-4a62-845a-a76d84551bb8",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Observation",
+								"83e21f4f-9f42-4a62-845a-a76d84551bb8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get observations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Observation",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Observation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get patient observations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Patient/1692964d-c5e9-408a-bea0-4ebec87f3f42/Observation",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Patient",
+								"1692964d-c5e9-408a-bea0-4ebec87f3f42",
+								"Observation"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Questionnaire",
+			"item": [
+				{
+					"name": "Get questionnaires",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Questionnaire",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Questionnaire"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get questionnaire",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Questionnaire/b18c2ce5-0899-4452-8ac4-f890e892b13c/_history/1",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Questionnaire",
+								"b18c2ce5-0899-4452-8ac4-f890e892b13c",
+								"_history",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create questionnaire",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{fhir_address}}/Questionnaire",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Questionnaire"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update questionnaire",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"This is a test\",\r\n    \"status\": \"active\",\r\n    \"item\": [\r\n        {\r\n            \"text\": \"Namev2\",\r\n            \"type\": \"string\"\r\n        },\r\n        {\r\n            \"text\": \"Address\",\r\n            \"type\": \"string\"\r\n        },\r\n        {\r\n            \"text\": \"Gender\",\r\n            \"type\": \"choice\",\r\n            \"answerOption\": [\r\n                {\r\n                    \"valueString\": \"Male\"\r\n                },\r\n                {\r\n                    \"valueString\": \"Female\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{fhir_address}}/Questionnaire/b18c2ce5-0899-4452-8ac4-f890e892b13c",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Questionnaire",
+								"b18c2ce5-0899-4452-8ac4-f890e892b13c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete questionnaire",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Questionnaire/4117843b-c693-47ad-8c3a-97e5e87fd987",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Questionnaire",
+								"4117843b-c693-47ad-8c3a-97e5e87fd987"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "QuestionnaireResponse",
+			"item": [
+				{
+					"name": "Get questionnaire response",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/QuestionnaireResponse",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"QuestionnaireResponse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete questionnaire response",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/QuestionnaireResponse/d645fb38-5984-4344-bae3-14ce33ab9d5d",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"QuestionnaireResponse",
+								"d645fb38-5984-4344-bae3-14ce33ab9d5d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get patient questionnaire responses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Patient/fc401533-29ea-4492-b767-53fbb1e787d9/QuestionnaireResponse",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Patient",
+								"fc401533-29ea-4492-b767-53fbb1e787d9",
+								"QuestionnaireResponse"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ServiceRequest",
+			"item": [
+				{
+					"name": "Get patient service requests",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Patient/c9c9f06f-1946-4a58-8508-93fc123f4846/ServiceRequest",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Patient",
+								"c9c9f06f-1946-4a58-8508-93fc123f4846",
+								"ServiceRequest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete service request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/ServiceRequest/b668e0f8-0e87-4f85-90f8-749eb633ce27",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"ServiceRequest",
+								"b668e0f8-0e87-4f85-90f8-749eb633ce27"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Practitioner",
+			"item": [
+				{
+					"name": "Get practitioner",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhir_address}}/Practitioner",
+							"host": [
+								"{{fhir_address}}"
+							],
+							"path": [
+								"Practitioner"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "metadata",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{fhir_address}}/metadata",
+					"host": [
+						"{{fhir_address}}"
+					],
+					"path": [
+						"metadata"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get token (pp-sso)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "225a1844-050d-4c2e-ac3e-0911bc819965",
+						"exec": [
+							"pm.test(\"Token received successfully\", function () {",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"if (pm.response.code !== 200) {",
+							"    postman.setNextRequest(null);",
+							"    return;",
+							"}",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"access_token\", jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "client_id",
+							"value": "{{identity_client_id}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{identity_client_secret}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "{{identity_client_scopes}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{identity_address}}/connect/token",
+					"host": [
+						"{{identity_address}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get token (AAD)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "600f6a22-9bfe-4998-a740-c1c1fe7b1939",
+						"exec": [
+							"var json = JSON.parse(responseBody); postman.setEnvironmentVariable(\"sso_token\", json.access_token); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "c84941fe-f862-444a-a00c-723acfbb06ed",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "NOlWHM0X7wxe.wdE+:*jpDQvaNOyqt23",
+							"type": "text"
+						},
+						{
+							"key": "resource",
+							"value": "api://da9ce6e3-a22e-4baf-8d00-72a4586a54f2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://login.microsoftonline.com/db329bd8-af39-4039-b008-3360eebd6898/oauth2/token?=",
+					"protocol": "https",
+					"host": [
+						"login",
+						"microsoftonline",
+						"com"
+					],
+					"path": [
+						"db329bd8-af39-4039-b008-3360eebd6898",
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,18 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MyHealth.Observations.Core.Events;
 using MyHealth.Observations.Core.Repository;
 using MyHealth.Observations.Models;
 using MyHealth.Observations.Models.Events;
-using MyHealth.Observations.Models.Events.Base;
 using MyHealth.Observations.Models.Requests;
 using MyHealth.Observations.Models.Responses;
 using MyHealth.Observations.Utility;
 
 namespace MyHealth.Observations.Core
 {
-    // TODO: add UserId to events
-
     public class ObservationsService : IObservationsService
     {
         private const string EventDataVersion = "1.0";
@@ -33,7 +31,7 @@ namespace MyHealth.Observations.Core
 
         public async Task<Observation> CreateObservationAsync(CreateObservationRequest request)
         {
-            Observation observation = await _repository.CreateObservationAsync(request);
+            Observation observation = await _repository.CreateObservationAsync(request, _operationContext.UserId);
             await _eventPublisher.PublishAsync(CreateObservationCreatedEvent(observation));
 
             return observation;
@@ -50,10 +48,14 @@ namespace MyHealth.Observations.Core
             return await _repository.GetObservationAsync(id);
         }
 
-        public Task<SearchObservationsResponse> SearchObservationsAsync()
+        public async Task<SearchObservationsResponse> SearchObservationsAsync()
         {
-            // TODO: make this per user when we have auth in place
-            throw new System.NotImplementedException();
+            IEnumerable<Observation> observations = await _repository.GetObservationsAsync(_operationContext.UserId);
+
+            return new SearchObservationsResponse
+            {
+                Observations = observations
+            };
         }
 
         public async Task<Observation> UpdateObservationAsync(string id, UpdateObservationRequest request)
@@ -70,12 +72,7 @@ namespace MyHealth.Observations.Core
                 subject: observation.Id,
                 eventTime: DateTime.UtcNow,
                 dataVersion: EventDataVersion,
-                data: new EventData
-                {
-                    OperationId = _operationContext.OperationId,
-                    SourceSystem = EventSourceSystem,
-                    SubjectSystem = EventSourceSystem
-                });
+                data: CreateEventData());
 
         private ObservationDeletedEvent CreateObservationDeletedEvent(string observationId) =>
             new ObservationDeletedEvent(
@@ -83,12 +80,7 @@ namespace MyHealth.Observations.Core
                 subject: observationId,
                 eventTime: DateTime.UtcNow,
                 dataVersion: EventDataVersion,
-                data: new EventData
-                {
-                    OperationId = _operationContext.OperationId,
-                    SourceSystem = EventSourceSystem,
-                    SubjectSystem = EventSourceSystem
-                });
+                data: CreateEventData());
 
         private ObservationUpdatedEvent CreateObservationUpdatedEvent(Observation observation) =>
             new ObservationUpdatedEvent(
@@ -96,11 +88,15 @@ namespace MyHealth.Observations.Core
                 subject: observation.Id,
                 eventTime: DateTime.UtcNow,
                 dataVersion: EventDataVersion,
-                data: new EventData
-                {
-                    OperationId = _operationContext.OperationId,
-                    SourceSystem = EventSourceSystem,
-                    SubjectSystem = EventSourceSystem
-                });
+                data: CreateEventData());
+
+        private ObservationEventData CreateEventData() =>
+            new ObservationEventData
+            {
+                OperationId = _operationContext.OperationId,
+                SourceSystem = EventSourceSystem,
+                SubjectSystem = EventSourceSystem,
+                UserId = _operationContext.UserId
+            };
     }
 }
