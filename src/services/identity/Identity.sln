@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsClient", "demo\JsClient\J
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Identity.Api", "src\MyHealth.Identity.Api\MyHealth.Identity.Api.csproj", "{0E01F79F-3BAA-42BC-A13A-0D9CF2972D3D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeTransformer", "demo\CodeTransformer\CodeTransformer.csproj", "{58A04E3A-BBFC-42BC-B0BC-45F8CF98B740}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{0E01F79F-3BAA-42BC-A13A-0D9CF2972D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E01F79F-3BAA-42BC-A13A-0D9CF2972D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E01F79F-3BAA-42BC-A13A-0D9CF2972D3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58A04E3A-BBFC-42BC-B0BC-45F8CF98B740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58A04E3A-BBFC-42BC-B0BC-45F8CF98B740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58A04E3A-BBFC-42BC-B0BC-45F8CF98B740}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58A04E3A-BBFC-42BC-B0BC-45F8CF98B740}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{FCBDEF6A-D9D7-4370-8FBD-B19AE09C2EAB} = {390EC341-27AE-4EEA-B03C-06B38750B35B}
 		{684BDB15-5455-4E77-B700-E71FA9E6586B} = {390EC341-27AE-4EEA-B03C-06B38750B35B}
 		{0E01F79F-3BAA-42BC-A13A-0D9CF2972D3D} = {13DF2D48-EAB4-4429-908B-B7E74857D82A}
+		{58A04E3A-BBFC-42BC-B0BC-45F8CF98B740} = {390EC341-27AE-4EEA-B03C-06B38750B35B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2B2ECECC-D117-4A25-BFFB-5EE4DBC17385}

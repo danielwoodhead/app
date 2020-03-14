@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9b5e9caa-d74f-4a2c-9c2d-1ce5c9974eea",
+		"_postman_id": "e45d2814-10e8-4db2-8613-ec0881505a43",
 		"name": "MyHealth",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -10,7 +10,32 @@
 			"item": [
 				{
 					"name": "Create observation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fde3463e-77ef-4c6f-ac3e-50be1ab72a64",
+								"exec": [
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"observation_id\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -18,40 +43,6 @@
 								"name": "Content-Type",
 								"value": "application/json",
 								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"userId\": \"test1\",\r\n  \"content\": \"headache\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{observationsAddress}}/api/observations",
-							"host": [
-								"{{observationsAddress}}"
-							],
-							"path": [
-								"api",
-								"observations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update observation",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
 							}
 						],
 						"body": {
@@ -64,14 +55,60 @@
 							}
 						},
 						"url": {
-							"raw": "{{observationsAddress}}/api/observations/7fc836d6-0233-4dd3-b7f1-2e3a69f080ea",
+							"raw": "{{observations_address}}/api/v1/observations",
 							"host": [
-								"{{observationsAddress}}"
+								"{{observations_address}}"
 							],
 							"path": [
 								"api",
+								"v1",
+								"observations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update observation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"content\": \"headache2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{observations_address}}/api/v1/observations/{{observation_id}}",
+							"host": [
+								"{{observations_address}}"
+							],
+							"path": [
+								"api",
+								"v1",
 								"observations",
-								"7fc836d6-0233-4dd3-b7f1-2e3a69f080ea"
+								"{{observation_id}}"
 							]
 						}
 					},
@@ -83,6 +120,16 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -102,14 +149,15 @@
 							}
 						},
 						"url": {
-							"raw": "{{observationsAddress}}/api/observations/7fc836d6-0233-4dd3-b7f1-2e3a69f080ea",
+							"raw": "{{observations_address}}/api/v1/observations/{{observation_id}}",
 							"host": [
-								"{{observationsAddress}}"
+								"{{observations_address}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"observations",
-								"7fc836d6-0233-4dd3-b7f1-2e3a69f080ea"
+								"{{observation_id}}"
 							]
 						}
 					},
@@ -118,6 +166,16 @@
 				{
 					"name": "Delete observation",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -137,14 +195,147 @@
 							}
 						},
 						"url": {
-							"raw": "{{observationsAddress}}/api/observations/7fc836d6-0233-4dd3-b7f1-2e3a69f080ea",
+							"raw": "{{observations_address}}/api/v1/observations/{{observation_id}}",
 							"host": [
-								"{{observationsAddress}}"
+								"{{observations_address}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"observations",
-								"7fc836d6-0233-4dd3-b7f1-2e3a69f080ea"
+								"{{observation_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Identity",
+			"item": [
+				{
+					"name": "Get code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://myhealth-identity-api.azurewebsites.net/connect/authorize?audience=observations-api&scope=observations-api fhir-api&response_type=code&client_id=mvc&redirect_uri=http://localhost:5002/signin-oidc&state=YOUR_OPAQUE_VALUE&code_challenge=51FaJvQFsiNdiFWIq2EMWUKeAqD47dqU_cHzJpfHl-Q&code_challenge_method=S256",
+							"protocol": "https",
+							"host": [
+								"myhealth-identity-api",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"connect",
+								"authorize"
+							],
+							"query": [
+								{
+									"key": "audience",
+									"value": "observations-api"
+								},
+								{
+									"key": "scope",
+									"value": "observations-api fhir-api"
+								},
+								{
+									"key": "response_type",
+									"value": "code"
+								},
+								{
+									"key": "client_id",
+									"value": "mvc"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://localhost:5002/signin-oidc"
+								},
+								{
+									"key": "state",
+									"value": "YOUR_OPAQUE_VALUE"
+								},
+								{
+									"key": "code_challenge",
+									"value": "51FaJvQFsiNdiFWIq2EMWUKeAqD47dqU_cHzJpfHl-Q"
+								},
+								{
+									"key": "code_challenge_method",
+									"value": "S256"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd76718b-71e6-42f7-9ffa-27ed24ec606d",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"access_token\", jsonData.access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "mvc",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "secret",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "dV2fk_GP4Vvm0SQEzYwMxIRXQ7H5o2I7FRI5FrA9Lgw",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://localhost:5002/signin-oidc",
+									"type": "text"
+								},
+								{
+									"key": "code_verifier",
+									"value": "c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://myhealth-identity-api.azurewebsites.net/connect/token",
+							"protocol": "https",
+							"host": [
+								"myhealth-identity-api",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"connect",
+								"token"
 							]
 						}
 					},

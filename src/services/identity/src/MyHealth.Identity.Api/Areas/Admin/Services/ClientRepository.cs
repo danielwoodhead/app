@@ -103,10 +103,8 @@ namespace MyHealth.Identity.Api.Areas.Admin.Services
                 return newEntity.ToModel();
             }
 
-            _context.Entry(entity).CurrentValues.SetValues(client);
             UpdateAllowedGrantTypes(entity, client, mapper);
             UpdateAllowedScopes(entity, client, mapper);
-            UpdateClientSecrets(entity, client, mapper);
 
             await _context.SaveChangesAsync();
 
@@ -153,28 +151,6 @@ namespace MyHealth.Identity.Api.Areas.Admin.Services
                 if (!client.AllowedScopes.Any(x => x == allowedScope.Scope))
                 {
                     _context.Remove(allowedScope);
-                }
-            }
-        }
-
-        private void UpdateClientSecrets(Entities.Client entity, Client client, IMapper mapper)
-        {
-            foreach (Secret clientSecret in client.ClientSecrets)
-            {
-                Entities.ClientSecret existingClientSecret = entity.ClientSecrets
-                    .FirstOrDefault(x => x.Value == clientSecret.Value);
-
-                if (existingClientSecret == null)
-                {
-                    entity.ClientSecrets.Add(mapper.Map<Secret, Entities.ClientSecret>(clientSecret));
-                }
-            }
-
-            foreach (Entities.ClientSecret clientSecret in entity.ClientSecrets)
-            {
-                if (!client.ClientSecrets.Any(x => x.Value == clientSecret.Value))
-                {
-                    _context.Remove(clientSecret);
                 }
             }
         }
