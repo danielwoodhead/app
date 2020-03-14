@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -5,14 +6,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyHealth.Observations.Api.Extensions;
+using MyHealth.Observations.Api.Middleware;
 using MyHealth.Observations.Api.Swagger;
 using MyHealth.Observations.Core;
 using MyHealth.Observations.Core.Events;
 using MyHealth.Observations.Core.Repository;
-using MyHealth.Observations.Integration.Events;
 using MyHealth.Observations.Integration.Events.ApplicationInsights;
 using MyHealth.Observations.Integration.Events.EventGrid;
 using MyHealth.Observations.Integration.Fhir;
+using MyHealth.Observations.Integration.Fhir.Base;
 using MyHealth.Observations.Utility;
 
 namespace MyHealth.Observations.Api
@@ -40,20 +42,33 @@ namespace MyHealth.Observations.Api
                 options.ReportApiVersions = true;
             });
             services.AddHealthChecks();
-            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
+            services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
             services.AddVersionAwareSwagger();
 
-            services.AddSingleton<IOperationContext, OperationContext>();
+            // prevent mapping of 'sub' claim
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = Configuration["Authentication:Authority"];
+                    options.Audience = Configuration["Authentication:Audience"];
+                });
+
+            services.AddScoped<IOperationContext, OperationContext>();
             services.AddTransient<IObservationsService, ObservationsService>();
 
             services.Configure<FhirServerSettings>(Configuration.GetSection("FhirServerSettings"));
+            services.AddTransient<IFhirClientFactory, FhirClientFactory>();
             services.AddTransient<IObservationsRepository, FhirObservationsRepository>();
 
             services.Configure<EventGridSettings>(Configuration.GetSection("EventGridSettings"));
             if (Configuration.GetSection("EventGridSettings").GetValue("Enabled", defaultValue: false))
                 services.AddSingleton<IEventPublisher, EventGridEventPublisher>();
-            else
-                services.AddSingleton<IEventPublisher, DisabledEventPublisher>();
 
             services.AddTransient<IEventPublisher, ApplicationInsightsEventPublisher>();
             services.AddComposite<IEventPublisher, CompositeEventPublisher>();
@@ -76,7 +91,9 @@ namespace MyHealth.Observations.Api
             }
 
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<OperationContextMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

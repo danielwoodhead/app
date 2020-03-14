@@ -13,16 +13,19 @@
     },
     "additionalFhirServerConfigProperties": {
       "value": {
-        "FhirServer:Security:Authorization:Roles:0:name": "admin",
-        "FhirServer:Security:Authorization:Roles:0:resourcePermissions:0:actions:0": "Read",
-        "FhirServer:Security:Authorization:Roles:0:resourcePermissions:0:actions:1": "Write",
-        "FhirServer:Security:Authorization:Roles:0:resourcePermissions:0:actions:2": "HardDelete",
         "FhirServer:CoreFeatures:SupportsBatch": true,
-        "FhirServer:CoreFeatures:SupportsTransaction": true
+        "FhirServer:CoreFeatures:SupportsTransaction": true,
+        "FhirServer:Security:Authorization:Enabled": false
       }
     },
     "fhirVersion": {
         "value": "R4"
+    },
+    "securityAuthenticationAuthority": {
+      "value": "https://myhealth-identity-api.azurewebsites.net"
+    },
+    "securityAuthenticationAudience": {
+      "value": "fhir-api"
     }
   }
 }

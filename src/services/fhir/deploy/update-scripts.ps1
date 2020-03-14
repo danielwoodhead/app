@@ -1,8 +1,6 @@
 # downloads the latest ARM templates for the Microsoft fhir-server from github
 # don't forget to edit the templates after running this as described in the README
 
-DownloadFilesFromRepo -Owner "microsoft" -Repository "fhir-server" -Path "samples/templates" -DestinationPath "."
-
 function DownloadFilesFromRepo {
 Param(
     [string]$Owner,
@@ -41,5 +39,6 @@ Param(
             throw "Unable to download '$($file.path)'"
         }
     }
-
 }
+
+DownloadFilesFromRepo -Owner "microsoft" -Repository "fhir-server" -Path "samples/templates" -DestinationPath "."

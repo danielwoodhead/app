@@ -1,9 +1,9 @@
-provider "azurerm" {
-  version = "=1.44.0"
-}
-
 terraform {
   backend "azurerm" {}
+}
+
+provider "azurerm" {
+  version = "=1.44.0"
 }
 
 data "azurerm_app_service_plan" "asp" {
@@ -38,5 +38,7 @@ resource "azurerm_app_service" "as" {
     DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.cr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.cr.admin_password
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+    Authentication__Authority           = var.authentication_authority
+    Authentication__Audience            = var.authentication_audience
   }
 }

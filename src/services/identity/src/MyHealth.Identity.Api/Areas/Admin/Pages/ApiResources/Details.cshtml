@@ -1,0 +1,38 @@
+﻿@page
+@model DetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <h4>API Resource</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.ApiResource.Name)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.ApiResource.Name)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.ApiResource.DisplayName)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.ApiResource.DisplayName)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Scopes)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Scopes)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.ApiResource.Name">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
