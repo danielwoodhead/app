@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:MyHealth.Mobile.Core.Converters;assembly=MyHealth.Mobile.Core"
+             mc:Ignorable="d"
+             x:Class="MyHealth.Mobile.Core.App">
+    <Application.Resources>
+
+        <!-- COLORS -->
+        <Color x:Key="WhiteColor">#ffffff</Color>
+        <Color x:Key="GreenColor">#00A69C</Color>
+        <Color x:Key="TextColor">#757575</Color>
+        <Color x:Key="LightTextColor">#979797</Color>
+        <Color x:Key="AndroidDefaultButtonClassBackgroundColor">#C9C9C9</Color>
+        <Color x:Key="iOSDefaultButtonClassBackgroundColor">Transparent</Color>
+        <Color x:Key="AndroidDefaultButtonClassBorderColor">Transparent</Color>
+        <Color x:Key="iOSDefaultButtonClassBorderColor">#007aff</Color>
+        <Color x:Key="AndroidDefaultButtonClassTextColor">#FFFFFF</Color>
+        <Color x:Key="iOSDefaultButtonClassTextColor">#007aff</Color>
+        <Color x:Key="AndroidEntryBackgroundColor">Transparent</Color>
+        <Color x:Key="iOSEntryBackgroundColor">#FFFFFF</Color>
+        <Color x:Key="AndroidDefaultAccentColorColor">#1FAECE</Color>
+        <Color x:Key="AndroidListViewBackgroundColor">Transparent</Color>
+        <Color x:Key="iOSListViewBackgroundColor">Transparent</Color>
+
+        <OnPlatform x:TypeArguments="Color"
+                    x:Key="DefaultButtonClassBackgroundColor">
+            <On Platform="iOS" Value="{ StaticResource iOSDefaultButtonClassBackgroundColor }" />
+            <On Platform="Android" Value="{ StaticResource AndroidDefaultButtonClassBackgroundColor }" />
+        </OnPlatform>
+
+        <OnPlatform x:TypeArguments="Color"
+                    x:Key="DefaultButtonClassBorderColor">
+            <On Platform="iOS" Value="{ StaticResource iOSDefaultButtonClassBorderColor }" />
+            <On Platform="Android" Value="{ StaticResource AndroidDefaultButtonClassBorderColor }" />
+        </OnPlatform>
+
+        <OnPlatform x:TypeArguments="Color"
+                    x:Key="DefaultButtonClassTextColor">
+            <On Platform="iOS" Value="{ StaticResource iOSDefaultButtonClassTextColor }" />
+            <On Platform="Android" Value="{ StaticResource AndroidDefaultButtonClassTextColor }" />
+        </OnPlatform>
+
+        <OnPlatform x:TypeArguments="Color"
+                    x:Key="EntryBackgroundColor">
+            <On Platform="iOS" Value="{ StaticResource iOSEntryBackgroundColor }" />
+            <On Platform="Android" Value="{ StaticResource AndroidEntryBackgroundColor }" />
+        </OnPlatform>
+
+        <!-- SIZES -->
+        <OnPlatform x:TypeArguments="x:Double"
+                    x:Key="BaseButtonBorderRadius">
+            <On Platform="iOS" Value="6" />
+        </OnPlatform>
+
+        <OnPlatform x:TypeArguments="x:Double"
+                    x:Key="BaseButtonBorderWidth">
+            <On Platform="iOS, Android" Value="0" />
+        </OnPlatform>
+
+        <!-- FONTS -->
+        <OnPlatform x:TypeArguments="x:Double"
+                    x:Key="BaseButtonFontSize">
+            <On Platform="iOS" Value="18" />
+            <On Platform="Android" Value="16" />
+        </OnPlatform>
+
+        <OnPlatform x:TypeArguments="FontAttributes"
+                    x:Key="BaseButtonFontAttributes">
+            <On Platform="iOS" Value="Bold" />
+            <On Platform="Android" Value="None" />
+        </OnPlatform>
+
+        <!-- CONVERTERS -->
+        <converters:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
+
+        <!-- STYLES -->
+        <Style TargetType="Button" ApplyToDerivedTypes="True" CanCascade="True">
+            <Setter Property="FontSize" Value="{ StaticResource BaseButtonFontSize }" />
+            <Setter Property="FontAttributes" Value="{ StaticResource BaseButtonFontAttributes }" />
+            <Setter Property="BorderRadius" Value="{ StaticResource BaseButtonBorderRadius }" />
+            <Setter Property="BorderWidth" Value="{ StaticResource BaseButtonBorderWidth }" />
+            <Setter Property="BackgroundColor" Value="{ StaticResource DefaultButtonClassBackgroundColor }" />
+            <Setter Property="BorderColor" Value="{ StaticResource DefaultButtonClassBorderColor }" />
+            <Setter Property="TextColor" Value="{ StaticResource DefaultButtonClassTextColor }" />
+        </Style>
+
+        <Style TargetType="Entry" ApplyToDerivedTypes="True" CanCascade="True">
+            <Setter Property="TextColor" Value="{ StaticResource TextColor }" />
+            <Setter Property="PlaceholderColor" Value="{ StaticResource LightTextColor }" />
+            <Setter Property="BackgroundColor" Value="{ StaticResource EntryBackgroundColor }" />
+        </Style>
+        
+    </Application.Resources>
+</Application>
