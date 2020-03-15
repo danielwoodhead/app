@@ -13,11 +13,14 @@
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="4.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991640" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.4.0" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\ObservationDetailsView.xaml.cs">
+      <DependentUpon>ObservationDetailsView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ObservationsView.xaml.cs">
       <DependentUpon>ObservationsView.xaml</DependentUpon>
     </Compile>

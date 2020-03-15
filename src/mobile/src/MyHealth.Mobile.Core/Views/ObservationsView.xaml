@@ -4,20 +4,32 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModelBase="clr-namespace:MyHealth.Mobile.Core.ViewModels.Base;assembly=MyHealth.Mobile.Core"
+             xmlns:behaviors="clr-namespace:MyHealth.Mobile.Core.Behaviors;assembly=MyHealth.Mobile.Core" 
              mc:Ignorable="d"
              x:Class="MyHealth.Mobile.Core.Views.ObservationsView"
              viewModelBase:ViewModelLocator.AutoWireViewModel="true">
     <ContentPage.Content>
         <StackLayout>
-            <CollectionView ItemsSource="{Binding Observations, Mode=TwoWay}"
-                            VerticalOptions="StartAndExpand"
-                            HorizontalOptions="FillAndExpand"/>
-            <Editor Text="{Binding Observation.Value, Mode=TwoWay}" 
-                    VerticalOptions="FillAndExpand"
-                    HorizontalOptions="FillAndExpand" />
-            <Button Text="Add"
-                    Command="{Binding AddObservationCommand}"
-                    VerticalOptions="End"
+            <ListView ItemsSource="{Binding Observations, Mode=TwoWay}"
+                      VerticalOptions="StartAndExpand"
+                      HorizontalOptions="FillAndExpand">
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior
+                        EventName="ItemTapped"
+                        EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"
+                        Command="{Binding OpenObservationCommand}" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding Content}"/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Text="New"
+                    Command="{Binding NewObservationCommand}"
+                    VerticalOptions="Center"
                     HorizontalOptions="Center"/>
         </StackLayout>
     </ContentPage.Content>

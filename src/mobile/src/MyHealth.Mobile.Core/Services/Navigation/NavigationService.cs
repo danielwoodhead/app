@@ -13,10 +13,7 @@ namespace MyHealth.Mobile.Core.Services.Navigation
     {
         public Task InitializeAsync()
         {
-            //if (string.IsNullOrEmpty(_settingsService.AuthAccessToken))
-            //    return NavigateToAsync<LoginViewModel>();
-            //else
-                return NavigateToAsync<MainViewModel>();
+            return NavigateToAsync<MainViewModel>();
         }
 
         public Task NavigateToAsync<TViewModel>() where TViewModel : ViewModelBase
@@ -24,26 +21,24 @@ namespace MyHealth.Mobile.Core.Services.Navigation
             return InternalNavigateToAsync(typeof(TViewModel), null);
         }
 
+        public Task NavigateToAsync<TViewModel>(object parameter) where TViewModel : ViewModelBase
+        {
+            return InternalNavigateToAsync(typeof(TViewModel), parameter);
+        }
+
         private async Task InternalNavigateToAsync(Type viewModelType, object parameter)
         {
             Page page = CreatePage(viewModelType, parameter);
 
-            //if (page is LoginView)
-            //{
-            //    Application.Current.MainPage = new CustomNavigationView(page);
-            //}
-            //else
-            //{
-                var navigationPage = Application.Current.MainPage as CustomNavigationView;
-                if (navigationPage != null)
-                {
-                    await navigationPage.PushAsync(page);
-                }
-                else
-                {
-                    Application.Current.MainPage = new CustomNavigationView(page);
-                }
-            //}
+            var navigationPage = Application.Current.MainPage as CustomNavigationView;
+            if (navigationPage != null)
+            {
+                await navigationPage.PushAsync(page);
+            }
+            else
+            {
+                Application.Current.MainPage = new CustomNavigationView(page);
+            }
 
             await (page.BindingContext as ViewModelBase).InitializeAsync(parameter);
         }

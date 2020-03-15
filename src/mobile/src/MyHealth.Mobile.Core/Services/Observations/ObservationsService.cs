@@ -16,21 +16,36 @@ namespace MyHealth.Mobile.Core.Services.Observations
             _apiClient = apiClient;
         }
 
-        public async Task AddObservationAsync(string observation)
+        public async Task AddObservationAsync(Observation observation)
         {
             await _apiClient.PostAsync<CreateObservationRequest, Observation>(
                 ApiUrlBase,
                 new CreateObservationRequest
                 {
-                    UserId = "xamarin1", // TODO: remove when auth in place
-                    Content = observation
+                    Content = observation.Content
                 });
         }
 
-        public Task<IEnumerable<string>> GetObservationsAsync()
+        public async Task DeleteObservationAsync(string id)
         {
-            // TODO
-            return Task.FromResult((IEnumerable<string>)new[] { "TODO" });
+            await _apiClient.DeleteAsync($"{ApiUrlBase}/{id}");
+        }
+
+        public async Task<Observation> GetObservationAsync(string id)
+        {
+            return await _apiClient.GetAsync<Observation>($"{ApiUrlBase}/{id}");
+        }
+
+        public async Task<IEnumerable<Observation>> GetObservationsAsync()
+        {
+            var response = await _apiClient.GetAsync<SearchObservationsResponse>(ApiUrlBase);
+
+            return response.Observations;
+        }
+
+        public async Task UpdateObservationAsync(Observation observation)
+        {
+            await _apiClient.PutAsync($"{ApiUrlBase}/{observation.Id}", observation);
         }
     }
 }

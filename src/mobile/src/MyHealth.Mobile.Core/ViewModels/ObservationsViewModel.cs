@@ -2,8 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MyHealth.Mobile.Core.Models.Observations;
 using MyHealth.Mobile.Core.Services.Observations;
-using MyHealth.Mobile.Core.Validation;
 using MyHealth.Mobile.Core.ViewModels.Base;
 using Xamarin.Forms;
 
@@ -13,23 +13,9 @@ namespace MyHealth.Mobile.Core.ViewModels
     {
         private readonly IObservationsService _observationsService;
 
-        private ValidatableObject<string> _observation;
-        private ObservableCollection<string> _observations;
+        private ObservableCollection<Observation> _observations;
 
-        public ValidatableObject<string> Observation
-        {
-            get
-            {
-                return _observation;
-            }
-            set
-            {
-                _observation = value;
-                RaisePropertyChanged(() => Observation);
-            }
-        }
-
-        public ObservableCollection<string> Observations
+        public ObservableCollection<Observation> Observations
         {
             get { return _observations; }
             set
@@ -39,23 +25,23 @@ namespace MyHealth.Mobile.Core.ViewModels
             }
         }
 
-        public ICommand AddObservationCommand => new Command(async () => await AddObservationAsync());
+        public ICommand NewObservationCommand => new Command(async () => await NewObservationAsync());
+        public ICommand OpenObservationCommand => new Command<Observation>(async (item) => await OpenObservationAsync(item));
 
         public ObservationsViewModel(IObservationsService observationsService)
         {
             _observationsService = observationsService;
-            _observation = new ValidatableObject<string>();
         }
 
         public override async Task InitializeAsync(object navigationData)
         {
             if (Observations == null)
-                Observations = new ObservableCollection<string>();
+                Observations = new ObservableCollection<Observation>();
 
-            IEnumerable<string> observations = await _observationsService.GetObservationsAsync();
+            IEnumerable<Observation> observations = await _observationsService.GetObservationsAsync();
 
             Observations.Clear();
-            foreach (string observation in observations)
+            foreach (Observation observation in observations)
             {
                 Observations.Add(observation);
             }
@@ -63,16 +49,14 @@ namespace MyHealth.Mobile.Core.ViewModels
             await base.InitializeAsync(navigationData);
         }
 
-        private async Task AddObservationAsync()
+        private async Task NewObservationAsync()
         {
-            IsBusy = true;
+            await NavigationService.NavigateToAsync<ObservationDetailsViewModel>();
+        }
 
-            Observations.Add(Observation.Value);
-            RaisePropertyChanged(() => Observations);
-
-            await _observationsService.AddObservationAsync(Observation.Value);
-
-            IsBusy = false;
+        private async Task OpenObservationAsync(Observation item)
+        {
+            await NavigationService.NavigateToAsync<ObservationDetailsViewModel>(item.Id);
         }
     }
 }
