@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyHealth.Observations.Api.Extensions;
 using MyHealth.Observations.Core;
 using MyHealth.Observations.Models;
 using MyHealth.Observations.Models.Requests;
@@ -47,12 +48,11 @@ namespace MyHealth.Observations.Api.Controllers
         // POST: api/observations
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<Observation>> Post([FromBody] CreateObservationRequest request)
+        public async Task<ActionResult<Observation>> Post([FromBody] CreateObservationRequest request, ApiVersion apiVersion)
         {
             Observation observation = await _observationsService.CreateObservationAsync(request);
 
-            // TODO: find better way of dealing with the api version here
-            return CreatedAtRoute("Get", new { id = observation.Id, version = "v1" }, observation);
+            return CreatedAtRoute("Get", new { id = observation.Id, version = apiVersion.ToUrlString() }, observation);
         }
 
         // PUT: api/observations/5
