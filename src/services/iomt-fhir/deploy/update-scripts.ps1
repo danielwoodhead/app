@@ -1,4 +1,4 @@
-# downloads the latest ARM templates for the Microsoft fhir-server from github
+# downloads the latest ARM templates for the Microsoft iomt-fhir from github
 
 function DownloadFilesFromRepo {
 Param(
@@ -40,4 +40,4 @@ Param(
     }
 }
 
-DownloadFilesFromRepo -Owner "microsoft" -Repository "fhir-server" -Path "samples/templates" -DestinationPath "."
+DownloadFilesFromRepo -Owner "microsoft" -Repository "iomt-fhir" -Path "deploy/templates" -DestinationPath "."
