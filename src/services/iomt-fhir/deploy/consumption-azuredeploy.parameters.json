@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ServiceName": {
+      "value": "myhealth-iomt-fhir"
+    },
+    "ResourceLocation": {
+        "value": "UK South"
+    },
+    "FhirServiceUrl": {
+        "value": "https://myhealth-fhir.azurewebsites.net"
+    },
+    "FhirServiceAuthority": {
+      "value": "https://myhealth-identity-api.azurewebsites.net"
+    },
+    "FhirServiceResource": {
+        "value": "fhir-api"
+    },
+    "FhirServiceClientId": {
+      "value": "iomt-fhir"
+    }
+  }
+}
