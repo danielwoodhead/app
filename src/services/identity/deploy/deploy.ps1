@@ -6,7 +6,7 @@ terraform validate
 # on first run the app service has to be created before the sql firewall rules
 terraform apply -target "azurerm_app_service.as" -var-file="dev.tfvars" -var identity_admin_password={password}
 
-terraform apply -var-file="dev.tfvars" -var identity_admin_password=FooFoo1!
+terraform apply -var-file="dev.tfvars" -var identity_admin_password={password}
 
 # since we're not using different tags at this stage, restart the web app to pick up the new image
 az webapp restart --name myhealth-identity-api --resource-group DansApp
