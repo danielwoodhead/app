@@ -1,24 +1,25 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using MyHealth.Mobile.Core.Models.Observations;
-using MyHealth.Mobile.Core.Services.Api;
+using MyHealth.Mobile.Core.Services.Http;
 
 namespace MyHealth.Mobile.Core.Services.Observations
 {
     public class ObservationsService : IObservationsService
     {
-        private const string ApiUrlBase = "https://myhealth-observations-api.azurewebsites.net/api/v1/observations";
+        private const string ApiUrlBase = GlobalSettings.ObservationsApiUrlBase;
 
-        private readonly IApiClient _apiClient;
+        private readonly HttpClient _httpClient;
 
-        public ObservationsService(IApiClient apiClient)
+        public ObservationsService(IHttpClientFactory httpClientFactory)
         {
-            _apiClient = apiClient;
+            _httpClient = httpClientFactory.Create();
         }
 
         public async Task AddObservationAsync(Observation observation)
         {
-            await _apiClient.PostAsync<CreateObservationRequest, Observation>(
+            await _httpClient.PostAsync<CreateObservationRequest, Observation>(
                 ApiUrlBase,
                 new CreateObservationRequest
                 {
@@ -28,24 +29,29 @@ namespace MyHealth.Mobile.Core.Services.Observations
 
         public async Task DeleteObservationAsync(string id)
         {
-            await _apiClient.DeleteAsync($"{ApiUrlBase}/{id}");
+            await _httpClient.DeleteAsync($"{ApiUrlBase}/{id}");
         }
 
         public async Task<Observation> GetObservationAsync(string id)
         {
-            return await _apiClient.GetAsync<Observation>($"{ApiUrlBase}/{id}");
+            return await _httpClient.GetAsync<Observation>($"{ApiUrlBase}/{id}");
         }
 
         public async Task<IEnumerable<Observation>> GetObservationsAsync()
         {
-            var response = await _apiClient.GetAsync<SearchObservationsResponse>(ApiUrlBase);
+            var response = await _httpClient.GetAsync<SearchObservationsResponse>(ApiUrlBase);
 
             return response.Observations;
         }
 
         public async Task UpdateObservationAsync(Observation observation)
         {
-            await _apiClient.PutAsync($"{ApiUrlBase}/{observation.Id}", observation);
+            var request = new UpdateObservationRequest
+            {
+                Content = observation.Content
+            };
+
+            await _httpClient.PutAsync<UpdateObservationRequest, Observation>($"{ApiUrlBase}/{observation.Id}", request);
         }
     }
 }

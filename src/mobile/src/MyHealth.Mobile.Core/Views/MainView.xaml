@@ -9,6 +9,12 @@
             x:Class="MyHealth.Mobile.Core.Views.MainView"
             viewModelBase:ViewModelLocator.AutoWireViewModel="true">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="LOGOUT"
+                     Command="{Binding LogoutCommand}">
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
     <views:ObservationsView x:Name="ObservationsView">
         <views:ObservationsView.Title>Observations</views:ObservationsView.Title>
     </views:ObservationsView>

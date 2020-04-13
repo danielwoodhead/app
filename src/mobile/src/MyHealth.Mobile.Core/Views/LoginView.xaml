@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModelBase="clr-namespace:MyHealth.Mobile.Core.ViewModels.Base;assembly=MyHealth.Mobile.Core"
+             xmlns:behaviors="clr-namespace:MyHealth.Mobile.Core.Behaviors;assembly=MyHealth.Mobile.Core"
+             xmlns:converters="clr-namespace:MyHealth.Mobile.Core.Converters;assembly=MyHealth.Mobile.Core"
+             mc:Ignorable="d"
+             x:Class="MyHealth.Mobile.Core.Views.LoginView"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true">
+    <ContentPage.Resources>
+        <converters:WebNavigatingEventArgsConverter x:Key="WebNavigatingEventArgsConverter" />
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid
+            BackgroundColor="{StaticResource BackgroundColor}">
+            <WebView
+                WidthRequest="1000"
+                HeightRequest="1000"
+                Source="{Binding LoginUrl}">
+                <WebView.Behaviors>
+                    <behaviors:EventToCommandBehavior 
+                        EventName="Navigating"
+                        EventArgsConverter="{StaticResource WebNavigatingEventArgsConverter}"
+                        Command="{Binding NavigateCommand}"/>
+                </WebView.Behaviors>
+            </WebView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -24,6 +24,5 @@ namespace MyHealth.Mobile.Core.Exceptions
         {
             HttpCode = code;
         }
-
     }
 }

@@ -10,6 +10,7 @@
 
         <!-- COLORS -->
         <Color x:Key="WhiteColor">#ffffff</Color>
+        <Color x:Key="BackgroundColor">#F4F6FA</Color>
         <Color x:Key="GreenColor">#00A69C</Color>
         <Color x:Key="TextColor">#757575</Color>
         <Color x:Key="LightTextColor">#979797</Color>

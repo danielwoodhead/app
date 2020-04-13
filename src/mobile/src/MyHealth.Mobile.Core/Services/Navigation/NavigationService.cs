@@ -2,6 +2,8 @@
 using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
+using MyHealth.Mobile.Core.Services.Settings;
+using MyHealth.Mobile.Core.Services.SystemTime;
 using MyHealth.Mobile.Core.ViewModels;
 using MyHealth.Mobile.Core.ViewModels.Base;
 using MyHealth.Mobile.Core.Views;
@@ -11,9 +13,21 @@ namespace MyHealth.Mobile.Core.Services.Navigation
 {
     public class NavigationService : INavigationService
     {
+        private readonly ISettingsService _settingsService;
+        private readonly ISystemTimeService _systemTimeService;
+
+        public NavigationService(ISettingsService settingsService, ISystemTimeService systemTimeService)
+        {
+            _settingsService = settingsService;
+            _systemTimeService = systemTimeService;
+        }
+
         public Task InitializeAsync()
         {
-            return NavigateToAsync<MainViewModel>();
+            if (string.IsNullOrEmpty(_settingsService.AuthAccessToken) || _settingsService.AuthAccessTokenExpiresUtc < _systemTimeService.UtcNow)
+                return NavigateToAsync<LoginViewModel>();
+            else
+                return NavigateToAsync<MainViewModel>();
         }
 
         public Task NavigateToAsync<TViewModel>() where TViewModel : ViewModelBase
@@ -30,14 +44,21 @@ namespace MyHealth.Mobile.Core.Services.Navigation
         {
             Page page = CreatePage(viewModelType, parameter);
 
-            var navigationPage = Application.Current.MainPage as CustomNavigationView;
-            if (navigationPage != null)
+            if (page is LoginView)
             {
-                await navigationPage.PushAsync(page);
+                Application.Current.MainPage = new CustomNavigationView(page);
             }
             else
             {
-                Application.Current.MainPage = new CustomNavigationView(page);
+                var navigationPage = Application.Current.MainPage as CustomNavigationView;
+                if (navigationPage != null)
+                {
+                    await navigationPage.PushAsync(page);
+                }
+                else
+                {
+                    Application.Current.MainPage = new CustomNavigationView(page);
+                }
             }
 
             await (page.BindingContext as ViewModelBase).InitializeAsync(parameter);

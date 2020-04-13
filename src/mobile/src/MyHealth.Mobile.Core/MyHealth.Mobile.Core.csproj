@@ -13,13 +13,20 @@
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="4.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\extensions\src\MyHealth.Extensions.Cryptography\MyHealth.Extensions.Cryptography.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Views\ObservationDetailsView.xaml.cs">
       <DependentUpon>ObservationDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\ObservationsView.xaml.cs">
       <DependentUpon>ObservationsView.xaml</DependentUpon>

@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Cryptography", "src\MyHealth.Extensions.Cryptography\MyHealth.Extensions.Cryptography.csproj", "{465B67FF-74D8-4D07-98F0-6E4308CDA9FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{070D4A9C-AE66-4F8C-908D-28233A54C0F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{465B67FF-74D8-4D07-98F0-6E4308CDA9FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{465B67FF-74D8-4D07-98F0-6E4308CDA9FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{465B67FF-74D8-4D07-98F0-6E4308CDA9FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{465B67FF-74D8-4D07-98F0-6E4308CDA9FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{465B67FF-74D8-4D07-98F0-6E4308CDA9FE} = {070D4A9C-AE66-4F8C-908D-28233A54C0F5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5F0C8B0-2B7D-4865-B54B-B5448F24582A}
+	EndGlobalSection
+EndGlobal
