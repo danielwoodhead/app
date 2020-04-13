@@ -62,3 +62,8 @@ variable "identity_admin_email" {
 variable "identity_admin_password" {
  description = "The identity admin user password" 
 }
+
+variable "log_level" {
+  description = "The log level"
+  default     = "Information"
+}
