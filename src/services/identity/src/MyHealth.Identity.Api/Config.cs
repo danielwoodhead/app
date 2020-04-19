@@ -16,7 +16,10 @@ namespace MyHealth.Identity.Api
         public static IEnumerable<ApiResource> Apis =>
             new List<ApiResource>
             {
-                new ApiResource("api1", "My API")
+                new ApiResource("api1", "My API"),
+                new ApiResource("observations-api", "Observations API"),
+                new ApiResource("fhir-api", "FHIR API"),
+                new ApiResource("integrations-api", "Integrations API")
             };
 
         public static IEnumerable<Client> Clients =>
@@ -45,7 +48,10 @@ namespace MyHealth.Identity.Api
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
+                        "api1",
+                        "observations-api",
+                        "fhir-api",
+                        "integrations-api"
                     },
                     AllowOfflineAccess = true
                 },
