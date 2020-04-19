@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.Events\MyHealth.Extensions.Events.csproj" />
+    <ProjectReference Include="..\MyHealth.Integrations.Models\MyHealth.Integrations.Models.csproj" />
+    <ProjectReference Include="..\MyHealth.Integrations.Utility\MyHealth.Integrations.Utility.csproj" />
+  </ItemGroup>
+
+</Project>
