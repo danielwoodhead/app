@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  myhealth.identity.admin:
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp3.1/MyHealth.Identity.Admin.dll" /seed'
+
+  myhealth.identity.admin.api:
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+  myhealth.identity.sts.identity:
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
