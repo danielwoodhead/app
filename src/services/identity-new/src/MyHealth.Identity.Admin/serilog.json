@@ -1,7 +1,10 @@
 ﻿{
     "Serilog": {
+        "Using": [
+            "Serilog.Sinks.ApplicationInsights"
+        ],
         "MinimumLevel": {
-            "Default": "Error",
+            "Default": "Information",
             "Override": {
                 "Skoruba": "Information"
             }
@@ -11,16 +14,16 @@
                 "Name": "Console"
             },
             {
-                "Name": "MSSqlServer",
+                "Name": "ApplicationInsights",
                 "Args": {
-                    "connectionString": "Server=(localdb)\\mssqllocaldb;Database=MyHealthIdentity;Trusted_Connection=True;MultipleActiveResultSets=true",
-                    "tableName": "Log",
-                    "columnOptionsSection": {
-                        "addStandardColumns": [ "LogEvent" ],
-                        "removeStandardColumns": [ "Properties" ]
-                    }
+                    "restrictedToMinimumLevel": "Information",
+                    "telemetryConverter": "Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters.TraceTelemetryConverter, Serilog.Sinks.ApplicationInsights"
                 }
             }
-        ]
+        ],
+        "Enrich": [ "FromLogContext" ],
+        "Properties": {
+            "Application": "Sample"
+        }
     }
 }

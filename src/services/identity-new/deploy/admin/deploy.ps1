@@ -4,9 +4,9 @@ terraform init -backend-config="resource_group_name=DansTerraform" -backend-conf
 terraform validate
 
 # on first run the app service has to be created before the sql firewall rules
-terraform apply -target "azurerm_app_service.as" -var-file="dev.tfvars" -var identity_client_secret=secret
+terraform apply -target "azurerm_app_service.as" -var-file="dev.tfvars" -var identity_client_secret={secret}
 
-terraform apply -var-file="dev.tfvars" -var identity_client_secret=secret
+terraform apply -var-file="dev.tfvars" -var identity_client_secret={secret}
 
 # since we're not using different tags at this stage, restart the web app to pick up the new image
 az webapp restart --name myhealth-identity-admin --resource-group DansApp
