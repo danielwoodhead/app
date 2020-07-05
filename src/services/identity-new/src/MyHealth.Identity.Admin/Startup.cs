@@ -33,6 +33,8 @@ namespace MyHealth.Identity.Admin
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
+
             var rootConfiguration = CreateRootConfiguration();
             services.AddSingleton(rootConfiguration);
 

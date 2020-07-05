@@ -27,6 +27,8 @@ namespace MyHealth.Identity.STS.Identity
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
+
             var rootConfiguration = CreateRootConfiguration();
             services.AddSingleton(rootConfiguration);
 

@@ -8,7 +8,7 @@
     "Users": [
       {
         "Username": "admin",
-        "Password": "FooFoo1!",
+        "Password": "P@ssword!",
         "Email": "admin@myhealth.com",
         "Roles": [
           "IdentityAdmin"

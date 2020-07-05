@@ -81,7 +81,7 @@
       {
         "ClientId": "client",
         "ClientName": "client",
-        "ClientUri": "http://localhost:9000",
+        "ClientUri": "https://myhealth-identity-admin.azurewebsites.net",
         "AllowedGrantTypes": [
           "hybrid"
         ],
@@ -91,14 +91,14 @@
           }
         ],
         "RedirectUris": [
-          "http://localhost:9000/signin-oidc"
+          "https://myhealth-identity-admin.azurewebsites.net/signin-oidc"
         ],
-        "FrontChannelLogoutUri": "http://localhost:9000/signout-oidc",
+        "FrontChannelLogoutUri": "https://myhealth-identity-admin.azurewebsites.net/signout-oidc",
         "PostLogoutRedirectUris": [
-          "http://localhost:9000/signout-callback-oidc"
+          "https://myhealth-identity-admin.azurewebsites.net/signout-callback-oidc"
         ],
         "AllowedCorsOrigins": [
-          "http://localhost:9000"
+          "https://myhealth-identity-admin.azurewebsites.net"
         ],
         "AllowedScopes": [
           "openid",
