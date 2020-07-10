@@ -20,6 +20,7 @@
     <ProjectReference Include="..\MyHealth.Integrations.Core\MyHealth.Integrations.Core.csproj" />
     <ProjectReference Include="..\MyHealth.Integrations.Models\MyHealth.Integrations.Models.csproj" />
     <ProjectReference Include="..\MyHealth.Integrations.Repository.TableStorage\MyHealth.Integrations.Repository.TableStorage.csproj" />
+    <ProjectReference Include="..\providers\MyHealth.Integrations.Fitbit\MyHealth.Integrations.Fitbit.csproj" />
   </ItemGroup>
 
 </Project>

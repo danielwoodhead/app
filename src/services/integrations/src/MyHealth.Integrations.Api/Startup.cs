@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +10,8 @@ using MyHealth.Extensions.Events;
 using MyHealth.Extensions.Events.Azure.EventGrid;
 using MyHealth.Integrations.Core;
 using MyHealth.Integrations.Core.Repository;
+using MyHealth.Integrations.Fitbit;
+using MyHealth.Integrations.Fitbit.Controllers;
 using MyHealth.Integrations.Repository.TableStorage;
 using MyHealth.Integrations.Utility;
 
@@ -29,7 +30,10 @@ namespace MyHealth.Integrations.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry();
-            services.AddControllers();
+
+            services.AddControllers()
+                .AddApplicationPart(typeof(FitbitController).Assembly);
+
             services.AddVersioning();
             services.AddHealthChecks();
 
@@ -51,10 +55,14 @@ namespace MyHealth.Integrations.Api
             services.Configure<TableStorageSettings>(Configuration.GetSection("TableStorage"));
             services.AddTransient<IIntegrationsService, IntegrationsService>();
             services.AddSingleton<IIntegrationsRepository, TableStorageIntegrationsRepository>();
-            services.AddScoped<IOperationContext, OperationContext>();
+            services.AddSingleton<IOperationContext, OperationContext>();
+            services.AddScoped<IUserOperationContext, UserOperationContext>();
 
             services.Configure<EventGridSettings>(Configuration.GetSection("EventGrid"));
             services.AddSingleton<IEventPublisher, EventGridEventPublisher>();
+
+            // providers
+            services.Configure<FitbitSettings>(Configuration.GetSection("Fitbit"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -17,12 +17,12 @@ namespace MyHealth.Integrations.Core
         private const string EventSourceSystem = "myhealth:integrations:api";
 
         private readonly IIntegrationsRepository _integrationsRepository;
-        private readonly IOperationContext _operationContext;
+        private readonly IUserOperationContext _operationContext;
         private readonly IEventPublisher _eventPublisher;
 
         public IntegrationsService(
             IIntegrationsRepository integrationsRepository,
-            IOperationContext operationContext,
+            IUserOperationContext operationContext,
             IEventPublisher eventPublisher)
         {
             _integrationsRepository = integrationsRepository;
@@ -40,9 +40,13 @@ namespace MyHealth.Integrations.Core
 
         public async Task DeleteIntegrationAsync(string id)
         {
-            await _integrationsRepository.DeleteIntegrationAsync(id, _operationContext.UserId);
+            Integration integration = await _integrationsRepository.GetIntegrationAsync(id, _operationContext.UserId);
 
-            await _eventPublisher.PublishAsync(CreateIntegrationDeletedEvent(id));
+            if (integration != null)
+            {
+                await _integrationsRepository.DeleteIntegrationAsync(id, _operationContext.UserId);
+                await _eventPublisher.PublishAsync(CreateIntegrationDeletedEvent(integration));
+            }
         }
 
         public async Task<Integration> GetIntegrationAsync(string id)
@@ -74,15 +78,15 @@ namespace MyHealth.Integrations.Core
                 subject: integration.Id,
                 eventTime: DateTime.UtcNow,
                 dataVersion: EventDataVersion,
-                data: CreateEventData());
+                data: CreateEventData(integration));
 
-        private IntegrationDeletedEvent CreateIntegrationDeletedEvent(string id) =>
+        private IntegrationDeletedEvent CreateIntegrationDeletedEvent(Integration integration) =>
             new IntegrationDeletedEvent(
                 id: Guid.NewGuid().ToString(),
-                subject: id,
+                subject: integration.Id,
                 eventTime: DateTime.UtcNow,
                 dataVersion: EventDataVersion,
-                data: CreateEventData());
+                data: CreateEventData(integration));
 
         private IntegrationUpdatedEvent CreateIntegrationUpdatedEvent(Integration integration) =>
             new IntegrationUpdatedEvent(
@@ -90,14 +94,15 @@ namespace MyHealth.Integrations.Core
                 subject: integration.Id,
                 eventTime: DateTime.UtcNow,
                 dataVersion: EventDataVersion,
-                data: CreateEventData());
+                data: CreateEventData(integration));
 
-        private IntegrationEventData CreateEventData() =>
+        private IntegrationEventData CreateEventData(Integration integration) =>
             new IntegrationEventData
             {
                 OperationId = _operationContext.OperationId,
                 SourceSystem = EventSourceSystem,
                 SubjectSystem = EventSourceSystem,
+                Provider = integration.Provider,
                 UserId = _operationContext.UserId
             };
     }

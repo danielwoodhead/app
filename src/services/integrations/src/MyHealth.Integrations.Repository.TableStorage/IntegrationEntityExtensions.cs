@@ -1,4 +1,5 @@
-﻿using MyHealth.Integrations.Models;
+﻿using System;
+using MyHealth.Integrations.Models;
 
 namespace MyHealth.Integrations.Repository.TableStorage
 {
@@ -6,11 +7,14 @@ namespace MyHealth.Integrations.Repository.TableStorage
     {
         public static Integration Map(this IntegrationEntity entity)
         {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
             return new Integration
             {
                 Id = entity.Id,
                 UserId = entity.UserId,
-                Type = entity.Type
+                Provider = entity.Type
             };
         }
     }
