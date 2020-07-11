@@ -19,20 +19,23 @@ namespace MyHealth.Extensions.Events.Azure.EventGrid
             _eventGridClient = new EventGridClient(new TopicCredentials(_settings.TopicKey));
         }
 
-        public async Task PublishAsync(DomainEvent e)
+        public async Task PublishAsync(IEvent @event)
         {
             if (!_settings.Enabled)
                 return;
 
-            if (e == null)
-                throw new ArgumentNullException(nameof(e));
+            if (@event == null)
+                throw new ArgumentNullException(nameof(@event));
 
-            await PublishEventAsync(e.ToEventGridEvent());
+            await PublishAsync(new[] { @event });
         }
 
-        private async Task PublishEventAsync(EventGridEvent eventGridEvent)
+        public async Task PublishAsync(IEnumerable<IEvent> events)
         {
-            await PublishEventsAsync(new[] { eventGridEvent });
+            if (!_settings.Enabled)
+                return;
+
+            await PublishEventsAsync(events.Select(e => e.ToEventGridEvent()));
         }
 
         private async Task PublishEventsAsync(IEnumerable<EventGridEvent> events)

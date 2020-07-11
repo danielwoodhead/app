@@ -18,7 +18,7 @@ namespace MyHealth.Integrations.Repository.TableStorage
 
         public TableStorageIntegrationsRepository(IOptions<TableStorageSettings> settings)
         {
-            _settings = settings.Value;
+            _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
 
             _cloudTableClient = CloudStorageAccount.Parse(_settings.ConnectionString).CreateCloudTableClient();
         }
@@ -27,6 +27,9 @@ namespace MyHealth.Integrations.Repository.TableStorage
 
         public async Task<Integration> CreateIntegrationAsync(CreateIntegrationRequest request, string userId)
         {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+
             var entity = new IntegrationEntity(
                 id: Guid.NewGuid().ToString(),
                 userId: userId);
