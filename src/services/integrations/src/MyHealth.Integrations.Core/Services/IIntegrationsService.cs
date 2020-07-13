@@ -3,7 +3,7 @@ using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Requests;
 using MyHealth.Integrations.Models.Response;
 
-namespace MyHealth.Integrations.Core
+namespace MyHealth.Integrations.Core.Services
 {
     public interface IIntegrationsService
     {

@@ -14,7 +14,7 @@ namespace MyHealth.Integrations.Repository.TableStorage
             {
                 Id = entity.Id,
                 UserId = entity.UserId,
-                Provider = entity.Type
+                Provider = entity.Provider
             };
         }
     }

@@ -34,7 +34,7 @@ namespace MyHealth.Integrations.Repository.TableStorage
                 id: Guid.NewGuid().ToString(),
                 userId: userId);
 
-            entity.Type = request.Type;
+            entity.Provider = request.Provider.ToString();
 
             await Table.InsertAsync(entity);
 

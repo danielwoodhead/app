@@ -4,5 +4,6 @@
     {
         public string BaseUrl { get; set; }
         public string VerificationCode { get; set; }
+        public string ClientId { get; set; }
     }
 }

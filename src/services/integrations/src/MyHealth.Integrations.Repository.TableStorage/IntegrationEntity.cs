@@ -6,7 +6,7 @@ namespace MyHealth.Integrations.Repository.TableStorage
     {
         public string Id => RowKey;
         public string UserId => PartitionKey;
-        public string Type { get; set; }
+        public string Provider { get; set; }
         public string Token { get; set; }
 
         public IntegrationEntity(

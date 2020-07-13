@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using MyHealth.Integrations.Core.Events.Handlers;
 using MyHealth.Integrations.Fitbit.Clients;
 using MyHealth.Integrations.Fitbit.EventHandlers;
+using MyHealth.Integrations.Fitbit.Services;
 using Polly;
 
 namespace MyHealth.Integrations.Fitbit
@@ -13,36 +14,18 @@ namespace MyHealth.Integrations.Fitbit
     {
         public static IServiceCollection AddFitBit(this IServiceCollection services)
         {
-            services
-                .AddConfiguration()
-                .AddEventHandlers()
-                .AddClients();
-
-            return services;
-        }
-
-        private static IServiceCollection AddConfiguration(this IServiceCollection services)
-        {
             services.AddOptions<FitbitSettings>()
                 .Configure<IConfiguration>((options, configuration) =>
                 {
-                    options.BaseUrl = configuration["FitbitBaseUrl"];
-                    options.VerificationCode = configuration["FitbitVerificationCode"];
+                    options.BaseUrl = configuration["Fitbit:BaseUrl"];
+                    options.VerificationCode = configuration["Fitbit:VerificationCode"];
+                    options.ClientId = configuration["Fitbit:ClientId"];
                 });
 
-            return services;
-        }
-
-        private static IServiceCollection AddEventHandlers(this IServiceCollection services)
-        {
+            services.AddTransient<IFitbitService, FitbitService>();
             services.AddTransient<IIntegrationCreatedEventHandler, FitbitIntegrationCreatedEventHandler>();
             services.AddTransient<IIntegrationProviderUpdateEventHandler, FitbitProviderUpdateEventHandler>();
 
-            return services;
-        }
-
-        private static IServiceCollection AddClients(this IServiceCollection services)
-        {
             services
                 .AddHttpClient<IFitbitClient, FitbitClient>((s, client) =>
                 {

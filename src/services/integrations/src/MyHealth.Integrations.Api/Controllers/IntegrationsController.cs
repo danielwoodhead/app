@@ -3,17 +3,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyHealth.Extensions.AspNetCore.Versioning;
-using MyHealth.Integrations.Core;
+using MyHealth.Integrations.Core.Services;
 using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Requests;
 using MyHealth.Integrations.Models.Response;
 
 namespace MyHealth.Integrations.Api.Controllers
 {
-    [Route("api/v{version:apiVersion}/integrations")]
-    [ApiVersion("1.0")]
     [ApiController]
+    [ApiVersion("1.0")]
     [Authorize]
+    [Route("v{version:apiVersion}/integrations")]
     public class IntegrationsController : ControllerBase
     {
         private readonly IIntegrationsService _integrationsService;

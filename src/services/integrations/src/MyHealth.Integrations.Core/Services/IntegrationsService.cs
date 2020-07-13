@@ -9,7 +9,7 @@ using MyHealth.Integrations.Models.Requests;
 using MyHealth.Integrations.Models.Response;
 using MyHealth.Integrations.Utility;
 
-namespace MyHealth.Integrations.Core
+namespace MyHealth.Integrations.Core.Services
 {
     public class IntegrationsService : IIntegrationsService
     {
