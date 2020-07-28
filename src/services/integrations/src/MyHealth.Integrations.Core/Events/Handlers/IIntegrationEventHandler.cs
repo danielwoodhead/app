@@ -6,6 +6,6 @@ namespace MyHealth.Integrations.Core.Events.Handlers
     public interface IIntegrationEventHandler
     {
         string Provider { get; }
-        Task RunAsync(IEvent @event);
+        Task RunAsync(IEvent e);
     }
 }

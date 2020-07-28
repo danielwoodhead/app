@@ -1,0 +1,34 @@
+﻿@page "/integrations"
+@attribute [Authorize]
+@inject IFitbitClient FitbitClient;
+@inject IIntegrationsClient IntegrationsClient
+@inject NavigationManager NavigationManager
+@using MyHealth.Web.Core.Integrations
+
+<h3>Integrations</h3>
+
+@if (HasFitbitIntegration)
+{
+    <p><em>Fitbit integration found!</em></p>
+}
+else
+{
+    <button class="btn btn-primary" @onclick="AddFitbitIntegration">Add Fitbit</button>
+}
+
+@code {
+    private IEnumerable<Integration> _integrations;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _integrations = (await IntegrationsClient.GetAllIntegrationsAsync()).Integrations;
+    }
+
+    private bool HasFitbitIntegration => _integrations != null && _integrations.Any(i => i.Provider == "Fitbit");
+
+    private void AddFitbitIntegration()
+    {
+        string fitbitAuthenticationUri = FitbitClient.GetAuthenticationUri(NavigationManager.BaseUri);
+        NavigationManager.NavigateTo(fitbitAuthenticationUri);
+    }
+}

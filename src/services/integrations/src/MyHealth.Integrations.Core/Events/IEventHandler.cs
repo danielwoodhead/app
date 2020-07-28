@@ -5,6 +5,6 @@ namespace MyHealth.Integrations.Core.Events
 {
     public interface IEventHandler
     {
-        Task RunAsync(IEvent @event);
+        Task ProcessAsync(IEvent e);
     }
 }

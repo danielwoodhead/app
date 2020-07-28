@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Options;
 using MyHealth.Extensions.Azure.Storage.Table;
-using MyHealth.Integrations.Core.Repository;
+using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Requests;
 
@@ -13,44 +13,42 @@ namespace MyHealth.Integrations.Repository.TableStorage
 {
     public class TableStorageIntegrationsRepository : IIntegrationsRepository
     {
-        private readonly CloudTableClient _cloudTableClient;
+        private readonly CloudTable _table;
         private readonly TableStorageSettings _settings;
 
         public TableStorageIntegrationsRepository(IOptions<TableStorageSettings> settings)
         {
             _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
 
-            _cloudTableClient = CloudStorageAccount.Parse(_settings.ConnectionString).CreateCloudTableClient();
+            _table = CloudStorageAccount.Parse(_settings.ConnectionString)
+                .CreateCloudTableClient()
+                .GetTableReference(_settings.IntegrationsTableName);
         }
-
-        private CloudTable Table => _cloudTableClient.GetTableReference(_settings.IntegrationsTableName);
 
         public async Task<Integration> CreateIntegrationAsync(CreateIntegrationRequest request, string userId)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
 
-            var entity = new IntegrationEntity(
-                id: Guid.NewGuid().ToString(),
-                userId: userId);
+            var e1 = new IntegrationByIdEntity(userId, Guid.NewGuid().ToString(), request.Provider);
+            var e2 = new IntegrationByProviderEntity(userId, request.Provider, request.Data);
 
-            entity.Type = request.Type;
+            await _table.BatchInsertAsync(e1, e2);
 
-            await Table.InsertAsync(entity);
-
-            return entity.Map();
+            return e1.Map();
         }
 
         public async Task DeleteIntegrationAsync(string id, string userId)
         {
-            var entity = await Table.RetrieveAsync<IntegrationEntity>(userId, id);
+            var e1 = await _table.RetrieveAsync<IntegrationByIdEntity>(userId, IntegrationByIdEntity.ToRowKey(id));
+            var e2 = await _table.RetrieveAsync<IntegrationByProviderEntity>(userId, IntegrationByProviderEntity.ToRowKey(e1.Provider));
 
-            await Table.DeleteAsync(entity);
+            await _table.BatchDeleteAsync(e1, e2);
         }
 
         public async Task<Integration> GetIntegrationAsync(string id, string userId)
         {
-            var entity = await Table.RetrieveAsync<IntegrationEntity>(userId, id);
+            var entity = await _table.RetrieveAsync<IntegrationByIdEntity>(userId, IntegrationByIdEntity.ToRowKey(id));
 
             if (entity == null)
                 return null;
@@ -60,20 +58,9 @@ namespace MyHealth.Integrations.Repository.TableStorage
 
         public async Task<IEnumerable<Integration>> GetIntegrationsAsync(string userId)
         {
-            var entities = await Table.RetrievePartitionAsync<IntegrationEntity>(userId);
+            var entities = await _table.GetIntegrationsAsync<IntegrationByIdEntity>(userId);
 
             return entities.Select(e => e.Map());
-        }
-
-        public async Task<Integration> UpdateIntegrationAsync(string id, string userId, UpdateIntegrationRequest request)
-        {
-            var entity = new IntegrationEntity(
-                id: id,
-                userId: userId);
-
-            await Table.InsertOrMergeAsync(entity);
-
-            return entity.Map();
         }
     }
 }

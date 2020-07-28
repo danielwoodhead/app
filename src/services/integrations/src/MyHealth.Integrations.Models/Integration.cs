@@ -4,7 +4,7 @@
     {
         public string Id { get; set; }
         public string UserId { get; set; }
-        public string Provider { get; set; }
-        public string Token { get; set; }
+        public Provider Provider { get; set; }
+        public object Data { get; set; }
     }
 }

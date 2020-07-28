@@ -2,6 +2,7 @@
 {
     public class CreateIntegrationRequest
     {
-        public string Type { get; set; }
+        public Provider Provider { get; set; }
+        public object Data { get; set; }
     }
 }
