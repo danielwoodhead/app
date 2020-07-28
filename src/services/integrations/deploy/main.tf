@@ -21,11 +21,29 @@ data "azurerm_application_insights" "ai" {
   resource_group_name = var.resource_group_name
 }
 
+data "azurerm_key_vault" "kv" {
+  name                = var.key_vault_name
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_storage_account" "storage" {
+  name                     = replace("${var.prefix}00", "-", "")
+  resource_group_name      = var.resource_group_name
+  location                 = var.location
+  account_kind             = "StorageV2"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
 resource "azurerm_app_service" "as" {
   name                = "${var.prefix}-api"
   location            = var.location
   resource_group_name = var.resource_group_name
   app_service_plan_id = data.azurerm_app_service_plan.asp.id
+
+  identity {
+    type = "SystemAssigned"
+  }
 
   site_config {
     linux_fx_version = "DOCKER|${data.azurerm_container_registry.cr.login_server}/${var.container_image_name}"
@@ -40,5 +58,19 @@ resource "azurerm_app_service" "as" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     Authentication__Authority           = var.authentication_authority
     Authentication__Audience            = var.authentication_audience
+    Fitbit__BaseUrl                     = var.fitbit_base_url
+    KeyVault__Name                      = var.key_vault_name
+    TableStorage__ConnectionString      = azurerm_storage_account.storage.primary_connection_string
+    TableStorage__IntegrationsTableName = var.integrations_table_name
   }
+}
+
+resource "azurerm_key_vault_access_policy" "policy" {
+  key_vault_id = data.azurerm_key_vault.kv.id
+  tenant_id    = azurerm_app_service.as.identity[0].tenant_id
+  object_id    = azurerm_app_service.as.identity[0].principal_id
+
+  secret_permissions = [
+    "get", "list"
+  ]
 }

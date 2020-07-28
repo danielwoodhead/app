@@ -21,7 +21,7 @@ namespace MyHealth.Web.Core.Integrations
         public string GetAuthenticationUri(string baseRedirectUri)
         {
             string baseUri = "https://www.fitbit.com/oauth2/authorize";
-            string clientId = _configuration["Fitbit:ClientId"];
+            string clientId = _configuration["Integrations:Fitbit:ClientId"];
 
             string result = QueryHelpers.AddQueryString(baseUri, new Dictionary<string, string>
             {

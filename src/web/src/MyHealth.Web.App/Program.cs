@@ -21,13 +21,13 @@ namespace MyHealth.Web.App
             builder.Services
                 .AddHttpClient<IIntegrationsClient, IntegrationsClient>(client =>
                 {
-                    client.BaseAddress = new Uri("https://localhost:44339/v1/");
+                    client.BaseAddress = new Uri(builder.Configuration["Integrations:BaseUrl"]);
                 })
                 .AddHttpMessageHandler(sp =>
                 {
                     return sp.GetService<AuthorizationMessageHandler>()
                         .ConfigureHandler(
-                            authorizedUrls: new[] { "https://localhost:44339" },
+                            authorizedUrls: new[] { builder.Configuration["Integrations:BaseUrl"] },
                             scopes: new[] { "integrations-api" });
                 });
 

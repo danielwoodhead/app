@@ -40,3 +40,17 @@ variable "authentication_authority" {
 variable "authentication_audience" {
   description = "The authentication audience"
 }
+
+variable "fitbit_base_url" {
+  description = "The Fitbit API base URL"
+  default     = "https://api.fitbit.com" 
+}
+
+variable "key_vault_name" {
+  description = "The key vault name"
+}
+
+variable "integrations_table_name" {
+  description = "The integrations table name"
+  default     = "Integrations"
+}
