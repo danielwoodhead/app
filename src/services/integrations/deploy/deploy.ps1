@@ -1,5 +1,6 @@
 az account set --subscription bc22730d-89ef-4562-9a78-dfb790976b9a
 az acr build --registry myhealthregistry --image "myhealth/integrations.api`:latest" --file ../src/MyHealth.Integrations.Api/Dockerfile ../../..
+az acr build --registry myhealthregistry --image "myhealth/integrations.funcs`:latest" --file ../src/MyHealth.Integrations.FunctionApp/Dockerfile ../../..
 terraform init -backend-config="resource_group_name=DansTerraform" -backend-config="storage_account_name=dansterraform" -backend-config="container_name=tfstate" -backend-config="key=dev.integrations.tfstate"
 terraform validate
 terraform apply -var-file="dev.tfvars"
@@ -10,5 +11,3 @@ az webapp restart --name myhealth-integrations-api --resource-group DansApp
 # delete untagged images
 az acr repository show-manifests --name myhealthregistry --repository myhealth/integrations.api --query "[?tags[0]==null].digest" -o tsv `
   | ForEach-Object{ az acr repository delete --name myhealthregistry --image myhealth/integrations.api@$_ --yes }
-
-# TODO: deploy functions app

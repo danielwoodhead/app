@@ -1,13 +1,13 @@
 // Default URL for triggering event grid function in the local environment.
 // http://localhost:7071/runtime/webhooks/EventGrid?functionName={functionname}
-using Microsoft.Azure.WebJobs;
+using System.Threading.Tasks;
 using Microsoft.Azure.EventGrid.Models;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using MyHealth.Integrations.Core.Events;
-using System.Threading.Tasks;
-using MyHealth.Integrations.Functions.Extensions;
+using MyHealth.Integrations.FunctionApp.Extensions;
 
-namespace MyHealth.Integrations.Functions
+namespace MyHealth.Integrations.FunctionApp.Functions
 {
     public class NewIntegration
     {

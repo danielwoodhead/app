@@ -65,12 +65,57 @@ resource "azurerm_app_service" "as" {
   }
 }
 
-resource "azurerm_key_vault_access_policy" "policy" {
+resource "azurerm_key_vault_access_policy" "api" {
   key_vault_id = data.azurerm_key_vault.kv.id
   tenant_id    = azurerm_app_service.as.identity[0].tenant_id
   object_id    = azurerm_app_service.as.identity[0].principal_id
 
   secret_permissions = [
     "get", "list"
+  ]
+}
+
+resource "azurerm_function_app" "functions" {
+  name                      = "${var.prefix}-funcs"
+  location                  = var.location
+  resource_group_name       = var.resource_group_name
+  app_service_plan_id       = data.azurerm_app_service_plan.asp.id
+  storage_connection_string = azurerm_storage_account.storage.primary_connection_string
+  version                   = "~3"
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  app_settings = {
+    APPINSIGHTS_INSTRUMENTATIONKEY      = data.azurerm_application_insights.ai.instrumentation_key
+    DOCKER_REGISTRY_SERVER_URL          = "https://${data.azurerm_container_registry.cr.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.cr.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.cr.admin_password
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+    FUNCTIONS_EXTENSION_VERSION         = "~3"
+    FUNCTIONS_WORKER_RUNTIME            = "dotnet"
+    Authentication__Authority           = var.authentication_authority
+    Authentication__Audience            = var.authentication_audience
+    Fitbit__BaseUrl                     = var.fitbit_base_url
+    KeyVault__Name                      = var.key_vault_name
+    TableStorage__ConnectionString      = azurerm_storage_account.storage.primary_connection_string
+    TableStorage__IntegrationsTableName = var.integrations_table_name
+  }
+
+  site_config {
+    always_on                 = true
+    linux_fx_version          = "DOCKER|${data.azurerm_container_registry.cr.login_server}/${var.functions_container_image_name}"
+    use_32_bit_worker_process = true
+  }
+}
+
+resource "azurerm_key_vault_access_policy" "functions" {
+  key_vault_id = data.azurerm_key_vault.kv.id
+  tenant_id    = azurerm_function_app.functions.identity[0].tenant_id
+  object_id    = azurerm_function_app.functions.identity[0].principal_id
+
+  secret_permissions = [
+    "get"
   ]
 }

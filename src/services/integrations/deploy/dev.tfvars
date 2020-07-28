@@ -1,6 +1,7 @@
 resource_group_name = "DansApp"
 app_service_plan_name = "myhealth-asp"
 container_image_name = "myhealth/integrations.api:latest"
+functions_container_image_name = "myhealth/integrations.funcs:latest"
 container_registry_name = "myhealthregistry"
 application_insights_name = "myhealth-insights"
 authentication_authority = "https://myhealth-identity-sts.azurewebsites.net"

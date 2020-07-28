@@ -25,6 +25,10 @@ variable "container_image_name" {
   description = "The container image name"
 }
 
+variable "functions_container_image_name" {
+  description = "The functions container image name"
+}
+
 variable "container_registry_name" {
   description = "The container registry name"
 }
