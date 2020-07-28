@@ -9,7 +9,7 @@ using MyHealth.Integrations.Models.Events;
 
 namespace MyHealth.Integrations.Core.Events
 {
-    public class EventHandler
+    public class EventHandler : IEventHandler
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly Dictionary<string, Type> _eventTypeMapping;
@@ -18,7 +18,8 @@ namespace MyHealth.Integrations.Core.Events
         {
             _eventTypeMapping = new Dictionary<string, Type>()
             {
-                { EventTypes.IntegrationCreated, typeof(IIntegrationCreatedEventHandler) }
+                { EventTypes.IntegrationCreated, typeof(IIntegrationCreatedEventHandler) },
+                { EventTypes.IntegrationProviderUpdate, typeof(IIntegrationProviderUpdateEventHandler) }
             };
 
             _serviceProvider = serviceProvider;
@@ -33,7 +34,7 @@ namespace MyHealth.Integrations.Core.Events
 
             if (!_eventTypeMapping.TryGetValue(@event.EventType, out var eventHandlerType))
             {
-                throw new InvalidOperationException("No event handler interfaces are defined for this event type");
+                throw new InvalidOperationException($"No event handler interfaces are defined for event type {@event.EventType}");
             }
 
             var data = (IntegrationEventData)@event.Data;

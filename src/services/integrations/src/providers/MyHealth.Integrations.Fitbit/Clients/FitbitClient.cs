@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net.Http;
-using System.Text.Json;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.Extensions.Options;
@@ -32,18 +32,17 @@ namespace MyHealth.Integrations.Fitbit.Clients
             HttpResponseMessage response = await _httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
-            return JsonSerializer.Deserialize<AddFitbitSubscriptionResponse>(
-                await response.Content.ReadAsStringAsync());
+            return await response.Content.ReadFromJsonAsync<AddFitbitSubscriptionResponse>();
         }
 
-        public async Task<TokenResponse> AuthenticateAsync(string code)
+        public async Task<TokenResponse> AuthenticateAsync(string code, Uri redirectUri)
         {
             return await _httpClient.RequestAuthorizationCodeTokenAsync(
                 new AuthorizationCodeTokenRequest
                 {
-                    Address = _httpClient.BaseAddress.AbsoluteUri + "/oauth2/token",
+                    Address = _httpClient.BaseAddress.AbsoluteUri + "oauth2/token",
                     ClientId = _fitbitSettings.ClientId,
-                    RedirectUri = "", // TODO: should be passed in
+                    RedirectUri = redirectUri.AbsoluteUri,
                     Code = code
                 });
         }

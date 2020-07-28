@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MyHealth.Extensions.Events;
-using MyHealth.Integrations.Core.Repository;
+using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Events;
 using MyHealth.Integrations.Models.Requests;
@@ -64,14 +64,6 @@ namespace MyHealth.Integrations.Core.Services
             };
         }
 
-        public async Task<Integration> UpdateIntegrationAsync(string id, UpdateIntegrationRequest request)
-        {
-            Integration integration = await _integrationsRepository.UpdateIntegrationAsync(id, _operationContext.UserId, request);
-            await _eventPublisher.PublishAsync(CreateIntegrationUpdatedEvent(integration));
-
-            return integration;
-        }
-
         private IntegrationCreatedEvent CreateIntegrationCreatedEvent(Integration integration) =>
             new IntegrationCreatedEvent(
                 id: Guid.NewGuid().ToString(),
@@ -88,21 +80,13 @@ namespace MyHealth.Integrations.Core.Services
                 dataVersion: EventDataVersion,
                 data: CreateEventData(integration));
 
-        private IntegrationUpdatedEvent CreateIntegrationUpdatedEvent(Integration integration) =>
-            new IntegrationUpdatedEvent(
-                id: Guid.NewGuid().ToString(),
-                subject: integration.Id,
-                eventTime: DateTime.UtcNow,
-                dataVersion: EventDataVersion,
-                data: CreateEventData(integration));
-
         private IntegrationEventData CreateEventData(Integration integration) =>
             new IntegrationEventData
             {
                 OperationId = _operationContext.OperationId,
                 SourceSystem = EventSourceSystem,
                 SubjectSystem = EventSourceSystem,
-                Provider = integration.Provider,
+                Provider = integration.Provider.ToString(),
                 UserId = _operationContext.UserId
             };
     }

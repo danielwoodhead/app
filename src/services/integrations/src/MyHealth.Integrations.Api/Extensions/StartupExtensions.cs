@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using MyHealth.Extensions.AspNetCore.Swagger;
 using MyHealth.Extensions.Events;
 using MyHealth.Extensions.Events.Azure.EventGrid;
-using MyHealth.Integrations.Core.Repository;
+using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Core.Services;
-using MyHealth.Integrations.Fitbit.Controllers;
+using MyHealth.Integrations.Core.Utility;
 using MyHealth.Integrations.Repository.TableStorage;
 using MyHealth.Integrations.Utility;
 
@@ -39,14 +39,6 @@ namespace MyHealth.Integrations.Api.Extensions
             return services;
         }
 
-        public static IMvcBuilder AddProviderControllers(this IMvcBuilder builder)
-        {
-            builder
-                .AddApplicationPart(typeof(FitbitController).Assembly);
-
-            return builder;
-        }
-
         public static IServiceCollection AddIntegrationsCore(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<TableStorageSettings>(configuration.GetSection("TableStorage"));
@@ -57,6 +49,8 @@ namespace MyHealth.Integrations.Api.Extensions
 
             services.Configure<EventGridSettings>(configuration.GetSection("EventGrid"));
             services.AddSingleton<IEventPublisher, EventGridEventPublisher>();
+
+            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
             return services;
         }

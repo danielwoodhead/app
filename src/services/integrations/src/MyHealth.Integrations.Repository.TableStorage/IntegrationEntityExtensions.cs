@@ -5,16 +5,16 @@ namespace MyHealth.Integrations.Repository.TableStorage
 {
     public static class IntegrationEntityExtensions
     {
-        public static Integration Map(this IntegrationEntity entity)
+        public static Integration Map(this IntegrationByIdEntity entity)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
             return new Integration
             {
-                Id = entity.Id,
-                UserId = entity.UserId,
-                Provider = entity.Provider
+                Id = entity.RowKey,
+                UserId = entity.PartitionKey,
+                Provider = entity.ProviderEnum
             };
         }
     }

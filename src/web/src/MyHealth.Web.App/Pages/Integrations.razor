@@ -1,5 +1,6 @@
 ﻿@page "/integrations"
 @attribute [Authorize]
+@inject IFitbitClient FitbitClient;
 @inject IIntegrationsClient IntegrationsClient
 @inject NavigationManager NavigationManager
 @using MyHealth.Web.Core.Integrations
@@ -20,20 +21,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var x = await IntegrationsClient.GetAllIntegrationsAsync();
-
-        _integrations = x.Integrations;
+        _integrations = (await IntegrationsClient.GetAllIntegrationsAsync()).Integrations;
     }
 
-    private bool HasFitbitIntegration => _integrations != null && _integrations.Any(i => i.Provider == "fitbit");
+    private bool HasFitbitIntegration => _integrations != null && _integrations.Any(i => i.Provider == "Fitbit");
 
     private void AddFitbitIntegration()
     {
-        // redirect to authenticate with fitbit
-        NavigationManager.NavigateTo("https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22DKBS&redirect_uri=https%3A%2F%2Flocalhost%3A44315%2Fintegrations&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight");
-
-        // pass fitbit code to integrations api to create the integration
-
-        
+        string fitbitAuthenticationUri = FitbitClient.GetAuthenticationUri(NavigationManager.BaseUri);
+        NavigationManager.NavigateTo(fitbitAuthenticationUri);
     }
 }

@@ -21,7 +21,7 @@ namespace MyHealth.Integrations.Functions
         [FunctionName(nameof(IntegrationProviderUpdate))]
         public async Task Run([EventGridTrigger]EventGridEvent eventGridEvent)
         {
-            await _eventHandler.RunAsync(eventGridEvent.ToEvent());
+            await _eventHandler.ProcessAsync(eventGridEvent.ToEvent());
         }
     }
 }

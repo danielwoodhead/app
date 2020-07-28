@@ -10,7 +10,6 @@ namespace MyHealth.Integrations.Core.Services
         Task<SearchIntegrationsResponse> SearchIntegrationsAsync();
         Task<Integration> GetIntegrationAsync(string id);
         Task<Integration> CreateIntegrationAsync(CreateIntegrationRequest request);
-        Task<Integration> UpdateIntegrationAsync(string id, UpdateIntegrationRequest request);
         Task DeleteIntegrationAsync(string id);
     }
 }

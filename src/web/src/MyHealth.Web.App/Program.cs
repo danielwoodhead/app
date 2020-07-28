@@ -18,21 +18,24 @@ namespace MyHealth.Web.App
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            builder.Services.AddHttpClient<IIntegrationsClient, IntegrationsClient>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:44339/v1/");
-            })
+            builder.Services
+                .AddHttpClient<IIntegrationsClient, IntegrationsClient>(client =>
+                {
+                    client.BaseAddress = new Uri("https://localhost:44339/v1/");
+                })
                 .AddHttpMessageHandler(sp =>
                 {
-                    var handler = sp.GetService<AuthorizationMessageHandler>()
+                    return sp.GetService<AuthorizationMessageHandler>()
                         .ConfigureHandler(
                             authorizedUrls: new[] { "https://localhost:44339" },
-                            scopes: new[] { "integrations-api" }); return handler;
+                            scopes: new[] { "integrations-api" });
                 });
+
+            builder.Services.AddTransient<IFitbitClient, FitbitClient>();
 
             builder.Services.AddOidcAuthentication(options =>
             {
-                builder.Configuration.Bind("oidc", options.ProviderOptions);
+                builder.Configuration.Bind("Oidc", options.ProviderOptions);
             });
 
             await builder.Build().RunAsync();

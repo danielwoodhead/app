@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +25,7 @@ namespace MyHealth.Integrations.Api
         {
             services.AddApplicationInsightsTelemetry();
             services.AddAuth(Configuration);
-            services.AddControllers().AddProviderControllers();
+            services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddHealthChecks();
             services.AddIntegrationsCore(Configuration);
             services.AddSwagger();

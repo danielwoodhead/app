@@ -20,19 +20,21 @@ namespace MyHealth.Integrations.Fitbit
                     options.BaseUrl = configuration["Fitbit:BaseUrl"];
                     options.VerificationCode = configuration["Fitbit:VerificationCode"];
                     options.ClientId = configuration["Fitbit:ClientId"];
+                    options.ClientSecret = configuration["Fitbit:ClientSecret"];
                 });
 
             services.AddTransient<IFitbitService, FitbitService>();
             services.AddTransient<IIntegrationCreatedEventHandler, FitbitIntegrationCreatedEventHandler>();
             services.AddTransient<IIntegrationProviderUpdateEventHandler, FitbitProviderUpdateEventHandler>();
 
+            services.AddTransient<FitbitAuthenticationHandler>();
             services
                 .AddHttpClient<IFitbitClient, FitbitClient>((s, client) =>
                 {
                     var settings = s.GetService<IOptions<FitbitSettings>>();
-
                     client.BaseAddress = new Uri(settings.Value.BaseUrl);
                 })
+                .AddHttpMessageHandler<FitbitAuthenticationHandler>()
                 .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
                 {
                     TimeSpan.FromSeconds(1),

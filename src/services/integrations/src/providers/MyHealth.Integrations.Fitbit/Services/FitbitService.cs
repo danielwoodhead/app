@@ -6,6 +6,7 @@ using IdentityModel.Client;
 using Microsoft.Extensions.Options;
 using MyHealth.Extensions.Events;
 using MyHealth.Integrations.Core.Services;
+using MyHealth.Integrations.Core.Utility;
 using MyHealth.Integrations.Fitbit.Clients;
 using MyHealth.Integrations.Fitbit.Models;
 using MyHealth.Integrations.Models;
@@ -23,6 +24,7 @@ namespace MyHealth.Integrations.Fitbit.Services
         private readonly IOperationContext _operationContext;
         private readonly IFitbitClient _fitbitClient;
         private readonly IIntegrationsService _integrationsService;
+        private readonly IDateTimeProvider _dateTimeProvider;
         private readonly FitbitSettings _fitBitSettings;
 
         public FitbitService(
@@ -30,26 +32,36 @@ namespace MyHealth.Integrations.Fitbit.Services
             IOperationContext operationContext,
             IFitbitClient fitbitClient,
             IIntegrationsService integrationsService,
+            IDateTimeProvider dateTimeProvider,
             IOptions<FitbitSettings> fitBitSettings)
         {
             _eventPublisher = eventPublisher;
             _operationContext = operationContext;
             _fitbitClient = fitbitClient;
             _integrationsService = integrationsService;
+            _dateTimeProvider = dateTimeProvider;
             _fitBitSettings = fitBitSettings.Value;
         }
 
-        public async Task CreateIntegrationAsync(string code)
+        public async Task CreateIntegrationAsync(string userId, AuthorizationCodeRequest request)
         {
-            TokenResponse tokenResponse = await _fitbitClient.AuthenticateAsync(code);
+            TokenResponse tokenResponse = await _fitbitClient.AuthenticateAsync(request.Code, request.RedirectUri);
 
             if (tokenResponse.IsError)
                 throw new Exception(tokenResponse.Error); // TODO: if invalid code - return 4XX else throw exception
 
+            // TODO: await _fitbitClient.AddSubscriptionAsync(subscriptionId: userId);
+
             await _integrationsService.CreateIntegrationAsync(
                 new CreateIntegrationRequest
                 {
-                    Provider = Provider.Fitbit
+                    Provider = Provider.Fitbit,
+                    Data = new FitbitIntegrationData
+                    {
+                        AccessToken = tokenResponse.AccessToken,
+                        AccessTokenExpiresUtc = _dateTimeProvider.UtcNow.AddSeconds(tokenResponse.ExpiresIn),
+                        RefreshToken = tokenResponse.RefreshToken
+                    }
                 });
         }
 
@@ -61,7 +73,7 @@ namespace MyHealth.Integrations.Fitbit.Services
                 new IntegrationProviderUpdateEvent(
                     id: Guid.NewGuid().ToString(),
                     subject: update.SubscriptionId,
-                    eventTime: DateTime.UtcNow,
+                    eventTime: _dateTimeProvider.UtcNow,
                     dataVersion: EventDataVersion,
                     data: new IntegrationEventData
                     {
