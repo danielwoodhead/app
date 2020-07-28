@@ -4,7 +4,7 @@ using MyHealth.Extensions.Events;
 using MyHealth.Extensions.Events.Azure.EventGrid;
 using MyHealth.Integrations.Models.Events;
 
-namespace MyHealth.Integrations.Functions.Extensions
+namespace MyHealth.Integrations.FunctionApp.Extensions
 {
     public static class EventGridEventExtensions
     {

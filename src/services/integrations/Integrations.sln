@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "providers", "providers", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.Fitbit", "src\providers\MyHealth.Integrations.Fitbit\MyHealth.Integrations.Fitbit.csproj", "{CB1D4D79-6E5F-4EE1-918E-842C7E7A78FC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.Functions", "src\MyHealth.Integrations.Functions\MyHealth.Integrations.Functions.csproj", "{7194E329-F088-4B5F-BD45-15A680D60A3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.FunctionApp", "src\MyHealth.Integrations.FunctionApp\MyHealth.Integrations.FunctionApp.csproj", "{7194E329-F088-4B5F-BD45-15A680D60A3D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{48C0D6A6-1B2F-4272-9D61-BD2459DAF175}"
 	ProjectSection(SolutionItems) = preProject

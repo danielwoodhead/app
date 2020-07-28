@@ -1,9 +1,9 @@
 ﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using MyHealth.Integrations.Fitbit;
 
-[assembly: FunctionsStartup(typeof(MyHealth.Integrations.Functions.Startup))]
+[assembly: FunctionsStartup(typeof(MyHealth.Integrations.FunctionApp.Startup))]
 
-namespace MyHealth.Integrations.Functions
+namespace MyHealth.Integrations.FunctionApp
 {
     public class Startup : FunctionsStartup
     {
