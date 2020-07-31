@@ -56,6 +56,16 @@ namespace MyHealth.Integrations.Repository.TableStorage
             return entity.Map();
         }
 
+        public async Task<Integration> GetIntegrationAsync(Provider provider, string userId)
+        {
+            var entity = await _table.RetrieveAsync<IntegrationByProviderEntity>(userId, IntegrationByProviderEntity.ToRowKey(provider.ToString()));
+
+            if (entity == null)
+                return null;
+
+            return entity.Map();
+        }
+
         public async Task<IEnumerable<Integration>> GetIntegrationsAsync(string userId)
         {
             var entities = await _table.GetIntegrationsAsync<IntegrationByIdEntity>(userId);

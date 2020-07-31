@@ -8,11 +8,11 @@ using Microsoft.Extensions.Options;
 
 namespace MyHealth.Integrations.Fitbit.Clients
 {
-    public class FitbitAuthenticationHandler : DelegatingHandler
+    public class FitbitBasicAuthenticationHandler : DelegatingHandler
     {
         private readonly FitbitSettings _settings;
 
-        public FitbitAuthenticationHandler(IOptions<FitbitSettings> settings)
+        public FitbitBasicAuthenticationHandler(IOptions<FitbitSettings> settings)
         {
             _settings = settings.Value;
         }

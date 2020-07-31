@@ -10,7 +10,7 @@ namespace MyHealth.Extensions.AspNetCore.Versioning
             if (apiVersion == null)
                 throw new ArgumentNullException(nameof(apiVersion));
 
-            return $"v{apiVersion.ToString()}";
+            return $"v{apiVersion}";
         }
     }
 }

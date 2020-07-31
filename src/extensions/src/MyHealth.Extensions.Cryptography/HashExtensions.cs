@@ -29,5 +29,18 @@ namespace MyHealth.Extensions.Cryptography
                 return sha.ComputeHash(input);
             }
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5350:Do Not Use Weak Cryptographic Algorithms", Justification = "Required for integration with Fitbit")]
+        public static string HmacSha1(this string input, string key)
+        {
+            byte[] secretBytes = Encoding.UTF8.GetBytes(key);
+            byte[] dataBytes = Encoding.UTF8.GetBytes(input);
+
+            using (var hmac = new HMACSHA1(secretBytes))
+            {
+                byte[] calcHash = hmac.ComputeHash(dataBytes);
+                return Convert.ToBase64String(calcHash);
+            }
+        }
     }
 }

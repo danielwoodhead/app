@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MyHealth.Extensions.Events;
 using MyHealth.Integrations.Core.Data;
+using MyHealth.Integrations.Core.Events;
 using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Events;
 using MyHealth.Integrations.Models.Requests;
@@ -14,7 +15,6 @@ namespace MyHealth.Integrations.Core.Services
     public class IntegrationsService : IIntegrationsService
     {
         private const string EventDataVersion = "1.0";
-        private const string EventSourceSystem = "myhealth:integrations:api";
 
         private readonly IIntegrationsRepository _integrationsRepository;
         private readonly IUserOperationContext _operationContext;
@@ -54,6 +54,11 @@ namespace MyHealth.Integrations.Core.Services
             return await _integrationsRepository.GetIntegrationAsync(id, _operationContext.UserId);
         }
 
+        public async Task<Integration> GetIntegrationAsync(Provider provider, string userId)
+        {
+            return await _integrationsRepository.GetIntegrationAsync(provider, userId);
+        }
+
         public async Task<SearchIntegrationsResponse> SearchIntegrationsAsync()
         {
             IEnumerable<Integration> integrations = await _integrationsRepository.GetIntegrationsAsync(_operationContext.UserId);
@@ -84,9 +89,9 @@ namespace MyHealth.Integrations.Core.Services
             new IntegrationEventData
             {
                 OperationId = _operationContext.OperationId,
-                SourceSystem = EventSourceSystem,
-                SubjectSystem = EventSourceSystem,
-                Provider = integration.Provider.ToString(),
+                SourceSystem = EventConstants.IntegrationsApi,
+                SubjectSystem = EventConstants.MyHealth,
+                Provider = integration.Provider,
                 UserId = _operationContext.UserId
             };
     }

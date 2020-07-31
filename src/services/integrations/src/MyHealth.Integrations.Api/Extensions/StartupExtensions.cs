@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyHealth.Extensions.AspNetCore.Swagger;
+using MyHealth.Extensions.DependencyInjection;
 using MyHealth.Extensions.Events;
+using MyHealth.Extensions.Events.ApplicationInsights;
 using MyHealth.Extensions.Events.Azure.EventGrid;
 using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Core.Services;
@@ -48,7 +50,10 @@ namespace MyHealth.Integrations.Api.Extensions
             services.AddScoped<IUserOperationContext, UserOperationContext>();
 
             services.Configure<EventGridSettings>(configuration.GetSection("EventGrid"));
+
+            services.AddTransient<IEventPublisher, ApplicationInsightsEventPublisher>();
             services.AddSingleton<IEventPublisher, EventGridEventPublisher>();
+            services.AddComposite<IEventPublisher, CompositeEventPublisher>();
 
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 

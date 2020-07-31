@@ -17,5 +17,19 @@ namespace MyHealth.Integrations.Repository.TableStorage
                 Provider = entity.ProviderEnum
             };
         }
+
+        public static Integration Map(this IntegrationByProviderEntity entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            return new Integration
+            {
+                Id = entity.RowKey,
+                UserId = entity.PartitionKey,
+                Provider = entity.Provider,
+                Data = entity.ProviderData
+            };
+        }
     }
 }

@@ -50,18 +50,19 @@ resource "azurerm_app_service" "as" {
   }
 
   app_settings = {
-    APPINSIGHTS_INSTRUMENTATIONKEY      = data.azurerm_application_insights.ai.instrumentation_key
-    ASPNETCORE_ENVIRONMENT              = var.environment
-    DOCKER_REGISTRY_SERVER_URL          = "https://${data.azurerm_container_registry.cr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.cr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.cr.admin_password
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-    Authentication__Authority           = var.authentication_authority
-    Authentication__Audience            = var.authentication_audience
-    Fitbit__BaseUrl                     = var.fitbit_base_url
-    KeyVault__Name                      = var.key_vault_name
-    TableStorage__ConnectionString      = azurerm_storage_account.storage.primary_connection_string
-    TableStorage__IntegrationsTableName = var.integrations_table_name
+    APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.ai.instrumentation_key
+    ASPNETCORE_ENVIRONMENT                          = var.environment
+    DOCKER_REGISTRY_SERVER_URL                      = "https://${data.azurerm_container_registry.cr.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME                 = data.azurerm_container_registry.cr.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD                 = data.azurerm_container_registry.cr.admin_password
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE             = false
+    Authentication__Authority                       = var.authentication_authority
+    Authentication__Audience                        = var.authentication_audience
+    Fitbit__BaseUrl                                 = var.fitbit_base_url
+    KeyVault__Name                                  = var.key_vault_name
+    Logging__ApplicationInsights__LogLevel__Default = "Information"
+    TableStorage__ConnectionString                  = azurerm_storage_account.storage.primary_connection_string
+    TableStorage__IntegrationsTableName             = var.integrations_table_name
   }
 }
 
@@ -93,7 +94,6 @@ resource "azurerm_function_app" "functions" {
     DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.cr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.cr.admin_password
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-    FUNCTIONS_EXTENSION_VERSION         = "~3"
     FUNCTIONS_WORKER_RUNTIME            = "dotnet"
     Authentication__Authority           = var.authentication_authority
     Authentication__Audience            = var.authentication_audience

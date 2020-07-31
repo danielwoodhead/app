@@ -18,6 +18,9 @@ COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Swagger/MyHealth.Extensions
 COPY ["services/integrations/src/providers/MyHealth.Integrations.Fitbit/MyHealth.Integrations.Fitbit.csproj", "services/integrations/src/providers/MyHealth.Integrations.Fitbit/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Versioning/MyHealth.Extensions.AspNetCore.Versioning.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Versioning/"]
 COPY ["extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/MyHealth.Extensions.Events.Azure.EventGrid.csproj", "extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/"]
+COPY ["extensions/src/MyHealth.Extensions.DependencyInjection/MyHealth.Extensions.DependencyInjection.csproj", "extensions/src/MyHealth.Extensions.DependencyInjection/"]
+COPY ["extensions/src/MyHealth.Extensions.Events.ApplicationInsights/MyHealth.Extensions.Events.ApplicationInsights.csproj", "extensions/src/MyHealth.Extensions.Events.ApplicationInsights/"]
+COPY ["extensions/src/MyHealth.Extensions.Cryptography/MyHealth.Extensions.Cryptography.csproj", "extensions/src/MyHealth.Extensions.Cryptography/"]
 RUN dotnet restore "services/integrations/src/MyHealth.Integrations.Api/MyHealth.Integrations.Api.csproj"
 COPY . .
 WORKDIR "/src/services/integrations/src/MyHealth.Integrations.Api"

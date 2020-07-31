@@ -9,6 +9,7 @@ namespace MyHealth.Integrations.Core.Services
     {
         Task<SearchIntegrationsResponse> SearchIntegrationsAsync();
         Task<Integration> GetIntegrationAsync(string id);
+        Task<Integration> GetIntegrationAsync(Provider provider, string userId);
         Task<Integration> CreateIntegrationAsync(CreateIntegrationRequest request);
         Task DeleteIntegrationAsync(string id);
     }
