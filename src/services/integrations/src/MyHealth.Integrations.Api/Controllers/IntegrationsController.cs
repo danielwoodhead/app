@@ -28,7 +28,7 @@ namespace MyHealth.Integrations.Api.Controllers
             return Ok(await _integrationsService.SearchIntegrationsAsync());
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetIntegration")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Integration>> Get(string id)

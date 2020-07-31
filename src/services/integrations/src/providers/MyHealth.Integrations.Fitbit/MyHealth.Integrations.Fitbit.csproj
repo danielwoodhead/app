@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Versioning\MyHealth.Extensions.AspNetCore.Versioning.csproj" />
+    <ProjectReference Include="..\..\..\..\..\extensions\src\MyHealth.Extensions.Cryptography\MyHealth.Extensions.Cryptography.csproj" />
     <ProjectReference Include="..\..\MyHealth.Integrations.Core\MyHealth.Integrations.Core.csproj" />
   </ItemGroup>
 

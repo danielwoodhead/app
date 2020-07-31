@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MyHealth.Extensions.Events;
 using MyHealth.Integrations.Core.Events.Handlers;
 using MyHealth.Integrations.Fitbit.Clients;
+using MyHealth.Integrations.Models;
 
 namespace MyHealth.Integrations.Fitbit.EventHandlers
 {
@@ -15,7 +16,7 @@ namespace MyHealth.Integrations.Fitbit.EventHandlers
             _fitbitClient = fitbitClient ?? throw new ArgumentNullException(nameof(fitbitClient));
         }
 
-        public string Provider => FitbitConstants.Provider;
+        public Provider Provider => Provider.Fitbit;
 
         public Task RunAsync(IEvent @event)
         {

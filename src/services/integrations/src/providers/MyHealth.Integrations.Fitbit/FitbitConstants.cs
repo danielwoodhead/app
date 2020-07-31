@@ -2,7 +2,7 @@
 {
     public static class FitbitConstants
     {
-        public const string Provider = "fitbit";
-        public const string SubscriberSystem = "myhealth";
+        public const string RequestSignatureHeader = "X-Fitbit-Signature";
+        public const string SubscriberIdHeader = "X-Fitbit-Subscriber-Id";
     }
 }

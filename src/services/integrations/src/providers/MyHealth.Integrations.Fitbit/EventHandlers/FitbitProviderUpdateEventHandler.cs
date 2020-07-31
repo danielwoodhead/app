@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using MyHealth.Extensions.Events;
 using MyHealth.Integrations.Core.Events.Handlers;
 using MyHealth.Integrations.Fitbit.Clients;
+using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Events;
 
 namespace MyHealth.Integrations.Fitbit.EventHandlers
@@ -19,7 +20,7 @@ namespace MyHealth.Integrations.Fitbit.EventHandlers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public string Provider => FitbitConstants.Provider;
+        public Provider Provider => Provider.Fitbit;
 
         public Task RunAsync(IEvent @event)
         {

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using Microsoft.Azure.Cosmos.Table;
 using MyHealth.Integrations.Models;
 
@@ -7,6 +8,7 @@ namespace MyHealth.Integrations.Repository.TableStorage
     public class IntegrationByProviderEntity : TableEntity
     {
         public string ProviderData { get; set; }
+        public Provider Provider => Enum.Parse<Provider>(RowKey.Split('_')[1]);
 
         public IntegrationByProviderEntity()
         {

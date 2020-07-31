@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.Extensions.Options;
+using MyHealth.Extensions.Cryptography;
 using MyHealth.Extensions.Events;
+using MyHealth.Integrations.Core.Events;
 using MyHealth.Integrations.Core.Services;
 using MyHealth.Integrations.Core.Utility;
 using MyHealth.Integrations.Fitbit.Clients;
@@ -23,14 +25,16 @@ namespace MyHealth.Integrations.Fitbit.Services
         private readonly IEventPublisher _eventPublisher;
         private readonly IOperationContext _operationContext;
         private readonly IFitbitClient _fitbitClient;
+        private readonly IFitbitAuthenticationClient _fitbitAuthClient;
         private readonly IIntegrationsService _integrationsService;
         private readonly IDateTimeProvider _dateTimeProvider;
-        private readonly FitbitSettings _fitBitSettings;
+        private readonly FitbitSettings _fitbitSettings;
 
         public FitbitService(
             IEventPublisher eventPublisher,
             IOperationContext operationContext,
             IFitbitClient fitbitClient,
+            IFitbitAuthenticationClient fitbitAuthClient,
             IIntegrationsService integrationsService,
             IDateTimeProvider dateTimeProvider,
             IOptions<FitbitSettings> fitBitSettings)
@@ -38,21 +42,20 @@ namespace MyHealth.Integrations.Fitbit.Services
             _eventPublisher = eventPublisher;
             _operationContext = operationContext;
             _fitbitClient = fitbitClient;
+            _fitbitAuthClient = fitbitAuthClient;
             _integrationsService = integrationsService;
             _dateTimeProvider = dateTimeProvider;
-            _fitBitSettings = fitBitSettings.Value;
+            _fitbitSettings = fitBitSettings.Value;
         }
 
-        public async Task CreateIntegrationAsync(string userId, AuthorizationCodeRequest request)
+        public async Task<Integration> CreateIntegrationAsync(string userId, AuthorizationCodeRequest request)
         {
-            TokenResponse tokenResponse = await _fitbitClient.AuthenticateAsync(request.Code, request.RedirectUri);
+            TokenResponse tokenResponse = await _fitbitAuthClient.AuthenticateAsync(request.Code, request.RedirectUri);
 
             if (tokenResponse.IsError)
                 throw new Exception(tokenResponse.Error); // TODO: if invalid code - return 4XX else throw exception
 
-            // TODO: await _fitbitClient.AddSubscriptionAsync(subscriptionId: userId);
-
-            await _integrationsService.CreateIntegrationAsync(
+            var integration = await _integrationsService.CreateIntegrationAsync(
                 new CreateIntegrationRequest
                 {
                     Provider = Provider.Fitbit,
@@ -63,12 +66,14 @@ namespace MyHealth.Integrations.Fitbit.Services
                         RefreshToken = tokenResponse.RefreshToken
                     }
                 });
+
+            await _fitbitClient.AddSubscriptionAsync(subscriptionId: userId);
+
+            return integration;
         }
 
         public async Task ProcessUpdateNotificationAsync(IEnumerable<FitbitUpdateNotification> request)
         {
-            // TODO: signature verification
-
             await _eventPublisher.PublishAsync(request.Select(update =>
                 new IntegrationProviderUpdateEvent(
                     id: Guid.NewGuid().ToString(),
@@ -78,16 +83,23 @@ namespace MyHealth.Integrations.Fitbit.Services
                     data: new IntegrationEventData
                     {
                         OperationId = _operationContext.OperationId,
-                        SourceSystem = FitbitConstants.Provider,
-                        SubjectSystem = FitbitConstants.SubscriberSystem,
-                        Provider = FitbitConstants.Provider,
+                        SourceSystem = EventConstants.IntegrationsApi,
+                        SubjectSystem = EventConstants.MyHealth,
+                        Provider = Provider.Fitbit,
                         UserId = update.SubscriptionId
                     })));
         }
 
-        public bool Verify(string verificationCode)
+        public bool VerifySubscriptionEndpoint(string verificationCode)
         {
-            return verificationCode == _fitBitSettings.VerificationCode;
+            return verificationCode == _fitbitSettings.VerificationCode;
+        }
+
+        public bool VerifyUpdateNotification(string request, string verificationSignature)
+        {
+            string expectedSignature = request.HmacSha1($"{_fitbitSettings.ClientSecret}&");
+
+            return verificationSignature == expectedSignature;
         }
     }
 }

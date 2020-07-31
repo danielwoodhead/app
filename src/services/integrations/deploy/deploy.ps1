@@ -11,3 +11,6 @@ az webapp restart --name myhealth-integrations-api --resource-group DansApp
 # delete untagged images
 az acr repository show-manifests --name myhealthregistry --repository myhealth/integrations.api --query "[?tags[0]==null].digest" -o tsv `
   | ForEach-Object{ az acr repository delete --name myhealthregistry --image myhealth/integrations.api@$_ --yes }
+
+az acr repository show-manifests --name myhealthregistry --repository myhealth/integrations.funcs --query "[?tags[0]==null].digest" -o tsv `
+  | ForEach-Object{ az acr repository delete --name myhealthregistry --image myhealth/integrations.funcs@$_ --yes }
