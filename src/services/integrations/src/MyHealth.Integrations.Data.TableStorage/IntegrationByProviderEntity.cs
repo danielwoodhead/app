@@ -3,7 +3,7 @@ using System.Text.Json;
 using Microsoft.Azure.Cosmos.Table;
 using MyHealth.Integrations.Models;
 
-namespace MyHealth.Integrations.Repository.TableStorage
+namespace MyHealth.Integrations.Data.TableStorage
 {
     public class IntegrationByProviderEntity : TableEntity
     {

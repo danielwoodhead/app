@@ -1,7 +1,7 @@
 ﻿using System;
 using MyHealth.Integrations.Models;
 
-namespace MyHealth.Integrations.Repository.TableStorage
+namespace MyHealth.Integrations.Data.TableStorage
 {
     public static class IntegrationEntityExtensions
     {

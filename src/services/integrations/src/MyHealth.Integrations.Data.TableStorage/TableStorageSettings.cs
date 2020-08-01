@@ -1,4 +1,4 @@
-﻿namespace MyHealth.Integrations.Repository.TableStorage
+﻿namespace MyHealth.Integrations.Data.TableStorage
 {
     public class TableStorageSettings
     {

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace MyHealth.Integrations.Api
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1052:Static holder types should be Static or NotInheritable", Justification = "Standard dotnet pattern")]
     public class Program
     {
         public static void Main(string[] args)
@@ -18,7 +19,7 @@ namespace MyHealth.Integrations.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, config) =>
                 {
-                    var builtConfig = config.Build();
+                    IConfigurationRoot builtConfig = config.Build();
 
                     var azureServiceTokenProvider = new AzureServiceTokenProvider();
                     var keyVaultClient = new KeyVaultClient(

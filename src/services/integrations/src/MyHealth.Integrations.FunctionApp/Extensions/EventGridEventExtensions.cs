@@ -10,17 +10,16 @@ namespace MyHealth.Integrations.FunctionApp.Extensions
     {
         public static IEvent ToEvent(this EventGridEvent @event)
         {
-            switch (@event.EventType)
+            if (@event == null)
+                throw new ArgumentNullException(nameof(@event));
+
+            return @event.EventType switch
             {
-                case EventTypes.IntegrationCreated:
-                    return @event.ReadAs<IntegrationCreatedEvent, IntegrationEventData>();
-                case EventTypes.IntegrationDeleted:
-                    return @event.ReadAs<IntegrationDeletedEvent, IntegrationEventData>();
-                case EventTypes.IntegrationUpdated:
-                    return @event.ReadAs<IntegrationUpdatedEvent, IntegrationEventData>();
-                default:
-                    throw new NotSupportedException($"Unsupported event type '{@event.EventType}'");
-            }
+                EventTypes.IntegrationCreated => @event.ReadAs<IntegrationCreatedEvent, IntegrationEventData>(),
+                EventTypes.IntegrationDeleted => @event.ReadAs<IntegrationDeletedEvent, IntegrationEventData>(),
+                EventTypes.IntegrationUpdated => @event.ReadAs<IntegrationUpdatedEvent, IntegrationEventData>(),
+                _ => throw new NotSupportedException($"Unsupported event type '{@event.EventType}'"),
+            };
         }
     }
 }
