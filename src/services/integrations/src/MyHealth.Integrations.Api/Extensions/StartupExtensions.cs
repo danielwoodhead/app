@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyHealth.Extensions.AspNetCore.Swagger;
@@ -9,7 +10,7 @@ using MyHealth.Extensions.Events.Azure.EventGrid;
 using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Core.Services;
 using MyHealth.Integrations.Core.Utility;
-using MyHealth.Integrations.Repository.TableStorage;
+using MyHealth.Integrations.Data.TableStorage;
 using MyHealth.Integrations.Utility;
 
 namespace MyHealth.Integrations.Api.Extensions
@@ -43,6 +44,9 @@ namespace MyHealth.Integrations.Api.Extensions
 
         public static IServiceCollection AddIntegrationsCore(this IServiceCollection services, IConfiguration configuration)
         {
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             services.Configure<TableStorageSettings>(configuration.GetSection("TableStorage"));
             services.AddTransient<IIntegrationsService, IntegrationsService>();
             services.AddSingleton<IIntegrationsRepository, TableStorageIntegrationsRepository>();

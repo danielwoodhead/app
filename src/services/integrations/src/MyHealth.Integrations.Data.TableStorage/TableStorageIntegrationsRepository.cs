@@ -9,7 +9,7 @@ using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Requests;
 
-namespace MyHealth.Integrations.Repository.TableStorage
+namespace MyHealth.Integrations.Data.TableStorage
 {
     public class TableStorageIntegrationsRepository : IIntegrationsRepository
     {

@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.Model
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.AspNetCore.Versioning", "..\..\extensions\src\MyHealth.Extensions.AspNetCore.Versioning\MyHealth.Extensions.AspNetCore.Versioning.csproj", "{32BBB983-AE09-4180-BACD-2A744A6DBF0E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.Repository.TableStorage", "src\MyHealth.Integrations.Repository.TableStorage\MyHealth.Integrations.Repository.TableStorage.csproj", "{9C54DBEE-5BEC-4CD8-B00A-FEA700BDE527}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.Data.TableStorage", "src\MyHealth.Integrations.Data.TableStorage\MyHealth.Integrations.Data.TableStorage.csproj", "{9C54DBEE-5BEC-4CD8-B00A-FEA700BDE527}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Azure.Storage.Table", "..\..\extensions\src\MyHealth.Extensions.Azure.Storage.Table\MyHealth.Extensions.Azure.Storage.Table.csproj", "{D8382A6F-0D8D-40F9-AF50-D94BA3C64F8A}"
 EndProject
@@ -27,9 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Events"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Events.Azure.EventGrid", "..\..\extensions\src\MyHealth.Extensions.Events.Azure.EventGrid\MyHealth.Extensions.Events.Azure.EventGrid.csproj", "{9BC8AC81-5FC5-4A59-BB09-F4777B7EE872}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "providers", "providers", "{513FE50C-563E-41E5-986F-CC5F62BC2BA5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integrations", "integrations", "{513FE50C-563E-41E5-986F-CC5F62BC2BA5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.Fitbit", "src\providers\MyHealth.Integrations.Fitbit\MyHealth.Integrations.Fitbit.csproj", "{CB1D4D79-6E5F-4EE1-918E-842C7E7A78FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.Fitbit", "src\integrations\MyHealth.Integrations.Fitbit\MyHealth.Integrations.Fitbit.csproj", "{CB1D4D79-6E5F-4EE1-918E-842C7E7A78FC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.FunctionApp", "src\MyHealth.Integrations.FunctionApp\MyHealth.Integrations.FunctionApp.csproj", "{7194E329-F088-4B5F-BD45-15A680D60A3D}"
 EndProject

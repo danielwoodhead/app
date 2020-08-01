@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 using MyHealth.Extensions.Azure.Storage.Table;
 
-namespace MyHealth.Integrations.Repository.TableStorage
+namespace MyHealth.Integrations.Data.TableStorage
 {
     public static class CloudTableExtensions
     {
