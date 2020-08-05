@@ -8,7 +8,6 @@ namespace MyHealth.Integrations.Data.TableStorage
     public class IntegrationByProviderEntity : TableEntity
     {
         public string ProviderData { get; set; }
-        public string IntegrationId => RowKey.Split('_')[1];
         public Provider Provider => Enum.Parse<Provider>(RowKey.Split('_')[1]);
 
         public IntegrationByProviderEntity()
