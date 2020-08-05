@@ -22,11 +22,23 @@ namespace MyHealth.Integrations.Fitbit.Clients
             return await _httpClient.RequestAuthorizationCodeTokenAsync(
                 new AuthorizationCodeTokenRequest
                 {
-                    Address = _httpClient.BaseAddress.AbsoluteUri + "oauth2/token",
+                    Address = GetTokenEndpointAddress(),
                     ClientId = _fitbitSettings.ClientId,
                     RedirectUri = redirectUri.AbsoluteUri,
                     Code = code
                 });
         }
+
+        public async Task<TokenResponse> RefreshTokenAsync(string refreshToken)
+        {
+            return await _httpClient.RequestRefreshTokenAsync(
+                new RefreshTokenRequest
+                {
+                    Address = GetTokenEndpointAddress(),
+                    RefreshToken = refreshToken
+                });
+        }
+
+        private string GetTokenEndpointAddress() => _httpClient.BaseAddress.AbsoluteUri + "oauth2/token";
     }
 }

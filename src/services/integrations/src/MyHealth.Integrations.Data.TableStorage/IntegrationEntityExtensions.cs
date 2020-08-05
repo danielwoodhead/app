@@ -12,7 +12,7 @@ namespace MyHealth.Integrations.Data.TableStorage
 
             return new Integration
             {
-                Id = entity.RowKey,
+                Id = entity.IntegrationId,
                 UserId = entity.PartitionKey,
                 Provider = entity.ProviderEnum
             };
@@ -25,7 +25,8 @@ namespace MyHealth.Integrations.Data.TableStorage
 
             return new Integration
             {
-                Id = entity.RowKey,
+                // TODO: add IntegrationId to IntegrationByProviderEntity
+                //Id = entity.IntegrationId,
                 UserId = entity.PartitionKey,
                 Provider = entity.Provider,
                 Data = entity.ProviderData

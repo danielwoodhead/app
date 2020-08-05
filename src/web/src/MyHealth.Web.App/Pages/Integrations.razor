@@ -10,6 +10,7 @@
 @if (HasFitbitIntegration)
 {
     <p><em>Fitbit integration found!</em></p>
+    <button class="btn btn-danger" @onclick="DeleteFitbitIntegration">Delete</button>
 }
 else
 {
@@ -19,16 +20,28 @@ else
 @code {
     private IEnumerable<Integration> _integrations;
 
+    private bool HasFitbitIntegration => _integrations != null && _integrations.Any(i => i.Provider == "Fitbit");
+    private string FitbitIntegrationId => _integrations?.FirstOrDefault(i => i.Provider == "Fitbit")?.Id;
+
     protected override async Task OnInitializedAsync()
+    {
+        await GetIntegrationsAsync();
+    }
+
+    private async Task GetIntegrationsAsync()
     {
         _integrations = (await IntegrationsClient.GetAllIntegrationsAsync()).Integrations;
     }
-
-    private bool HasFitbitIntegration => _integrations != null && _integrations.Any(i => i.Provider == "Fitbit");
 
     private void AddFitbitIntegration()
     {
         string fitbitAuthenticationUri = FitbitClient.GetAuthenticationUri(NavigationManager.BaseUri);
         NavigationManager.NavigateTo(fitbitAuthenticationUri);
+    }
+
+    private async Task DeleteFitbitIntegration()
+    {
+        await IntegrationsClient.DeleteIntegrationAsync(FitbitIntegrationId);
+        await GetIntegrationsAsync();
     }
 }

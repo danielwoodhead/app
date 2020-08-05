@@ -13,20 +13,16 @@ using MyHealth.Integrations.Fitbit.Clients;
 using MyHealth.Integrations.Fitbit.Models;
 using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Events;
-using MyHealth.Integrations.Models.Requests;
 using MyHealth.Integrations.Utility;
 
 namespace MyHealth.Integrations.Fitbit.Services
 {
-    public class FitbitService : IFitbitService
+    public class FitbitService : IFitbitService, IIntegrationSystemService
     {
-        private const string EventDataVersion = "1.0";
-
         private readonly IEventPublisher _eventPublisher;
         private readonly IOperationContext _operationContext;
         private readonly IFitbitClient _fitbitClient;
         private readonly IFitbitAuthenticationClient _fitbitAuthClient;
-        private readonly IIntegrationsService _integrationsService;
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly FitbitSettings _fitbitSettings;
 
@@ -35,7 +31,6 @@ namespace MyHealth.Integrations.Fitbit.Services
             IOperationContext operationContext,
             IFitbitClient fitbitClient,
             IFitbitAuthenticationClient fitbitAuthClient,
-            IIntegrationsService integrationsService,
             IDateTimeProvider dateTimeProvider,
             IOptions<FitbitSettings> fitBitSettings)
         {
@@ -43,33 +38,37 @@ namespace MyHealth.Integrations.Fitbit.Services
             _operationContext = operationContext;
             _fitbitClient = fitbitClient;
             _fitbitAuthClient = fitbitAuthClient;
-            _integrationsService = integrationsService;
             _dateTimeProvider = dateTimeProvider;
             _fitbitSettings = fitBitSettings.Value;
         }
 
-        public async Task<Integration> CreateIntegrationAsync(string userId, AuthorizationCodeRequest request)
+        public Provider Provider => Provider.Fitbit;
+
+        public async Task<ProviderResult> CreateIntegrationAsync(ProviderRequest request)
         {
-            TokenResponse tokenResponse = await _fitbitAuthClient.AuthenticateAsync(request.Code, request.RedirectUri);
+            var authCode = (CreateFitbitIntegrationRequest)request.Data;
+            TokenResponse tokenResponse = await _fitbitAuthClient.AuthenticateAsync(authCode.Code, authCode.RedirectUri);
 
             if (tokenResponse.IsError)
                 throw new Exception(tokenResponse.Error); // TODO: if invalid code - return 4XX else throw exception
 
-            var integration = await _integrationsService.CreateIntegrationAsync(
-                new CreateIntegrationRequest
+            await _fitbitClient.AddSubscriptionAsync(subscriptionId: request.UserId, accessToken: tokenResponse.AccessToken);
+
+            return new ProviderResult
+            {
+                Provider = Provider.Fitbit,
+                Data = new FitbitIntegrationData
                 {
-                    Provider = Provider.Fitbit,
-                    Data = new FitbitIntegrationData
-                    {
-                        AccessToken = tokenResponse.AccessToken,
-                        AccessTokenExpiresUtc = _dateTimeProvider.UtcNow.AddSeconds(tokenResponse.ExpiresIn),
-                        RefreshToken = tokenResponse.RefreshToken
-                    }
-                });
+                    AccessToken = tokenResponse.AccessToken,
+                    AccessTokenExpiresUtc = _dateTimeProvider.UtcNow.AddSeconds(tokenResponse.ExpiresIn),
+                    RefreshToken = tokenResponse.RefreshToken
+                }
+            };
+        }
 
-            await _fitbitClient.AddSubscriptionAsync(subscriptionId: userId);
-
-            return integration;
+        public async Task DeleteIntegrationAsync(string userId)
+        {
+            await _fitbitClient.DeleteSubscriptionAsync(subscriptionId: userId);
         }
 
         public async Task ProcessUpdateNotificationAsync(IEnumerable<FitbitUpdateNotification> request)
@@ -79,7 +78,7 @@ namespace MyHealth.Integrations.Fitbit.Services
                     id: Guid.NewGuid().ToString(),
                     subject: update.SubscriptionId,
                     eventTime: _dateTimeProvider.UtcNow,
-                    dataVersion: EventDataVersion,
+                    dataVersion: EventConstants.EventDataVersion,
                     data: new IntegrationEventData
                     {
                         OperationId = _operationContext.OperationId,

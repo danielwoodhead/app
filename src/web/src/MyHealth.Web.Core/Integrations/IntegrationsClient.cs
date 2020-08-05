@@ -8,8 +8,9 @@ namespace MyHealth.Web.Core.Integrations
 {
     public interface IIntegrationsClient
     {
-        Task<SearchIntegrationsResponse> GetAllIntegrationsAsync();
         Task CreateFitbitIntegrationAsync(string code, string redirectUri);
+        Task DeleteIntegrationAsync(string id);
+        Task<SearchIntegrationsResponse> GetAllIntegrationsAsync();
     }
 
     public class IntegrationsClient : IIntegrationsClient
@@ -32,6 +33,11 @@ namespace MyHealth.Web.Core.Integrations
                 });
         }
 
+        public async Task DeleteIntegrationAsync(string id)
+        {
+            await _httpClient.DeleteAsync($"integrations/{id}");
+        }
+
         public async Task<SearchIntegrationsResponse> GetAllIntegrationsAsync()
         {
             return await _httpClient.GetFromJsonAsync<SearchIntegrationsResponse>("integrations");
@@ -45,6 +51,7 @@ namespace MyHealth.Web.Core.Integrations
 
     public class Integration
     {
+        public string Id { get; set; }
         public string Provider { get; set; }
     }
 

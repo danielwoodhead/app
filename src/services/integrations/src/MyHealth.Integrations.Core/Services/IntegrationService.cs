@@ -4,35 +4,42 @@ using System.Threading.Tasks;
 using MyHealth.Extensions.Events;
 using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Core.Events;
+using MyHealth.Integrations.Core.Extensions;
 using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Events;
-using MyHealth.Integrations.Models.Requests;
 using MyHealth.Integrations.Models.Response;
 using MyHealth.Integrations.Utility;
 
 namespace MyHealth.Integrations.Core.Services
 {
-    public class IntegrationsService : IIntegrationsService
+    public class IntegrationService : IIntegrationService
     {
-        private const string EventDataVersion = "1.0";
-
-        private readonly IIntegrationsRepository _integrationsRepository;
+        private readonly IIntegrationRepository _integrationRepository;
+        private readonly IEnumerable<IIntegrationSystemService> _integrationSystemServices;
         private readonly IUserOperationContext _operationContext;
         private readonly IEventPublisher _eventPublisher;
 
-        public IntegrationsService(
-            IIntegrationsRepository integrationsRepository,
+        public IntegrationService(
+            IIntegrationRepository integrationRepository,
+            IEnumerable<IIntegrationSystemService> integrationSystemServices,
             IUserOperationContext operationContext,
             IEventPublisher eventPublisher)
         {
-            _integrationsRepository = integrationsRepository;
+            _integrationRepository = integrationRepository;
+            _integrationSystemServices = integrationSystemServices;
             _operationContext = operationContext;
             _eventPublisher = eventPublisher;
         }
 
-        public async Task<Integration> CreateIntegrationAsync(CreateIntegrationRequest request)
+        public async Task<Integration> CreateIntegrationAsync(ProviderRequest request)
         {
-            Integration integration = await _integrationsRepository.CreateIntegrationAsync(request, _operationContext.UserId);
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+
+            IIntegrationSystemService integrationSystemService = _integrationSystemServices.GetService(request.Provider);
+            ProviderResult creationResult = await integrationSystemService.CreateIntegrationAsync(request);
+
+            Integration integration = await _integrationRepository.CreateIntegrationAsync(_operationContext.UserId, creationResult.Provider, creationResult.Data);
             await _eventPublisher.PublishAsync(CreateIntegrationCreatedEvent(integration));
 
             return integration;
@@ -40,28 +47,30 @@ namespace MyHealth.Integrations.Core.Services
 
         public async Task DeleteIntegrationAsync(string id)
         {
-            Integration integration = await _integrationsRepository.GetIntegrationAsync(id, _operationContext.UserId);
+            Integration integration = await _integrationRepository.GetIntegrationAsync(id, _operationContext.UserId);
 
             if (integration != null)
             {
-                await _integrationsRepository.DeleteIntegrationAsync(id, _operationContext.UserId);
+                IIntegrationSystemService integrationSystemService = _integrationSystemServices.GetService(integration.Provider);
+                await integrationSystemService.DeleteIntegrationAsync(_operationContext.UserId);
+                await _integrationRepository.DeleteIntegrationAsync(id, _operationContext.UserId);
                 await _eventPublisher.PublishAsync(CreateIntegrationDeletedEvent(integration));
             }
         }
 
         public async Task<Integration> GetIntegrationAsync(string id)
         {
-            return await _integrationsRepository.GetIntegrationAsync(id, _operationContext.UserId);
+            return await _integrationRepository.GetIntegrationAsync(id, _operationContext.UserId);
         }
 
-        public async Task<Integration> GetIntegrationAsync(Provider provider, string userId)
+        public async Task<Integration> GetIntegrationAsync(string userId, Provider provider)
         {
-            return await _integrationsRepository.GetIntegrationAsync(provider, userId);
+            return await _integrationRepository.GetIntegrationAsync(userId, provider);
         }
 
         public async Task<SearchIntegrationsResponse> SearchIntegrationsAsync()
         {
-            IEnumerable<Integration> integrations = await _integrationsRepository.GetIntegrationsAsync(_operationContext.UserId);
+            IEnumerable<Integration> integrations = await _integrationRepository.GetIntegrationsAsync(_operationContext.UserId);
 
             return new SearchIntegrationsResponse
             {
@@ -69,12 +78,17 @@ namespace MyHealth.Integrations.Core.Services
             };
         }
 
+        public async Task UpdateIntegrationAsync(string userId, Provider provider, object integrationData)
+        {
+            await _integrationRepository.UpdateIntegrationAsync(userId, provider, integrationData);
+        }
+
         private IntegrationCreatedEvent CreateIntegrationCreatedEvent(Integration integration) =>
             new IntegrationCreatedEvent(
                 id: Guid.NewGuid().ToString(),
                 subject: integration.Id,
                 eventTime: DateTime.UtcNow,
-                dataVersion: EventDataVersion,
+                dataVersion: EventConstants.EventDataVersion,
                 data: CreateEventData(integration));
 
         private IntegrationDeletedEvent CreateIntegrationDeletedEvent(Integration integration) =>
@@ -82,7 +96,7 @@ namespace MyHealth.Integrations.Core.Services
                 id: Guid.NewGuid().ToString(),
                 subject: integration.Id,
                 eventTime: DateTime.UtcNow,
-                dataVersion: EventDataVersion,
+                dataVersion: EventConstants.EventDataVersion,
                 data: CreateEventData(integration));
 
         private IntegrationEventData CreateEventData(Integration integration) =>
