@@ -25,7 +25,7 @@ namespace MyHealth.Integrations.Data.TableStorage
 
             return new Integration
             {
-                // TODO: add IntegraitonId to IntegrationByProviderEntity
+                // TODO: add IntegrationId to IntegrationByProviderEntity
                 //Id = entity.IntegrationId,
                 UserId = entity.PartitionKey,
                 Provider = entity.Provider,
