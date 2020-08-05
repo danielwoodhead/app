@@ -10,9 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using MyHealth.Extensions.AspNetCore.Versioning;
+using MyHealth.Integrations.Core.Services;
 using MyHealth.Integrations.Fitbit.Models;
 using MyHealth.Integrations.Fitbit.Services;
-using MyHealth.Integrations.Models.Requests;
+using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Utility;
 
 namespace MyHealth.Integrations.Fitbit.Controllers
@@ -25,24 +26,33 @@ namespace MyHealth.Integrations.Fitbit.Controllers
     public class FitbitController : ControllerBase
     {
         private readonly IFitbitService _fitbitService;
+        private readonly IIntegrationService _integrationService;
         private readonly IUserOperationContext _userOperationContext;
         private readonly ILogger<FitbitController> _logger;
 
         public FitbitController(
             IFitbitService fitbitService,
+            IIntegrationService integrationService,
             IUserOperationContext userOperationContext,
             ILogger<FitbitController> logger)
         {
             _fitbitService = fitbitService ?? throw new ArgumentNullException(nameof(fitbitService));
+            _integrationService = integrationService ?? throw new ArgumentNullException(nameof(integrationService));
             _userOperationContext = userOperationContext ?? throw new ArgumentNullException(nameof(userOperationContext));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult> CreateFitbitIntegration([FromBody] AuthorizationCodeRequest request, ApiVersion apiVersion)
+        public async Task<ActionResult> CreateFitbitIntegration([FromBody] CreateFitbitIntegrationRequest request, ApiVersion apiVersion)
         {
-            var integration = await _fitbitService.CreateIntegrationAsync(_userOperationContext.UserId, request);
+            var integration = await _integrationService.CreateIntegrationAsync(
+                new ProviderRequest
+                {
+                    Provider = Provider.Fitbit,
+                    Data = request,
+                    UserId = _userOperationContext.UserId
+                });
 
             return CreatedAtRoute(
                 "GetIntegration",

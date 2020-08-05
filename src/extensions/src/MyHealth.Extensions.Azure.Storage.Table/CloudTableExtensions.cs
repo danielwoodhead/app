@@ -9,29 +9,17 @@ namespace MyHealth.Extensions.Azure.Storage.Table
 {
     public static class CloudTableExtensions
     {
-        public static async Task DeleteAsync<TEntity>(this CloudTable table, TEntity entity)
-            where TEntity : ITableEntity
-        {
-            var operation = TableOperation.Delete(entity);
+        public static async Task DeleteAsync(this CloudTable table, ITableEntity entity)
+            => await table.ExecuteInternalAsync(TableOperation.Delete(entity));
 
-            await table.ExecuteInternalAsync(operation);
-        }
+        public static async Task<TableResult> InsertAsync(this CloudTable table, ITableEntity entity)
+            => await table.ExecuteInternalAsync(TableOperation.Insert(entity));
 
-        public static async Task<TableResult> InsertAsync<TEntity>(this CloudTable table, TEntity entity)
-            where TEntity : ITableEntity
-        {
-            var operation = TableOperation.Insert(entity);
+        public static async Task<TableResult> InsertOrMergeAsync(this CloudTable table, ITableEntity entity)
+            => await table.ExecuteInternalAsync(TableOperation.InsertOrMerge(entity));
 
-            return await table.ExecuteInternalAsync(operation);
-        }
-
-        public static async Task<TableResult> InsertOrMergeAsync<TEntity>(this CloudTable table, TEntity entity)
-            where TEntity : ITableEntity
-        {
-            var operation = TableOperation.InsertOrMerge(entity);
-
-            return await table.ExecuteInternalAsync(operation);
-        }
+        public static async Task<TableResult> InsertOrReplaceAsync(this CloudTable table, ITableEntity entity)
+            => await table.ExecuteInternalAsync(TableOperation.InsertOrReplace(entity));
 
         public static async Task<TEntity> RetrieveAsync<TEntity>(this CloudTable table, string partitionKey, string rowKey)
             where TEntity : class, ITableEntity
@@ -52,34 +40,22 @@ namespace MyHealth.Extensions.Azure.Storage.Table
         }
 
         public static async Task BatchInsertAsync(this CloudTable table, IEnumerable<ITableEntity> items)
-        {
-            await table.BatchExecuteAsync(items, (batch, item) => batch.Insert(item));
-        }
+            => await table.BatchExecuteAsync(items, (batch, item) => batch.Insert(item));
 
         public static async Task BatchInsertAsync(this CloudTable table, params ITableEntity[] items)
-        {
-            await table.BatchExecuteAsync(items, (batch, item) => batch.Insert(item));
-        }
+            => await table.BatchExecuteAsync(items, (batch, item) => batch.Insert(item));
 
         public static async Task BatchInsertOrReplaceAsync(this CloudTable table, IEnumerable<ITableEntity> items)
-        {
-            await table.BatchExecuteAsync(items, (batch, item) => batch.InsertOrReplace(item));
-        }
+            => await table.BatchExecuteAsync(items, (batch, item) => batch.InsertOrReplace(item));
 
         public static async Task BatchInsertOrReplaceAsync(this CloudTable table, params ITableEntity[] items)
-        {
-            await table.BatchExecuteAsync(items, (batch, item) => batch.InsertOrReplace(item));
-        }
+            => await table.BatchExecuteAsync(items, (batch, item) => batch.InsertOrReplace(item));
 
         public static async Task BatchDeleteAsync(this CloudTable table, IEnumerable<ITableEntity> items)
-        {
-            await table.BatchExecuteAsync(items, (batch, item) => batch.Delete(item));
-        }
+            => await table.BatchExecuteAsync(items, (batch, item) => batch.Delete(item));
 
         public static async Task BatchDeleteAsync(this CloudTable table, params ITableEntity[] items)
-        {
-            await table.BatchExecuteAsync(items, (batch, item) => batch.Delete(item));
-        }
+            => await table.BatchExecuteAsync(items, (batch, item) => batch.Delete(item));
 
         private static async Task BatchExecuteAsync(this CloudTable table, IEnumerable<ITableEntity> items, Action<TableBatchOperation, ITableEntity> batchAction)
         {
@@ -115,7 +91,7 @@ namespace MyHealth.Extensions.Azure.Storage.Table
             this CloudTable table,
             TableQuery<TElement> query,
             EntityResolver<TResult> entityResolver,
-            CancellationToken cancellationToken = default(CancellationToken),
+            CancellationToken cancellationToken = default,
             Action<IList<TResult>> onProgress = null)
             where TElement : class, ITableEntity, new()
             where TResult : class, ITableEntity, new()
@@ -142,7 +118,7 @@ namespace MyHealth.Extensions.Azure.Storage.Table
         public static async Task<IEnumerable<TEntity>> QueryAsync<TEntity>(
             this CloudTable table,
             TableQuery<TEntity> query,
-            CancellationToken cancellationToken = default(CancellationToken),
+            CancellationToken cancellationToken = default,
             Action<IList<TEntity>> onProgress = null)
             where TEntity : class, ITableEntity, new()
         {
@@ -166,14 +142,10 @@ namespace MyHealth.Extensions.Azure.Storage.Table
         }
 
         private static async Task<TableResult> ExecuteInternalAsync(this CloudTable table, TableOperation operation, bool isRetry = false)
-        {
-            return await table.ExecuteInternalAsync(async t => await t.ExecuteAsync(operation), isRetry);
-        }
+            => await table.ExecuteInternalAsync(async t => await t.ExecuteAsync(operation), isRetry);
 
         private static async Task<TableBatchResult> ExecuteInternalAsync(this CloudTable table, TableBatchOperation operation, bool isRetry = false)
-        {
-            return await table.ExecuteInternalAsync(async t => await t.ExecuteBatchAsync(operation), isRetry);
-        }
+            => await table.ExecuteInternalAsync(async t => await t.ExecuteBatchAsync(operation), isRetry);
 
         private static async Task<T> ExecuteInternalAsync<T>(this CloudTable table, Func<CloudTable, Task<T>> action, bool isRetry = false)
         {

@@ -1,7 +1,10 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using System.Threading.Tasks;
-using MyHealth.Integrations.Core.Services;
+using IdentityModel.Client;
+using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Core.Utility;
+using MyHealth.Integrations.Fitbit.Clients;
 using MyHealth.Integrations.Fitbit.Models;
 using MyHealth.Integrations.Models;
 
@@ -9,29 +12,45 @@ namespace MyHealth.Integrations.Fitbit.Services
 {
     public class FitbitTokenService : IFitbitTokenService
     {
-        private readonly IIntegrationsService _integrationsService;
+        private readonly IIntegrationRepository _integrationsRepository;
         private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly IFitbitAuthenticationClient _fitbitAuthenticationClient;
 
         public FitbitTokenService(
-            IIntegrationsService integrationsService,
-            IDateTimeProvider dateTimeProvider)
+            IIntegrationRepository integrationsRepository,
+            IDateTimeProvider dateTimeProvider,
+            IFitbitAuthenticationClient fitbitAuthenticationClient)
         {
-            _integrationsService = integrationsService;
+            _integrationsRepository = integrationsRepository;
             _dateTimeProvider = dateTimeProvider;
+            _fitbitAuthenticationClient = fitbitAuthenticationClient;
         }
 
         public async Task<string> GetAccessTokenAsync(string userId)
         {
-            var fitbitIntegration = await _integrationsService.GetIntegrationAsync(Provider.Fitbit, userId);
+            Integration fitbitIntegration = await _integrationsRepository.GetIntegrationAsync(userId, Provider.Fitbit);
 
-            var fitbitIntegrationData = JsonSerializer.Deserialize<FitbitIntegrationData>(fitbitIntegration.Data);
+            if (fitbitIntegration == null)
+                throw new ArgumentException($"Fitbit integration not found for userId '{userId}'");
 
-            if (fitbitIntegrationData.AccessTokenExpiresUtc < _dateTimeProvider.UtcNow)
-            {
-                // TODO: get (and store) new access token
-            }
+            FitbitIntegrationData fitbitIntegrationData = JsonSerializer.Deserialize<FitbitIntegrationData>(fitbitIntegration.Data);
 
-            return fitbitIntegrationData.AccessToken;
+            // TODO: add expiry offset
+            if (fitbitIntegrationData.AccessTokenExpiresUtc > _dateTimeProvider.UtcNow)
+                return fitbitIntegrationData.AccessToken;
+
+            TokenResponse tokenResponse = await _fitbitAuthenticationClient.RefreshTokenAsync(fitbitIntegrationData.RefreshToken);
+
+            if (tokenResponse.IsError)
+                throw new Exception($"Failed to refresh Fitbit token: {tokenResponse.Error} - {tokenResponse.ErrorDescription}");
+
+            fitbitIntegrationData.AccessToken = tokenResponse.AccessToken;
+            fitbitIntegrationData.AccessTokenExpiresUtc = _dateTimeProvider.UtcNow.AddSeconds(tokenResponse.ExpiresIn);
+            fitbitIntegrationData.RefreshToken = tokenResponse.RefreshToken;
+            await _integrationsRepository.UpdateIntegrationAsync(userId, Provider.Fitbit, fitbitIntegrationData);
+
+            return tokenResponse.AccessToken;
+            
         }
     }
 }

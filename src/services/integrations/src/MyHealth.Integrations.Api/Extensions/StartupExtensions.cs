@@ -48,8 +48,8 @@ namespace MyHealth.Integrations.Api.Extensions
                 throw new ArgumentNullException(nameof(configuration));
 
             services.Configure<TableStorageSettings>(configuration.GetSection("TableStorage"));
-            services.AddTransient<IIntegrationsService, IntegrationsService>();
-            services.AddSingleton<IIntegrationsRepository, TableStorageIntegrationsRepository>();
+            services.AddTransient<IIntegrationService, IntegrationService>();
+            services.AddSingleton<IIntegrationRepository, TableStorageIntegrationsRepository>();
             services.AddSingleton<IOperationContext, OperationContext>();
             services.AddScoped<IUserOperationContext, UserOperationContext>();
 

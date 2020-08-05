@@ -7,5 +7,6 @@ namespace MyHealth.Integrations.Fitbit.Clients
     public interface IFitbitAuthenticationClient
     {
         Task<TokenResponse> AuthenticateAsync(string code, Uri redirectUri);
+        Task<TokenResponse> RefreshTokenAsync(string refreshToken);
     }
 }

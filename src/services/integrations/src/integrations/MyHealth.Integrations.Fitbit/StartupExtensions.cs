@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MyHealth.Integrations.Core.Events.Handlers;
+using MyHealth.Integrations.Core.Services;
 using MyHealth.Integrations.Fitbit.Clients;
 using MyHealth.Integrations.Fitbit.EventHandlers;
 using MyHealth.Integrations.Fitbit.Services;
@@ -24,12 +25,13 @@ namespace MyHealth.Integrations.Fitbit
                 });
 
             services.AddTransient<IFitbitService, FitbitService>();
+            services.AddTransient<IIntegrationSystemService, FitbitService>();
             services.AddTransient<IFitbitTokenService, FitbitTokenService>();
             services.AddTransient<IIntegrationCreatedEventHandler, FitbitIntegrationCreatedEventHandler>();
             services.AddTransient<IIntegrationProviderUpdateEventHandler, FitbitProviderUpdateEventHandler>();
-
             services.AddTransient<FitbitBasicAuthenticationHandler>();
             services.AddTransient<FitbitBearerAuthenticationHandler>();
+
             services
                 .AddHttpClient<IFitbitClient, FitbitClient>((s, client) =>
                 {

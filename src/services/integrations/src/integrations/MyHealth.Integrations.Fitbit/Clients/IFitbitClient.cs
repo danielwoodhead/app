@@ -5,6 +5,7 @@ namespace MyHealth.Integrations.Fitbit.Clients
 {
     public interface IFitbitClient
     {
-        Task<AddFitbitSubscriptionResponse> AddSubscriptionAsync(string subscriptionId, string collectionPath = null, string subscriberId = null);
+        Task<AddFitbitSubscriptionResponse> AddSubscriptionAsync(string subscriptionId, string accessToken, string collectionPath = null, string subscriberId = null);
+        Task DeleteSubscriptionAsync(string subscriptionId, string collectionPath = null, string subscriberId = null);
     }
 }

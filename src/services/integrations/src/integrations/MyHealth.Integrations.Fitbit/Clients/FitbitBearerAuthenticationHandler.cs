@@ -22,9 +22,12 @@ namespace MyHealth.Integrations.Fitbit.Clients
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            string accessToken = await _fitbitTokenService.GetAccessTokenAsync(_userContext.UserId);
+            if (request.Headers.Authorization == null)
+            {
+                string accessToken = await _fitbitTokenService.GetAccessTokenAsync(_userContext.UserId);
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            }
 
             return await base.SendAsync(request, cancellationToken);
         }
