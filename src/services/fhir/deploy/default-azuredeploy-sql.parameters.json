@@ -22,10 +22,13 @@
         "value": "R4"
     },
     "securityAuthenticationAuthority": {
-      "value": "https://myhealth-identity-api.azurewebsites.net"
+      "value": "https://myhealth-identity-sts.azurewebsites.net"
     },
     "securityAuthenticationAudience": {
       "value": "fhir-api"
+    },
+    "enableExport": {
+      "value": true
     }
   }
 }

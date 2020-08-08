@@ -12,7 +12,7 @@
         "value": "https://myhealth-fhir.azurewebsites.net"
     },
     "FhirServiceAuthority": {
-      "value": "https://myhealth-identity-api.azurewebsites.net"
+      "value": "https://myhealth-identity-sts.azurewebsites.net"
     },
     "FhirServiceResource": {
         "value": "fhir-api"

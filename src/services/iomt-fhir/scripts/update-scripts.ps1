@@ -40,4 +40,4 @@ Param(
     }
 }
 
-DownloadFilesFromRepo -Owner "microsoft" -Repository "iomt-fhir" -Path "deploy/templates" -DestinationPath "."
+DownloadFilesFromRepo -Owner "microsoft" -Repository "iomt-fhir" -Path "deploy/templates" -DestinationPath "../deploy/iomt-fhir"

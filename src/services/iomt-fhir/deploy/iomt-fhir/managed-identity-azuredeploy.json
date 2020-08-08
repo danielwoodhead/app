@@ -128,44 +128,37 @@
         "description": "The location of the deployed resources."
       }
     },
+    "FhirVersion": {
+      "type": "string",
+      "allowedValues": [
+        "R4"
+      ],
+      "defaultValue": "R4",
+      "metadata": {
+        "description": "The FHIR version used in the connector. It should match the version used in the FHIR service."
+      }
+    },
     "FhirServiceUrl": {
       "type": "string",
       "metadata": {
         "description": "Url of the FHIR server that IoMT will be written to."
       }
     },
-    "FhirServiceAuthority": {
+    "FhirServiceAudience": {
       "type": "string",
       "metadata": {
-        "description": "Authority of the FHIR to retrieve a token against."
-      }
+        "description": "Audience representing the FHIR server."
+      },
+      "defaultValue": ""
     },
-    "FhirServiceResource": {
-      "type": "string",
-      "metadata": {
-        "description": "Resource/Audience representing the FHIR server on the provided authority."
-      }
-    },
-    "FhirServiceClientId": {
-      "type": "string",
-      "metadata": {
-        "description": "Client Id to run services as for access to the FHIR server."
-      }
-    },
-    "FhirServiceClientSecret": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Client secret of the application for accessing a token."
-      }
-    },
-    "ResourceIdentityServiceType": {
+    "ResourceIdentityResolutionType": {
       "type": "string",
       "allowedValues": [
-        "R4DeviceAndPatientLookupIdentityService",
-        "R4DeviceAndPatientCreateIdentityService",
-        "R4DeviceAndPatientWithEncounterLookupIdentityService"
+        "Lookup",
+        "Create",
+        "LookupWithEncounter"
       ],
-      "defaultValue": "R4DeviceAndPatientLookupIdentityService",
+      "defaultValue": "Lookup",
       "metadata": {
         "description": "Configures how patient, device, and other FHIR resource identities are resolved from the ingested data stream."
       }
@@ -191,7 +184,9 @@
     "app_service_resource_id": "[resourceId('Microsoft.Web/sites', variables('app_service_name'))]",
     "deploy_source_code": "[and(not(empty(parameters('repositoryUrl'))),not(empty(parameters('repositoryBranch'))))]",
     "sender_role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '2b629674-e913-4c01-ae53-ef4638d8f975')]",
-    "receiver_role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'a638d3c7-ab3a-418d-83e6-5f17a39d4fde')]"
+    "receiver_role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'a638d3c7-ab3a-418d-83e6-5f17a39d4fde')]",
+    "iomt_fhir_connector_name": "[concat('ResourceIdentity', ':', parameters('ResourceIdentityResolutionType'))]",
+    "fhir_service_audience": "[if(or(equals(parameters('FhirServiceAudience'), json('null')), equals(parameters('FhirServiceAudience'), '')), parameters('FhirServiceUrl'), parameters('FhirServiceAudience'))]"
   },
   "resources": [
     {
@@ -207,7 +202,8 @@
         "[resourceId('Microsoft.EventHub/namespaces/eventhubs/consumergroups', variables('eventhub_namespace_name'), 'normalizeddata', '$Default')]"
       ],
       "tags": {
-        "IomtFhirConnector": "[parameters('ResourceIdentityServiceType')]"
+        "IomtFhirConnector": "[variables('iomt_fhir_connector_name')]",
+        "IomtFhirVersion": "[parameters('FhirVersion')]"
       },
       "identity": {
         "type": "SystemAssigned"
@@ -272,7 +268,7 @@
           "name": "Transformation",
           "properties": {
             "streamingUnits": "[parameters('StreamingUnits')]",
-            "query": "[concat('SELECT \r\n    DeviceId [DeviceId], \r\n    PatientId [PatientId],\r\n    EncounterId [EncounterId],\r\n    collect() [Data],\r\n    System.Timestamp [WindowTime],\r\n    Type [MeasureType],\r\n    count(*) [Count]\r\nINTO\r\n    [FhirImportOutput]\r\nFROM\r\n    [NormalizedData] PARTITION BY PartitionId TIMESTAMP BY OccurrenceTimeUtc\r\nGROUP BY  PartitionId, \r\n    DeviceId, \r\n    PatientId, \r\n    EncounterId, \r\n    Type, \r\n    TUMBLINGWINDOW(', parameters('JobWindowUnit'), ', ', parameters('JobWindowMagnitude'), ')')]"
+            "query": "[concat('SELECT \r\n    DeviceId [DeviceId], \r\n    PatientId [PatientId],\r\n    EncounterId [EncounterId],\r\n    CorrelationId [CorrelationId],\r\n    collect() [Data],\r\n    System.Timestamp [WindowTime],\r\n    Type [MeasureType],\r\n    count(*) [Count]\r\nINTO\r\n    [FhirImportOutput]\r\nFROM\r\n    [NormalizedData] PARTITION BY PartitionId TIMESTAMP BY OccurrenceTimeUtc\r\nGROUP BY  PartitionId, \r\n    DeviceId, \r\n    PatientId, \r\n    EncounterId, \r\n    CorrelationId, \r\n    Type, \r\n    TUMBLINGWINDOW(', parameters('JobWindowUnit'), ', ', parameters('JobWindowMagnitude'), ')')]"
           }
         },
         "functions": [
@@ -285,7 +281,8 @@
       "name": "[variables('eventhub_namespace_name')]",
       "location": "[parameters('ResourceLocation')]",
       "tags": {
-        "IomtFhirConnector": "[parameters('ResourceIdentityServiceType')]"
+        "IomtFhirConnector": "[variables('iomt_fhir_connector_name')]",
+        "IomtFhirVersion": "[parameters('FhirVersion')]"
       },
       "sku": {
         "name": "Standard",
@@ -416,9 +413,9 @@
         "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventhub_namespace_name'), 'devicedata')]"
       ],
       "properties": {
-          "roleDefinitionId": "[variables('receiver_role')]",
-          "principalId": "[reference(variables('app_service_resource_id'), '2015-08-01', 'Full').Identity.principalId]",
-          "scope": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventhub_namespace_name'), 'devicedata')]"
+        "roleDefinitionId": "[variables('receiver_role')]",
+        "principalId": "[reference(variables('app_service_resource_id'), '2015-08-01', 'Full').Identity.principalId]",
+        "scope": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventhub_namespace_name'), 'devicedata')]"
       }
     },
     {
@@ -430,9 +427,9 @@
         "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventhub_namespace_name'), 'normalizeddata')]"
       ],
       "properties": {
-          "roleDefinitionId": "[variables('sender_role')]",
-          "principalId": "[reference(variables('app_service_resource_id'), '2015-08-01', 'Full').Identity.principalId]",
-          "scope": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventhub_namespace_name'), 'normalizeddata')]"
+        "roleDefinitionId": "[variables('sender_role')]",
+        "principalId": "[reference(variables('app_service_resource_id'), '2015-08-01', 'Full').Identity.principalId]",
+        "scope": "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventhub_namespace_name'), 'normalizeddata')]"
       }
     },
     {
@@ -441,7 +438,8 @@
       "name": "[variables('storage_account_name')]",
       "location": "[parameters('ResourceLocation')]",
       "tags": {
-        "IomtFhirConnector": "[parameters('ResourceIdentityServiceType')]"
+        "IomtFhirConnector": "[variables('iomt_fhir_connector_name')]",
+        "IomtFhirVersion": "[parameters('FhirVersion')]"
       },
       "sku": {
         "name": "Standard_RAGRS",
@@ -507,7 +505,8 @@
       "name": "[variables('app_plan_name')]",
       "location": "[parameters('ResourceLocation')]",
       "tags": {
-        "IomtFhirConnector": "[parameters('ResourceIdentityServiceType')]"
+        "IomtFhirConnector": "[variables('iomt_fhir_connector_name')]",
+        "IomtFhirVersion": "[parameters('FhirVersion')]"
       },
       "sku": {
         "name": "[parameters('AppServicePlanSku')]"
@@ -527,7 +526,8 @@
       "name": "[variables('app_service_name')]",
       "location": "[parameters('ResourceLocation')]",
       "tags": {
-        "IomtFhirConnector": "[parameters('ResourceIdentityServiceType')]"
+        "IomtFhirConnector": "[variables('iomt_fhir_connector_name')]",
+        "IomtFhirVersion": "[parameters('FhirVersion')]"
       },
       "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms', variables('app_plan_name'))]",
@@ -556,31 +556,25 @@
           "type": "config",
           "dependsOn": [
             "[variables('app_service_resource_id')]",
-            "[resourceId('Microsoft.Insights/components/', variables('app_insights_name'))]",
-            "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('key_vault_name'),'fhirserver-url')]",
-            "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('key_vault_name'),'fhirserver-authority')]",
-            "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('key_vault_name'),'fhirserver-resource')]",
-            "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('key_vault_name'),'fhirserver-clientid')]",
-            "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('key_vault_name'),'fhirserver-clientsecret')]"
+            "[resourceId('Microsoft.Insights/components/', variables('app_insights_name'))]"
           ],
           "properties": {
             "InputEventHub": "[concat('Endpoint=sb://', variables('app_service_name'), '.servicebus.windows.net/;Authentication=ManagedIdentity;EntityPath=devicedata')]",
             "OutputEventHub": "[concat('Endpoint=sb://', variables('app_service_name'), '.servicebus.windows.net/;Authentication=ManagedIdentity;EntityPath=normalizeddata')]",
-            "FUNCTIONS_EXTENSION_VERSION": "~2",
+            "FUNCTIONS_EXTENSION_VERSION": "~3",
             "FUNCTIONS_EXTENSION_RUNTIME": "dotnet",
             "PROJECT": "src/func/Microsoft.Health.Fhir.Ingest.Host/Microsoft.Health.Fhir.Ingest.Host.csproj",
             "AzureWebJobsStorage": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('key_vault_name'),'blob-storage-cs'), '2018-02-14').secretUriWithVersion, ')')]",
             "AzureWebJobsSecretStorageType": "Files",
-            "FhirService:Url": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('key_vault_name'),'fhirserver-url'), '2018-02-14').secretUriWithVersion, ')')]",
-            "FhirService:Authority": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('key_vault_name'),'fhirserver-authority'), '2018-02-14').secretUriWithVersion, ')')]",
-            "FhirService:Resource": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('key_vault_name'),'fhirserver-resource'), '2018-02-14').secretUriWithVersion, ')')]",
-            "FhirService:ClientId": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('key_vault_name'),'fhirserver-clientid'), '2018-02-14').secretUriWithVersion, ')')]",
-            "FhirService:ClientSecret": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('key_vault_name'),'fhirserver-clientsecret'), '2018-02-14').secretUriWithVersion, ')')]",
+            "FhirVersion": "[parameters('FhirVersion')]",
+            "FhirService:Url": "[parameters('FhirServiceUrl')]",
+            "FhirService:Resource": "[variables('fhir_service_audience')]",
             "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(concat('Microsoft.Insights/components/', variables('app_insights_name'))).InstrumentationKey]",
             "Template:DeviceContent": "devicecontent.json",
             "Template:FhirMapping": "fhirmapping.json",
-            "ResourceIdentity:ResourceIdentityServiceType": "[parameters('ResourceIdentityServiceType')]",
-            "ResourceIdentity:DefaultDeviceIdentifierSystem": "[parameters('DefaultDeviceIdentifierSystem')]"
+            "ResourceIdentity:ResourceIdentityServiceType": "[parameters('ResourceIdentityResolutionType')]",
+            "ResourceIdentity:DefaultDeviceIdentifierSystem": "[parameters('DefaultDeviceIdentifierSystem')]",
+            "FhirClient:UseManagedIdentity": "true"
           }
         },
         {
@@ -710,7 +704,8 @@
       "name": "[variables('app_insights_name')]",
       "location": "[parameters('ResourceLocation')]",
       "tags": {
-        "IomtFhirConnector": "[parameters('ResourceIdentityServiceType')]"
+        "IomtFhirConnector": "[variables('iomt_fhir_connector_name')]",
+        "IomtFhirVersion": "[parameters('FhirVersion')]"
       },
       "kind": "web",
       "properties": {
@@ -725,7 +720,8 @@
       "name": "[variables('key_vault_name')]",
       "location": "[parameters('ResourceLocation')]",
       "tags": {
-        "IomtFhirConnector": "[parameters('ResourceIdentityServiceType')]"
+        "IomtFhirConnector": "[variables('iomt_fhir_connector_name')]",
+        "IomtFhirVersion": "[parameters('FhirVersion')]"
       },
       "dependsOn": [
         "[variables('app_service_resource_id')]"
@@ -773,88 +769,12 @@
           "enabled": true
         }
       }
-    },
-    {
-      "type": "Microsoft.KeyVault/vaults/secrets",
-      "apiVersion": "2016-10-01",
-      "name": "[concat(variables('key_vault_name'), '/fhirserver-authority')]",
-      "location": "[parameters('ResourceLocation')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.KeyVault/vaults', variables('key_vault_name'))]"
-      ],
-      "properties": {
-        "contentType": "text/plain",
-        "value": "[parameters('FhirServiceAuthority')]",
-        "attributes": {
-          "enabled": true
-        }
-      }
-    },
-    {
-      "type": "Microsoft.KeyVault/vaults/secrets",
-      "apiVersion": "2016-10-01",
-      "name": "[concat(variables('key_vault_name'), '/fhirserver-clientid')]",
-      "location": "[parameters('ResourceLocation')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.KeyVault/vaults', variables('key_vault_name'))]"
-      ],
-      "properties": {
-        "contentType": "text/plain",
-        "value": "[parameters('FhirServiceClientId')]",
-        "attributes": {
-          "enabled": true
-        }
-      }
-    },
-    {
-      "type": "Microsoft.KeyVault/vaults/secrets",
-      "apiVersion": "2016-10-01",
-      "name": "[concat(variables('key_vault_name'), '/fhirserver-clientsecret')]",
-      "location": "[parameters('ResourceLocation')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.KeyVault/vaults', variables('key_vault_name'))]"
-      ],
-      "properties": {
-        "contentType": "text/plain",
-        "value": "[parameters('FhirServiceClientSecret')]",
-        "attributes": {
-          "enabled": true
-        }
-      }
-    },
-    {
-      "type": "Microsoft.KeyVault/vaults/secrets",
-      "apiVersion": "2016-10-01",
-      "name": "[concat(variables('key_vault_name'), '/fhirserver-resource')]",
-      "location": "[parameters('ResourceLocation')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.KeyVault/vaults', variables('key_vault_name'))]"
-      ],
-      "properties": {
-        "contentType": "text/plain",
-        "value": "[parameters('FhirServiceResource')]",
-        "attributes": {
-          "enabled": true
-        }
-      }
-    },
-    {
-      "type": "Microsoft.KeyVault/vaults/secrets",
-      "apiVersion": "2016-10-01",
-      "name": "[concat(variables('key_vault_name'), '/fhirserver-url')]",
-      "location": "[parameters('ResourceLocation')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.KeyVault/vaults', variables('key_vault_name'))]"
-      ],
-      "properties": {
-        "contentType": "text/plain",
-        "value": "[parameters('FhirServiceUrl')]",
-        "attributes": {
-          "enabled": true
-        }
-      }
     }
   ],
   "outputs": {
+    "managedIdentityId": {
+      "type": "string",
+      "value": "[reference(variables('app_service_resource_id'), '2015-08-01', 'Full').Identity.principalId]"
+    }
   }
 }
