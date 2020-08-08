@@ -58,3 +58,8 @@ variable "integrations_table_name" {
   description = "The integrations table name"
   default     = "Integrations"
 }
+
+variable "function_name_provider_update" {
+  description = "The name of the integration provider update function"
+  default     = "IntegrationProviderUpdate"
+}
