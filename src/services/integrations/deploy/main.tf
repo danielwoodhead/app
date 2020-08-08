@@ -3,7 +3,8 @@ terraform {
 }
 
 provider "azurerm" {
-  version = "=1.44.0"
+  version = "=2.22.0"
+  features {}
 }
 
 data "azurerm_app_service_plan" "asp" {
@@ -58,6 +59,9 @@ resource "azurerm_app_service" "as" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE             = false
     Authentication__Authority                       = var.authentication_authority
     Authentication__Audience                        = var.authentication_audience
+    EventGrid__Enabled                              = true
+    EventGrid__TopicEndpoint                        = azurerm_eventgrid_topic.topic.endpoint
+    EventGrid__TopicKey                             = azurerm_eventgrid_topic.topic.primary_access_key
     Fitbit__BaseUrl                                 = var.fitbit_base_url
     KeyVault__Name                                  = var.key_vault_name
     Logging__ApplicationInsights__LogLevel__Default = "Information"
@@ -77,12 +81,14 @@ resource "azurerm_key_vault_access_policy" "api" {
 }
 
 resource "azurerm_function_app" "functions" {
-  name                      = "${var.prefix}-funcs"
-  location                  = var.location
-  resource_group_name       = var.resource_group_name
-  app_service_plan_id       = data.azurerm_app_service_plan.asp.id
-  storage_connection_string = azurerm_storage_account.storage.primary_connection_string
-  version                   = "~3"
+  name                       = "${var.prefix}-funcs"
+  location                   = var.location
+  resource_group_name        = var.resource_group_name
+  app_service_plan_id        = data.azurerm_app_service_plan.asp.id
+  storage_account_name       = azurerm_storage_account.storage.name
+  storage_account_access_key = azurerm_storage_account.storage.primary_access_key
+  os_type                    = "linux"
+  version                    = "~3"
 
   identity {
     type = "SystemAssigned"
@@ -118,4 +124,21 @@ resource "azurerm_key_vault_access_policy" "functions" {
   secret_permissions = [
     "get"
   ]
+}
+
+resource "azurerm_eventgrid_topic" "topic" {
+  name                = "${var.prefix}-event-topic"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_eventgrid_event_subscription" "sub" {
+  name  = "${var.prefix}-provider-update-event-subscription"
+  scope = azurerm_eventgrid_topic.topic.id
+
+  azure_function_endpoint {
+    function_id                       = "${azurerm_function_app.functions.id}/functions/${var.function_name_provider_update}"
+    max_events_per_batch              = 1 # default (added to prevent constant TF changes)
+    preferred_batch_size_in_kilobytes = 64 # default (added to prevent constant TF changes)
+  }
 }

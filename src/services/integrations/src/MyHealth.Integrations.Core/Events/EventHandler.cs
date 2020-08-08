@@ -18,7 +18,6 @@ namespace MyHealth.Integrations.Core.Events
         {
             _eventTypeMapping = new Dictionary<string, Type>()
             {
-                { EventTypes.IntegrationCreated, typeof(IIntegrationCreatedEventHandler) },
                 { EventTypes.IntegrationProviderUpdate, typeof(IIntegrationProviderUpdateEventHandler) }
             };
 
