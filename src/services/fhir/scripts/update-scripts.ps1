@@ -40,4 +40,4 @@ Param(
     }
 }
 
-DownloadFilesFromRepo -Owner "microsoft" -Repository "fhir-server" -Path "samples/templates" -DestinationPath "."
+DownloadFilesFromRepo -Owner "microsoft" -Repository "fhir-server" -Path "samples/templates" -DestinationPath "../deploy/fhir-server"

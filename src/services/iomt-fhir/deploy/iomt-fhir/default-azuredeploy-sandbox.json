@@ -128,6 +128,16 @@
         "description": "The location of the deployed resources."
       }
     },
+    "FhirVersion": {
+      "type": "string",
+      "allowedValues": [
+        "R4"
+      ],
+      "defaultValue": "R4",
+      "metadata": {
+        "description": "The FHIR version used in the connector. It should match the version used in the FHIR service."
+      }
+    },
     "FhirServiceUrl": {
       "type": "string",
       "metadata": {
@@ -158,14 +168,14 @@
         "description": "Client secret of the application for accessing a token."
       }
     },
-    "ResourceIdentityServiceType": {
+    "ResourceIdentityResolutionType": {
       "type": "string",
       "allowedValues": [
-        "R4DeviceAndPatientLookupIdentityService",
-        "R4DeviceAndPatientCreateIdentityService",
-        "R4DeviceAndPatientWithEncounterLookupIdentityService"
+        "Lookup",
+        "Create",
+        "LookupWithEncounter"
       ],
-      "defaultValue": "R4DeviceAndPatientCreateIdentityService",
+      "defaultValue": "Create",
       "metadata": {
         "description": "Configures how patient, device, and other FHIR resource identities are resolved from the ingested data stream."
       }
@@ -214,6 +224,7 @@
   "variables": {
     "app_service_name": "[parameters('ServiceName')]",
     "iot_central_name": "[parameters('ServiceName')]",
+    "fhir_service_kind": "[concat('fhir-', parameters('FhirVersion'))]",
     "fhir_service_name": "[parameters('ServiceName')]",
     "fhir_service_url": "[concat('https://', parameters('ServiceName'),'.azurehealthcareapis.com')]",
     "fhir_service_cosmos_throughput": 1000
@@ -221,7 +232,7 @@
   "resources": [
     {
       "type": "Microsoft.HealthcareApis/services",
-      "kind": "fhir-R4",
+      "kind": "[variables('fhir_service_kind')]",
       "name": "[variables('fhir_service_name')]",
       "apiVersion": "2019-09-16",
       "location": "[parameters('FhirServiceLocation')]",
@@ -262,7 +273,7 @@
       "location": "[parameters('IotCentralLocation')]",
       "apiVersion": "2018-09-01",
       "sku": {
-        "name": "S1"
+        "name": "ST2"
       },
       "properties": {
         "displayName": "[variables('iot_central_name')]",
@@ -307,6 +318,9 @@
           "ResourceLocation": {
             "value": "[parameters('ResourceLocation')]"
           },
+          "FhirVersion": {
+            "value": "[parameters('FhirVersion')]"
+          },
           "FhirServiceUrl": {
             "value": "[parameters('FhirServiceUrl')]"
           },
@@ -322,8 +336,8 @@
           "FhirServiceClientSecret": {
             "value": "[parameters('FhirServiceClientSecret')]"
           },
-          "ResourceIdentityServiceType": {
-            "value": "[parameters('ResourceIdentityServiceType')]"
+          "ResourceIdentityResolutionType": {
+            "value": "[parameters('ResourceIdentityResolutionType')]"
           },
           "DefaultDeviceIdentifierSystem": {
             "value": "[parameters('DefaultDeviceIdentifierSystem')]"
