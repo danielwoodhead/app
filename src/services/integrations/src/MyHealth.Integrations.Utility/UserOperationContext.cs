@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using MyHealth.Integrations.Core.Utility;
 
 namespace MyHealth.Integrations.Utility
 {

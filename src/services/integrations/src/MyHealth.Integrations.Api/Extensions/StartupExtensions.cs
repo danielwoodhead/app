@@ -7,11 +7,7 @@ using MyHealth.Extensions.DependencyInjection;
 using MyHealth.Extensions.Events;
 using MyHealth.Extensions.Events.ApplicationInsights;
 using MyHealth.Extensions.Events.Azure.EventGrid;
-using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Core.Services;
-using MyHealth.Integrations.Core.Utility;
-using MyHealth.Integrations.Data.TableStorage;
-using MyHealth.Integrations.Utility;
 
 namespace MyHealth.Integrations.Api.Extensions
 {
@@ -47,19 +43,12 @@ namespace MyHealth.Integrations.Api.Extensions
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            services.Configure<TableStorageSettings>(configuration.GetSection("TableStorage"));
-            services.AddTransient<IIntegrationService, IntegrationService>();
-            services.AddSingleton<IIntegrationRepository, TableStorageIntegrationsRepository>();
-            services.AddSingleton<IOperationContext, OperationContext>();
-            services.AddScoped<IUserOperationContext, UserOperationContext>();
-
             services.Configure<EventGridSettings>(configuration.GetSection("EventGrid"));
 
+            services.AddTransient<IIntegrationService, IntegrationService>();
             services.AddTransient<IEventPublisher, ApplicationInsightsEventPublisher>();
             services.AddSingleton<IEventPublisher, EventGridEventPublisher>();
             services.AddComposite<IEventPublisher, CompositeEventPublisher>();
-
-            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
             return services;
         }

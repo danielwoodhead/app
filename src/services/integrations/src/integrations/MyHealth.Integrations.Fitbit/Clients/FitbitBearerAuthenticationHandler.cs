@@ -2,8 +2,8 @@
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using MyHealth.Integrations.Core.Utility;
 using MyHealth.Integrations.Fitbit.Services;
-using MyHealth.Integrations.Utility;
 
 namespace MyHealth.Integrations.Fitbit.Clients
 {

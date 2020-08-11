@@ -16,6 +16,9 @@
     <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.Events.Azure.EventGrid\MyHealth.Extensions.Events.Azure.EventGrid.csproj" />
     <ProjectReference Include="..\integrations\MyHealth.Integrations.Fitbit\MyHealth.Integrations.Fitbit.csproj" />
     <ProjectReference Include="..\MyHealth.Integrations.Core\MyHealth.Integrations.Core.csproj" />
+    <ProjectReference Include="..\MyHealth.Integrations.Data.TableStorage\MyHealth.Integrations.Data.TableStorage.csproj" />
+    <ProjectReference Include="..\MyHealth.Integrations.IoMT.EventHub\MyHealth.Integrations.IoMT.EventHub.csproj" />
+    <ProjectReference Include="..\MyHealth.Integrations.Utility\MyHealth.Integrations.Utility.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
