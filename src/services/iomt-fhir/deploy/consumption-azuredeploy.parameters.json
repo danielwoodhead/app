@@ -5,6 +5,12 @@
     "ServiceName": {
       "value": "myhealth-iomt-fhir"
     },
+    "RepositoryUrl": {
+      "value": "https://github.com/danielwoodhead/iomt-fhir"
+    },
+    "RepositoryBranch": {
+      "value": "client_credentials"
+    },
     "ResourceLocation": {
         "value": "UK South"
     },
@@ -12,13 +18,16 @@
         "value": "https://myhealth-fhir.azurewebsites.net"
     },
     "FhirServiceAuthority": {
-      "value": "https://myhealth-identity-sts.azurewebsites.net"
+      "value": "https://myhealth-identity-sts.azurewebsites.net/connect/token"
     },
     "FhirServiceResource": {
         "value": "fhir-api"
     },
     "FhirServiceClientId": {
       "value": "iomt-fhir"
+    },
+    "ResourceIdentityResolutionType": {
+      "value": "Create"
     }
   }
 }

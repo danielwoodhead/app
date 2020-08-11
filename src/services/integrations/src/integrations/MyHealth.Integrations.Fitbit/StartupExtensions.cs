@@ -13,7 +13,7 @@ namespace MyHealth.Integrations.Fitbit
 {
     public static class StartupExtensions
     {
-        public static IServiceCollection AddFitBit(this IServiceCollection services)
+        public static IServiceCollection AddFitBitCore(this IServiceCollection services)
         {
             services.AddOptions<FitbitSettings>()
                 .Configure<IConfiguration>((options, configuration) =>
@@ -27,7 +27,6 @@ namespace MyHealth.Integrations.Fitbit
             services.AddTransient<IFitbitService, FitbitService>();
             services.AddTransient<IIntegrationSystemService, FitbitService>();
             services.AddTransient<IFitbitTokenService, FitbitTokenService>();
-            services.AddTransient<IIntegrationProviderUpdateEventHandler, FitbitProviderUpdateEventHandler>();
             services.AddTransient<FitbitBasicAuthenticationHandler>();
             services.AddTransient<FitbitBearerAuthenticationHandler>();
 
@@ -53,6 +52,13 @@ namespace MyHealth.Integrations.Fitbit
                 {
                     TimeSpan.FromSeconds(1)
                 }));
+
+            return services;
+        }
+
+        public static IServiceCollection AddFitbitEventHandlers(this IServiceCollection services)
+        {
+            services.AddTransient<IIntegrationProviderUpdateEventHandler, FitbitProviderUpdateEventHandler>();
 
             return services;
         }

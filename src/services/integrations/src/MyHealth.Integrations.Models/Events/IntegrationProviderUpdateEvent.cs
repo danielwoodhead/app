@@ -3,9 +3,9 @@ using MyHealth.Extensions.Events;
 
 namespace MyHealth.Integrations.Models.Events
 {
-    public class IntegrationProviderUpdateEvent : DomainEvent<IntegrationEventData>
+    public class IntegrationProviderUpdateEvent : DomainEvent<IntegrationProviderEventData>
     {
-        public IntegrationProviderUpdateEvent(string id, string subject, DateTime eventTime, string dataVersion, IntegrationEventData data)
+        public IntegrationProviderUpdateEvent(string id, string subject, DateTime eventTime, string dataVersion, IntegrationProviderEventData data)
             : base(id, subject, eventTime, dataVersion, data)
         {
         }

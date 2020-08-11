@@ -9,16 +9,16 @@ using MyHealth.Integrations.FunctionApp.Extensions;
 
 namespace MyHealth.Integrations.FunctionApp.Functions
 {
-    public class IntegrationProviderUpdate
+    public class IntegrationEventProcessor
     {
         private readonly IEventHandler _eventHandler;
 
-        public IntegrationProviderUpdate(IEventHandler eventHandler)
+        public IntegrationEventProcessor(IEventHandler eventHandler)
         {
             _eventHandler = eventHandler;
         }
 
-        [FunctionName(nameof(IntegrationProviderUpdate))]
+        [FunctionName(nameof(IntegrationEventProcessor))]
         public async Task Run([EventGridTrigger]EventGridEvent eventGridEvent)
         {
             await _eventHandler.ProcessAsync(eventGridEvent.ToEvent());

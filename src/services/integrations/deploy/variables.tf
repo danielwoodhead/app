@@ -59,7 +59,19 @@ variable "integrations_table_name" {
   default     = "Integrations"
 }
 
-variable "function_name_provider_update" {
-  description = "The name of the integration provider update function"
-  default     = "IntegrationProviderUpdate"
+variable "function_name_integration_event" {
+  description = "The name of the integration event processor function"
+  default     = "IntegrationEventProcessor"
+}
+
+variable "iomt_event_hub_namespace" {
+  description = "The namespace of the IoMT event hub"
+}
+
+variable "iomt_event_hub_name" {
+  description = "The name of the IoMT event hub"
+}
+
+variable "iomt_event_hub_resource_group_name" {
+  description = "The name of the IoMT event hub resource group"
 }

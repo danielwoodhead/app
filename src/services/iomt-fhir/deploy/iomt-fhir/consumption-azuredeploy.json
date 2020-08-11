@@ -213,7 +213,7 @@
         "outputErrorPolicy": "Stop",
         "eventsOutOfOrderMaxDelayInSeconds": 0,
         "eventsLateArrivalMaxDelayInSeconds": 5,
-        "dataLocale": "en-US",
+        "dataLocale": "en-GB",
         "compatibilityLevel": "1.0",
         "inputs": [
           {
@@ -437,7 +437,7 @@
         "IomtFhirVersion": "[parameters('FhirVersion')]"
       },
       "sku": {
-        "name": "Standard_RAGRS",
+        "name": "Standard_LRS",
         "tier": "Standard"
       },
       "kind": "StorageV2",
@@ -583,7 +583,8 @@
             "Template:DeviceContent": "devicecontent.json",
             "Template:FhirMapping": "fhirmapping.json",
             "ResourceIdentity:ResourceIdentityServiceType": "[parameters('ResourceIdentityResolutionType')]",
-            "ResourceIdentity:DefaultDeviceIdentifierSystem": "[parameters('DefaultDeviceIdentifierSystem')]"
+            "ResourceIdentity:DefaultDeviceIdentifierSystem": "[parameters('DefaultDeviceIdentifierSystem')]",
+            "FhirClient:UseClientCredentials": "true"
           }
         },
         {

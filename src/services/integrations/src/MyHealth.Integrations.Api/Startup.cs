@@ -7,7 +7,9 @@ using Microsoft.Extensions.Hosting;
 using MyHealth.Extensions.AspNetCore.Swagger;
 using MyHealth.Extensions.AspNetCore.Versioning;
 using MyHealth.Integrations.Api.Extensions;
+using MyHealth.Integrations.Data.TableStorage;
 using MyHealth.Integrations.Fitbit;
+using MyHealth.Integrations.Utility;
 
 namespace MyHealth.Integrations.Api
 {
@@ -28,11 +30,13 @@ namespace MyHealth.Integrations.Api
             services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddHealthChecks();
             services.AddIntegrationsCore(Configuration);
+            services.AddTableStorage(Configuration);
             services.AddSwagger();
+            services.AddUtility();
             services.AddVersioning();
 
             // providers
-            services.AddFitBit();
+            services.AddFitBitCore();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

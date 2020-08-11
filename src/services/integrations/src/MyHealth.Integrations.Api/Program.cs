@@ -26,6 +26,7 @@ namespace MyHealth.Integrations.Api
                         new KeyVaultClient.AuthenticationCallback(
                             azureServiceTokenProvider.KeyVaultTokenCallback));
 
+                    // TODO: replace with Azure.Extensions.AspNetCore.Configuration.Secrets
                     config.AddAzureKeyVault(
                         $"https://{builtConfig["KeyVault:Name"]}.vault.azure.net/",
                         keyVaultClient,

@@ -1,0 +1,22 @@
+{
+  "templateType": "CollectionContent",
+  "template": [
+    {
+      "templateType": "JsonPathContent",
+      "template": {
+        "typeName": "weight",
+        "typeMatchExpression": "$..[?(@weight)]",
+        "deviceIdExpression": "$.deviceId",
+        "patientIdExpression": "$.patientId",
+        "timestampExpression": "$.measurementDateTime",
+        "values": [
+          {
+            "required": "true",
+            "valueExpression": "$.weight",
+            "valueName": "weight"
+          }
+        ]
+      }
+    }
+  ]
+}

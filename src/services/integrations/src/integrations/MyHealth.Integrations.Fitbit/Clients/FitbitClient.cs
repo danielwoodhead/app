@@ -18,9 +18,9 @@ namespace MyHealth.Integrations.Fitbit.Clients
 
         public async Task<AddFitbitSubscriptionResponse> AddSubscriptionAsync(string subscriptionId, string accessToken, string collectionPath = null, string subscriberId = null)
         {
-            string url = BuildAddSubscriptionUrl(subscriptionId, collectionPath);
-            var request = new HttpRequestMessage(HttpMethod.Post, url);
+            string url = BuildSubscriptionUrl(subscriptionId, collectionPath);
 
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             if (subscriberId != null)
@@ -34,7 +34,7 @@ namespace MyHealth.Integrations.Fitbit.Clients
 
         public async Task DeleteSubscriptionAsync(string subscriptionId, string collectionPath = null, string subscriberId = null)
         {
-            string url = BuildAddSubscriptionUrl(subscriptionId, collectionPath);
+            string url = BuildSubscriptionUrl(subscriptionId, collectionPath);
             var request = new HttpRequestMessage(HttpMethod.Delete, url);
 
             if (subscriberId != null)
@@ -44,7 +44,20 @@ namespace MyHealth.Integrations.Fitbit.Clients
             response.EnsureSuccessStatusCode();
         }
 
-        private static string BuildAddSubscriptionUrl(string subscriptionId, string collectionPath)
+        public async Task<ResourceContainer> GetResourceAsync(string ownerType, string ownerId, string collectionType, DateTime date, string accessToken)
+        {
+            string url = BuildResourceUrl(ownerType, ownerId, collectionType, date);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            HttpResponseMessage response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<ResourceContainer>();
+        }
+
+        private static string BuildSubscriptionUrl(string subscriptionId, string collectionPath)
         {
             string url = "1/user/-";
 
@@ -54,6 +67,11 @@ namespace MyHealth.Integrations.Fitbit.Clients
             url += $"/apiSubscriptions/{subscriptionId}.json";
 
             return url;
+        }
+
+        private static string BuildResourceUrl(string ownerType, string ownerId, string collectionType, DateTime date)
+        {
+            return $"1/{ownerType}/{ownerId}/{collectionType}/date/{date:yyyy-MM-dd}.json";
         }
     }
 }

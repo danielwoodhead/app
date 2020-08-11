@@ -13,7 +13,6 @@ using MyHealth.Integrations.Fitbit.Clients;
 using MyHealth.Integrations.Fitbit.Models;
 using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Events;
-using MyHealth.Integrations.Utility;
 
 namespace MyHealth.Integrations.Fitbit.Services
 {
@@ -79,13 +78,14 @@ namespace MyHealth.Integrations.Fitbit.Services
                     subject: update.SubscriptionId,
                     eventTime: _dateTimeProvider.UtcNow,
                     dataVersion: EventConstants.EventDataVersion,
-                    data: new IntegrationEventData
+                    data: new IntegrationProviderEventData
                     {
                         OperationId = _operationContext.OperationId,
                         SourceSystem = EventConstants.IntegrationsApi,
                         SubjectSystem = EventConstants.MyHealth,
                         Provider = Provider.Fitbit,
-                        UserId = update.SubscriptionId
+                        UserId = update.SubscriptionId,
+                        ProviderData = update
                     })));
         }
 

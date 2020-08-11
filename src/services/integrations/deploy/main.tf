@@ -27,6 +27,11 @@ data "azurerm_key_vault" "kv" {
   resource_group_name = var.resource_group_name
 }
 
+data "azurerm_eventhub_namespace" "iomt" {
+  name                = var.iomt_event_hub_namespace
+  resource_group_name = var.iomt_event_hub_resource_group_name
+}
+
 resource "azurerm_storage_account" "storage" {
   name                     = replace("${var.prefix}00", "-", "")
   resource_group_name      = var.resource_group_name
@@ -104,6 +109,11 @@ resource "azurerm_function_app" "functions" {
     Authentication__Authority           = var.authentication_authority
     Authentication__Audience            = var.authentication_audience
     Fitbit__BaseUrl                     = var.fitbit_base_url
+    Fitbit__VerificationCode            = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--VerificationCode/cfedf313627c40aca593ed84ef41e0ad)"
+    Fitbit__ClientId                    = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--ClientId/45c7f90d003845af98100be07c951c3d)"
+    Fitbit__ClientSecret                = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--ClientSecret/d425992ab34546029d8cffb83be6b887)"
+    IoMT__EventHub__ConnectionString    = data.azurerm_eventhub_namespace.iomt.default_primary_connection_string
+    IoMT__EventHub__Name                = var.iomt_event_hub_name
     KeyVault__Name                      = var.key_vault_name
     TableStorage__ConnectionString      = azurerm_storage_account.storage.primary_connection_string
     TableStorage__IntegrationsTableName = var.integrations_table_name
@@ -137,7 +147,7 @@ resource "azurerm_eventgrid_event_subscription" "sub" {
   scope = azurerm_eventgrid_topic.topic.id
 
   azure_function_endpoint {
-    function_id                       = "${azurerm_function_app.functions.id}/functions/${var.function_name_provider_update}"
+    function_id                       = "${azurerm_function_app.functions.id}/functions/${var.function_name_integration_event}"
     max_events_per_batch              = 1 # default (added to prevent constant TF changes)
     preferred_batch_size_in_kilobytes = 64 # default (added to prevent constant TF changes)
   }

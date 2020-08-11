@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using MyHealth.Extensions.Events;
 using MyHealth.Integrations.Core.Events.Handlers;
 using MyHealth.Integrations.Models.Events;
@@ -13,8 +14,9 @@ namespace MyHealth.Integrations.Core.Events
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly Dictionary<string, Type> _eventTypeMapping;
+        private readonly ILogger<EventHandler> _logger;
 
-        public EventHandler(IServiceProvider serviceProvider)
+        public EventHandler(IServiceProvider serviceProvider, ILogger<EventHandler> logger)
         {
             _eventTypeMapping = new Dictionary<string, Type>()
             {
@@ -22,6 +24,7 @@ namespace MyHealth.Integrations.Core.Events
             };
 
             _serviceProvider = serviceProvider;
+            _logger = logger;
         }
 
         public async Task ProcessAsync(IEvent @event)
@@ -31,9 +34,10 @@ namespace MyHealth.Integrations.Core.Events
                 throw new ArgumentNullException(nameof(@event));
             }
 
-            if (!_eventTypeMapping.TryGetValue(@event.EventType, out var eventHandlerType))
+            if (!_eventTypeMapping.TryGetValue(@event.EventType, out Type eventHandlerType))
             {
-                throw new InvalidOperationException($"No event handler interfaces are defined for event type {@event.EventType}");
+                _logger.LogInformation($"Event type {@event.EventType} received for subject {@event.Subject} - no event handler interface defined.");
+                return;
             }
 
             var data = (IntegrationEventData)@event.Data;
@@ -42,7 +46,8 @@ namespace MyHealth.Integrations.Core.Events
 
             if (handlers is null || !handlers.Any())
             {
-                throw new InvalidOperationException($"No event handler could be found for provider: {data.Provider} for event type {eventHandlerType.Name}");
+                _logger.LogInformation($"Event type {@event.EventType} received for subject {@event.Subject} - no event handler found for provider {data.Provider}.");
+                return;
             }
 
             foreach (IIntegrationEventHandler handler in handlers)

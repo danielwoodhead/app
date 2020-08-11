@@ -2,6 +2,14 @@
     "IsEncrypted": false,
     "Values": {
         "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-        "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+        "Fitbit:BaseUrl": "",
+        "Fitbit:VerificationCode": "",
+        "Fitbit:ClientId": "",
+        "Fitbit:ClientSecret": "",
+        "IoMT:EventHub:ConnectionString": "",
+        "IoMT:EventHub:Name": "",
+        "TableStorage:ConnectionString": "UseDevelopmentStorage=true",
+        "TableStorage:IntegrationsTableName": "Integrations"
     }
 }

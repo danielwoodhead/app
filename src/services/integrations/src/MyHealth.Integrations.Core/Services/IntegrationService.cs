@@ -5,10 +5,10 @@ using MyHealth.Extensions.Events;
 using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Core.Events;
 using MyHealth.Integrations.Core.Extensions;
+using MyHealth.Integrations.Core.Utility;
 using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Events;
 using MyHealth.Integrations.Models.Response;
-using MyHealth.Integrations.Utility;
 
 namespace MyHealth.Integrations.Core.Services
 {

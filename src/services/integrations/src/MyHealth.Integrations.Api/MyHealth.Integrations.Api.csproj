@@ -29,6 +29,7 @@
     <ProjectReference Include="..\MyHealth.Integrations.Core\MyHealth.Integrations.Core.csproj" />
     <ProjectReference Include="..\MyHealth.Integrations.Data.TableStorage\MyHealth.Integrations.Data.TableStorage.csproj" />
     <ProjectReference Include="..\MyHealth.Integrations.Models\MyHealth.Integrations.Models.csproj" />
+    <ProjectReference Include="..\MyHealth.Integrations.Utility\MyHealth.Integrations.Utility.csproj" />
   </ItemGroup>
 
 </Project>

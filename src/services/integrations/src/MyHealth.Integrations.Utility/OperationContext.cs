@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using MyHealth.Integrations.Core.Utility;
 
 namespace MyHealth.Integrations.Utility
 {

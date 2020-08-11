@@ -5,6 +5,9 @@ COPY ["services/integrations/src/MyHealth.Integrations.FunctionApp/MyHealth.Inte
 COPY ["extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/MyHealth.Extensions.Events.Azure.EventGrid.csproj", "extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/"]
 COPY ["services/integrations/src/MyHealth.Integrations.Core/MyHealth.Integrations.Core.csproj", "services/integrations/src/MyHealth.Integrations.Core/"]
 COPY ["services/integrations/src/integrations/MyHealth.Integrations.Fitbit/MyHealth.Integrations.Fitbit.csproj", "services/integrations/src/integrations/MyHealth.Integrations.Fitbit/"]
+COPY ["services/integrations/src/MyHealth.Integrations.IoMT.EventHub/MyHealth.Integrations.IoMT.EventHub.csproj", "services/integrations/src/MyHealth.Integrations.IoMT.EventHub/"]
+COPY ["services/integrations/src/MyHealth.Integrations.Data.TableStorage/MyHealth.Integrations.Data.TableStorage.csproj", "services/integrations/src/MyHealth.Integrations.Data.TableStorage/"]
+COPY ["services/integrations/src/MyHealth.Integrations.Utility/MyHealth.Integrations.Utility.csproj", "services/integrations/src/MyHealth.Integrations.Utility/"]
 RUN dotnet restore "services/integrations/src/MyHealth.Integrations.FunctionApp/MyHealth.Integrations.FunctionApp.csproj"
 COPY . .
 WORKDIR "/src/services/integrations/src/MyHealth.Integrations.FunctionApp"

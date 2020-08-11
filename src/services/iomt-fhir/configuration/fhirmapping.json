@@ -1,0 +1,26 @@
+{
+  "templateType": "CollectionFhir",
+  "template": [
+    {
+      "templateType": "CodeValueFhir",
+      "template": {
+        "codes": [
+          {
+            "code": "29463-7",
+            "system": "http://loinc.org",
+            "display": "Body weight"
+          }
+        ],
+        "periodInterval": 0,
+        "typeName": "weight",
+        "value": {
+          "unit": "kilogram",
+          "code": "kg",
+          "system": "http://unitsofmeasure.org",
+          "valueName": "weight",
+          "valueType": "Quantity"
+        }
+      }
+    }
+  ]
+}

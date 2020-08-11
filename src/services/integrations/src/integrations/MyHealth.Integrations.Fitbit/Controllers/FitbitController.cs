@@ -11,10 +11,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using MyHealth.Extensions.AspNetCore.Versioning;
 using MyHealth.Integrations.Core.Services;
+using MyHealth.Integrations.Core.Utility;
 using MyHealth.Integrations.Fitbit.Models;
 using MyHealth.Integrations.Fitbit.Services;
 using MyHealth.Integrations.Models;
-using MyHealth.Integrations.Utility;
 
 namespace MyHealth.Integrations.Fitbit.Controllers
 {
@@ -46,7 +46,7 @@ namespace MyHealth.Integrations.Fitbit.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult> CreateFitbitIntegration([FromBody] CreateFitbitIntegrationRequest request, ApiVersion apiVersion)
         {
-            var integration = await _integrationService.CreateIntegrationAsync(
+            Integration integration = await _integrationService.CreateIntegrationAsync(
                 new ProviderRequest
                 {
                     Provider = Provider.Fitbit,
