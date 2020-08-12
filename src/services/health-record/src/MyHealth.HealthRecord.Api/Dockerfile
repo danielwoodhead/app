@@ -7,10 +7,21 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["MyHealth.HealthRecord.Api/MyHealth.HealthRecord.Api.csproj", "MyHealth.HealthRecord.Api/"]
-RUN dotnet restore "MyHealth.HealthRecord.Api/MyHealth.HealthRecord.Api.csproj"
+COPY ["services/health-record/src/MyHealth.HealthRecord.Api/MyHealth.HealthRecord.Api.csproj", "services/health-record/src/MyHealth.HealthRecord.Api/"]
+COPY ["services/health-record/src/MyHealth.HealthRecord.Core/MyHealth.HealthRecord.Core.csproj", "services/health-record/src/MyHealth.HealthRecord.Core/"]
+COPY ["services/health-record/src/MyHealth.HealthRecord.Data.Fhir/MyHealth.HealthRecord.Data.Fhir.csproj", "services/health-record/src/MyHealth.HealthRecord.Data.Fhir/"]
+COPY ["services/health-record/src/MyHealth.HealthRecord.Models/MyHealth.HealthRecord.Models.csproj", "services/health-record/src/MyHealth.HealthRecord.Models/"]
+COPY ["services/health-record/src/MyHealth.HealthRecord.Utility/MyHealth.HealthRecord.Utility.csproj", "services/health-record/src/MyHealth.HealthRecord.Utility/"]
+COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Swagger/MyHealth.Extensions.AspNetCore.Swagger.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Swagger/"]
+COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Versioning/MyHealth.Extensions.AspNetCore.Versioning.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Versioning/"]
+COPY ["extensions/src/MyHealth.Extensions.DependencyInjection/MyHealth.Extensions.DependencyInjection.csproj", "extensions/src/MyHealth.Extensions.DependencyInjection/"]
+COPY ["extensions/src/MyHealth.Extensions.Events/MyHealth.Extensions.Events.csproj", "extensions/src/MyHealth.Extensions.Events/"]
+COPY ["extensions/src/MyHealth.Extensions.Events.ApplicationInsights/MyHealth.Extensions.Events.ApplicationInsights.csproj", "extensions/src/MyHealth.Extensions.Events.ApplicationInsights/"]
+COPY ["extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/MyHealth.Extensions.Events.Azure.EventGrid.csproj", "extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/"]
+
+RUN dotnet restore "services/health-record/src/MyHealth.HealthRecord.Api/MyHealth.HealthRecord.Api.csproj"
 COPY . .
-WORKDIR "/src/MyHealth.HealthRecord.Api"
+WORKDIR "/src/services/health-record/src/MyHealth.HealthRecord.Api"
 RUN dotnet build "MyHealth.HealthRecord.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish

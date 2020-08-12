@@ -1,4 +1,4 @@
-﻿using MyHealth.HealthRecord.Models.Events.Base;
+﻿using MyHealth.Extensions.Events;
 
 namespace MyHealth.HealthRecord.Models.Events
 {

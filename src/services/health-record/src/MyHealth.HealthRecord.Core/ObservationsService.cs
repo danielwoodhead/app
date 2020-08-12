@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MyHealth.HealthRecord.Core.Events;
-using MyHealth.HealthRecord.Core.Repository;
+using MyHealth.Extensions.Events;
+using MyHealth.HealthRecord.Core.Data;
 using MyHealth.HealthRecord.Models;
 using MyHealth.HealthRecord.Models.Events;
 using MyHealth.HealthRecord.Models.Requests;

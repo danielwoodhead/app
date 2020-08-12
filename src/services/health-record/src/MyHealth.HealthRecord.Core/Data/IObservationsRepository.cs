@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MyHealth.HealthRecord.Models;
 using MyHealth.HealthRecord.Models.Requests;
 
-namespace MyHealth.HealthRecord.Core.Repository
+namespace MyHealth.HealthRecord.Core.Data
 {
     public interface IObservationsRepository
     {

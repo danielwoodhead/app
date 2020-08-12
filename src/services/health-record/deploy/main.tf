@@ -3,7 +3,8 @@ terraform {
 }
 
 provider "azurerm" {
-  version = "=1.44.0"
+  version = "=2.22.0"
+  features {}
 }
 
 data "azurerm_app_service_plan" "asp" {

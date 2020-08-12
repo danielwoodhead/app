@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Hl7.Fhir.Rest;
-using MyHealth.HealthRecord.Core.Repository;
+using MyHealth.HealthRecord.Core.Data;
 using MyHealth.HealthRecord.Data.Fhir.Base;
 using MyHealth.HealthRecord.Models;
 using MyHealth.HealthRecord.Models.Requests;
@@ -66,7 +66,7 @@ namespace MyHealth.HealthRecord.Data.Fhir
             return new Observation
             {
                 Id = observation.Id,
-                Content = ((FHIR.FhirString)observation.Value).Value
+                Value = ((FHIR.FhirString)observation.Value).Value
             };
         }
 
@@ -93,7 +93,7 @@ namespace MyHealth.HealthRecord.Data.Fhir
             return new Observation
             {
                 Id = observation.Id,
-                Content = ((FHIR.FhirString)observation.Value).Value
+                Value = ((FHIR.FhirString)observation.Value).Value
             };
         }
 
@@ -105,11 +105,41 @@ namespace MyHealth.HealthRecord.Data.Fhir
 
             return result.Entry
                 .Select(e => (FHIR.Observation)e.Resource)
-                .Select(o => new Observation
-                {
-                    Id = o.Id,
-                    Content = ((FHIR.FhirString)o.Value).Value
-                });
+                .Select(ConvertObservation);
+        }
+
+        private Observation ConvertObservation(FHIR.Observation observation)
+        {
+            var result = new Observation
+            {
+                Id = observation.Id,
+                Text = observation.Code.Text
+            };
+
+            if (observation.Effective is FHIR.Period periodValue)
+            {
+                result.DateTime = periodValue.StartElement.ToDateTimeOffset();
+            }
+            else
+            {
+                throw new ArgumentException($"Unsupported FHIR date type {observation.Effective.GetType().Name}.");
+            }
+
+            if (observation.Value is FHIR.FhirString stringValue)
+            {
+                result.Value = stringValue.Value;
+            }
+            else if (observation.Value is FHIR.Quantity quantityValue)
+            {
+                result.Value = quantityValue.Value.ToString();
+                result.Unit = quantityValue.Unit;
+            }
+            else
+            {
+                throw new ArgumentException($"Unsupported FHIR value type {observation.Value.GetType().Name}.");
+            }
+
+            return result;
         }
 
         public async Task<Observation> UpdateObservationAsync(string id, UpdateObservationRequest request)
@@ -126,7 +156,7 @@ namespace MyHealth.HealthRecord.Data.Fhir
             return new Observation
             {
                 Id = updatedObservation.Id,
-                Content = ((FHIR.FhirString)observation.Value).Value
+                Value = ((FHIR.FhirString)observation.Value).Value
             };
         }
     }
