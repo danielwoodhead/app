@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>7b50ef4c-1c72-4d31-964d-0b173461398f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,13 +18,17 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Swagger\MyHealth.Extensions.AspNetCore.Swagger.csproj" />
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Versioning\MyHealth.Extensions.AspNetCore.Versioning.csproj" />
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.DependencyInjection\MyHealth.Extensions.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.Events.ApplicationInsights\MyHealth.Extensions.Events.ApplicationInsights.csproj" />
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.Events.Azure.EventGrid\MyHealth.Extensions.Events.Azure.EventGrid.csproj" />
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.Events\MyHealth.Extensions.Events.csproj" />
     <ProjectReference Include="..\MyHealth.HealthRecord.Core\MyHealth.HealthRecord.Core.csproj" />
     <ProjectReference Include="..\MyHealth.HealthRecord.Data.Fhir\MyHealth.HealthRecord.Data.Fhir.csproj" />
-    <ProjectReference Include="..\MyHealth.HealthRecord.Events\MyHealth.HealthRecord.Events.csproj" />
     <ProjectReference Include="..\MyHealth.HealthRecord.Models\MyHealth.HealthRecord.Models.csproj" />
   </ItemGroup>
 

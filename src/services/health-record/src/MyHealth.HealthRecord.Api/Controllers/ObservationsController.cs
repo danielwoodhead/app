@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MyHealth.HealthRecord.Api.Extensions;
+using MyHealth.Extensions.AspNetCore.Versioning;
 using MyHealth.HealthRecord.Core;
 using MyHealth.HealthRecord.Models;
 using MyHealth.HealthRecord.Models.Requests;

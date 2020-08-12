@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.Events\MyHealth.Extensions.Events.csproj" />
     <ProjectReference Include="..\MyHealth.HealthRecord.Models\MyHealth.HealthRecord.Models.csproj" />
     <ProjectReference Include="..\MyHealth.HealthRecord.Utility\MyHealth.HealthRecord.Utility.csproj" />
   </ItemGroup>

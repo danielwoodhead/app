@@ -1,21 +1,20 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MyHealth.HealthRecord.Api.Extensions;
-using MyHealth.HealthRecord.Api.Middleware;
-using MyHealth.HealthRecord.Api.Swagger;
 using MyHealth.HealthRecord.Core;
-using MyHealth.HealthRecord.Core.Events;
-using MyHealth.HealthRecord.Core.Repository;
-using MyHealth.HealthRecord.Events.ApplicationInsights;
-using MyHealth.HealthRecord.Events.EventGrid;
+using MyHealth.HealthRecord.Core.Data;
 using MyHealth.HealthRecord.Data.Fhir;
 using MyHealth.HealthRecord.Data.Fhir.Base;
 using MyHealth.HealthRecord.Utility;
+using MyHealth.Extensions.AspNetCore.Swagger;
+using MyHealth.Extensions.DependencyInjection;
+using MyHealth.Extensions.Events;
+using MyHealth.Extensions.Events.Azure.EventGrid;
+using MyHealth.Extensions.Events.ApplicationInsights;
+using MyHealth.Extensions.AspNetCore.Versioning;
 
 namespace MyHealth.HealthRecord.Api
 {
@@ -35,19 +34,12 @@ namespace MyHealth.HealthRecord.Api
         {
             services.AddApplicationInsightsTelemetry();
             services.AddControllers();
-            services.AddApiVersioning(options =>
-            {
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                options.ReportApiVersions = true;
-            });
+            services.AddVersioning();
             services.AddHealthChecks();
-            services.AddVersionedApiExplorer(options =>
+            services.AddVersionAwareSwagger(options =>
             {
-                options.GroupNameFormat = "'v'VVV";
-                options.SubstituteApiVersionInUrl = true;
+                options.ApiName = "MyHealth Health Record API";
             });
-            services.AddVersionAwareSwagger();
 
             // prevent mapping of 'sub' claim
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
@@ -67,9 +59,7 @@ namespace MyHealth.HealthRecord.Api
             services.AddTransient<IObservationsRepository, FhirObservationsRepository>();
 
             services.Configure<EventGridSettings>(Configuration.GetSection("EventGridSettings"));
-            if (Configuration.GetSection("EventGridSettings").GetValue("Enabled", defaultValue: false))
-                services.AddSingleton<IEventPublisher, EventGridEventPublisher>();
-
+            services.AddSingleton<IEventPublisher, EventGridEventPublisher>();
             services.AddTransient<IEventPublisher, ApplicationInsightsEventPublisher>();
             services.AddComposite<IEventPublisher, CompositeEventPublisher>();
         }
@@ -93,7 +83,6 @@ namespace MyHealth.HealthRecord.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseMiddleware<OperationContextMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
