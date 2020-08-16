@@ -10,6 +10,7 @@ using MyHealth.Identity.Admin.EntityFramework.Shared.Entities.Identity;
 using MyHealth.Identity.STS.Identity.Configuration;
 using MyHealth.Identity.STS.Identity.Configuration.Constants;
 using MyHealth.Identity.STS.Identity.Configuration.Interfaces;
+using MyHealth.Identity.STS.Identity.ExtensionGrants;
 using MyHealth.Identity.STS.Identity.Helpers;
 
 namespace MyHealth.Identity.STS.Identity
@@ -86,7 +87,8 @@ namespace MyHealth.Identity.STS.Identity
         public virtual void RegisterAuthentication(IServiceCollection services)
         {
             services.AddAuthenticationServices<AdminIdentityDbContext, UserIdentity, UserIdentityRole>(Configuration);
-            services.AddIdentityServer<IdentityServerConfigurationDbContext, IdentityServerPersistedGrantDbContext, UserIdentity>(Configuration);
+            services.AddIdentityServer<IdentityServerConfigurationDbContext, IdentityServerPersistedGrantDbContext, UserIdentity>(Configuration)
+                .AddExtensionGrantValidator<DelegationGrantValidator>();
         }
 
         public virtual void RegisterAuthorization(IServiceCollection services)
