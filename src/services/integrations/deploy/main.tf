@@ -106,8 +106,6 @@ resource "azurerm_function_app" "functions" {
     DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.cr.admin_password
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     FUNCTIONS_WORKER_RUNTIME            = "dotnet"
-    Authentication__Authority           = var.authentication_authority
-    Authentication__Audience            = var.authentication_audience
     Fitbit__BaseUrl                     = var.fitbit_base_url
     Fitbit__VerificationCode            = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--VerificationCode/cfedf313627c40aca593ed84ef41e0ad)"
     Fitbit__ClientId                    = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--ClientId/45c7f90d003845af98100be07c951c3d)"

@@ -27,7 +27,7 @@ namespace MyHealth.Integrations.FunctionApp
             builder.Services.AddIoMTEventHub(configuration);
             builder.Services.AddTableStorage(configuration);
             builder.Services.AddUtility();
-            builder.Services.AddFitBitCore();
+            builder.Services.AddFitBitCore(configuration);
             builder.Services.AddFitbitEventHandlers();
         }
     }

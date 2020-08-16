@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -13,45 +14,16 @@ namespace MyHealth.Integrations.Fitbit
 {
     public static class StartupExtensions
     {
-        public static IServiceCollection AddFitBitCore(this IServiceCollection services)
+        public static IServiceCollection AddFitBitCore(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddOptions<FitbitSettings>()
-                .Configure<IConfiguration>((options, configuration) =>
-                {
-                    options.BaseUrl = configuration["Fitbit:BaseUrl"];
-                    options.VerificationCode = configuration["Fitbit:VerificationCode"];
-                    options.ClientId = configuration["Fitbit:ClientId"];
-                    options.ClientSecret = configuration["Fitbit:ClientSecret"];
-                });
-
+            services.Configure<FitbitSettings>(configuration.GetSection("Fitbit"));
             services.AddTransient<IFitbitService, FitbitService>();
             services.AddTransient<IIntegrationSystemService, FitbitService>();
             services.AddTransient<IFitbitTokenService, FitbitTokenService>();
             services.AddTransient<FitbitBasicAuthenticationHandler>();
             services.AddTransient<FitbitBearerAuthenticationHandler>();
-
-            services
-                .AddHttpClient<IFitbitClient, FitbitClient>((s, client) =>
-                {
-                    var settings = s.GetService<IOptions<FitbitSettings>>();
-                    client.BaseAddress = new Uri(settings.Value.BaseUrl);
-                })
-                .AddHttpMessageHandler<FitbitBearerAuthenticationHandler>()
-                .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
-                {
-                    TimeSpan.FromSeconds(1)
-                }));
-            services
-                .AddHttpClient<IFitbitAuthenticationClient, FitbitAuthenticationClient>((s, client) =>
-                {
-                    var settings = s.GetService<IOptions<FitbitSettings>>();
-                    client.BaseAddress = new Uri(settings.Value.BaseUrl);
-                })
-                .AddHttpMessageHandler<FitbitBasicAuthenticationHandler>()
-                .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
-                {
-                    TimeSpan.FromSeconds(1)
-                }));
+            services.AddFitbitClient<IFitbitClient, FitbitClient, FitbitBearerAuthenticationHandler>();
+            services.AddFitbitClient<IFitbitAuthenticationClient, FitbitAuthenticationClient, FitbitBasicAuthenticationHandler>();
 
             return services;
         }
@@ -59,6 +31,26 @@ namespace MyHealth.Integrations.Fitbit
         public static IServiceCollection AddFitbitEventHandlers(this IServiceCollection services)
         {
             services.AddTransient<IIntegrationProviderUpdateEventHandler, FitbitProviderUpdateEventHandler>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddFitbitClient<TClient, TImplementation, THandler>(this IServiceCollection services)
+            where TClient : class
+            where TImplementation : class, TClient
+            where THandler : DelegatingHandler
+        {
+            services
+                .AddHttpClient<TClient, TImplementation>((s, client) =>
+                {
+                    var settings = s.GetService<IOptions<FitbitSettings>>();
+                    client.BaseAddress = new Uri(settings.Value.BaseUrl);
+                })
+                .AddHttpMessageHandler<THandler>()
+                .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
+                {
+                    TimeSpan.FromSeconds(1)
+                }));
 
             return services;
         }

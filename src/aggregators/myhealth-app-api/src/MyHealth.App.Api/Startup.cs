@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyHealth.App.Api.Core.Authentication;
+using MyHealth.App.Api.Core.Settings;
+using MyHealth.App.Api.Extensions;
+using MyHealth.App.Api.Identity;
+using MyHealth.App.Api.Integrations;
 using MyHealth.Extensions.AspNetCore.Swagger;
 using MyHealth.Extensions.AspNetCore.Versioning;
-using MyHealth.Integrations.Api.Extensions;
-using MyHealth.Integrations.Data.TableStorage;
-using MyHealth.Integrations.Fitbit;
-using MyHealth.Integrations.Utility;
 
-namespace MyHealth.Integrations.Api
+namespace MyHealth.App.Api
 {
     public class Startup
     {
@@ -28,48 +29,37 @@ namespace MyHealth.Integrations.Api
             services.AddApplicationInsightsTelemetry();
             services.AddAuth(Configuration);
             services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            services.AddDistributedMemoryCache();
             services.AddHealthChecks();
-            services.AddIntegrationsCore(Configuration);
-            services.AddTableStorage(Configuration);
             services.AddSwagger();
-            services.AddUtility();
             services.AddVersioning();
 
-            // providers
-            services.AddFitBitCore(Configuration);
+            services.Configure<MyHealthAppApiSettings>(Configuration.GetSection("MyHealthAppApi"));
+            services.AddTransient<DelegationAuthenticationHandler>();
+
+            // apis
+            services.AddIdentityApi(Configuration);
+            services.AddIntegrationsApi(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Standard ASP.NET Core pattern")]
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseCors(builder =>
-                {
-                    builder
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                });
             }
 
             app.UseHttpsRedirection();
-
-            if (!env.IsProduction())
-            {
-                app.UseVersionAwareSwagger();
-            }
-
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseVersionAwareSwagger();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
     }
