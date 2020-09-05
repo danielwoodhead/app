@@ -10,3 +10,5 @@ identity_api_token_endpoint = "https://myhealth-identity-sts.azurewebsites.net/c
 integrations_api_base_address = "https://myhealth-integrations-api.azurewebsites.net/v1/"
 key_vault_name = "myhealth-keyvault"
 my_health_app_api_client_scopes = "myhealth-healthrecord-api myhealth-integrations-api"
+front_end_origin = "https://myhealthwebstorage.z33.web.core.windows.net"
+front_end_origin_local = "https://localhost:44315" 

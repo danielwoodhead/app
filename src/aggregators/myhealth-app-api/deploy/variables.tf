@@ -55,3 +55,11 @@ variable "integrations_api_base_address" {
 variable "my_health_app_api_client_scopes" {
   description = "The MyHealth App API client scopes"
 }
+
+variable "front_end_origin" {
+  description = "Origin of front-end application"
+}
+
+variable "front_end_origin_local" {
+  description = "Origin of front-end application for local development"
+}

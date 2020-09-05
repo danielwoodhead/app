@@ -1,9 +1,9 @@
 ﻿@page "/integrations"
 @attribute [Authorize]
-@inject IFitbitClient FitbitClient;
-@inject IIntegrationsClient IntegrationsClient
+@inject IAppApiClient AppApiClient
 @inject NavigationManager NavigationManager
-@using MyHealth.Web.Core.Integrations
+@using MyHealth.Web.Core.AppApi
+@using MyHealth.Web.Core.Models
 
 <h3>Integrations</h3>
 
@@ -30,18 +30,18 @@ else
 
     private async Task GetIntegrationsAsync()
     {
-        _integrations = (await IntegrationsClient.GetAllIntegrationsAsync()).Integrations;
+        _integrations = (await AppApiClient.GetAllIntegrationsAsync()).Integrations;
     }
 
-    private void AddFitbitIntegration()
+    private async Task AddFitbitIntegration()
     {
-        string fitbitAuthenticationUri = FitbitClient.GetAuthenticationUri(NavigationManager.BaseUri);
+        string fitbitAuthenticationUri = await AppApiClient.GetFitbitAuthenticationUri($"{NavigationManager.BaseUri}integrations/fitbitcallback");
         NavigationManager.NavigateTo(fitbitAuthenticationUri);
     }
 
     private async Task DeleteFitbitIntegration()
     {
-        await IntegrationsClient.DeleteIntegrationAsync(FitbitIntegrationId);
+        await AppApiClient.DeleteIntegrationAsync(FitbitIntegrationId);
         await GetIntegrationsAsync();
     }
 }

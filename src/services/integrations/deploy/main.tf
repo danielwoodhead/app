@@ -68,6 +68,7 @@ resource "azurerm_app_service" "as" {
     EventGrid__TopicEndpoint                        = azurerm_eventgrid_topic.topic.endpoint
     EventGrid__TopicKey                             = azurerm_eventgrid_topic.topic.primary_access_key
     Fitbit__BaseUrl                                 = var.fitbit_base_url
+    Fitbit__AuthenticationUrl                       = var.fitbit_authentication_url
     KeyVault__Name                                  = var.key_vault_name
     Logging__ApplicationInsights__LogLevel__Default = "Information"
     TableStorage__ConnectionString                  = azurerm_storage_account.storage.primary_connection_string

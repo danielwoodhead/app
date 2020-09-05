@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace MyHealth.App.Api.Integrations.Models
+namespace MyHealth.Web.Core.Models
 {
-    public class CreateFitbitIntegrationRequest
+    public class AuthorizationCodeRequest
     {
         public string Code { get; set; }
         public Uri RedirectUri { get; set; }

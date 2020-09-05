@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyHealth.Web.Core.Integrations;
+using MyHealth.Web.Core.AppApi;
 
 namespace MyHealth.Web.App
 {
@@ -19,19 +19,17 @@ namespace MyHealth.Web.App
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             builder.Services
-                .AddHttpClient<IIntegrationsClient, IntegrationsClient>(client =>
+                .AddHttpClient<IAppApiClient, AppApiClient>(client =>
                 {
-                    client.BaseAddress = new Uri(builder.Configuration["Integrations:BaseUrl"]);
+                    client.BaseAddress = new Uri(builder.Configuration["AppApi:BaseUrl"]);
                 })
                 .AddHttpMessageHandler(sp =>
                 {
                     return sp.GetService<AuthorizationMessageHandler>()
                         .ConfigureHandler(
-                            authorizedUrls: new[] { builder.Configuration["Integrations:BaseUrl"] },
-                            scopes: new[] { "integrations-api" });
+                            authorizedUrls: new[] { builder.Configuration["AppApi:BaseUrl"] },
+                            scopes: new[] { "myhealth-app-api" });
                 });
-
-            builder.Services.AddTransient<IFitbitClient, FitbitClient>();
 
             builder.Services.AddOidcAuthentication(options =>
             {

@@ -50,6 +50,11 @@ variable "fitbit_base_url" {
   default     = "https://api.fitbit.com" 
 }
 
+variable "fitbit_authentication_url" {
+  description = "The Fitbit authentication URL"
+  default     = "https://www.fitbit.com/oauth2/authorize" 
+}
+
 variable "key_vault_name" {
   description = "The key vault name"
 }

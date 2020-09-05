@@ -49,6 +49,8 @@ resource "azurerm_app_service" "as" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE             = false
     Authentication__Authority                       = var.authentication_authority
     Authentication__Audience                        = var.authentication_audience
+    Cors__AllowedOrigins__0                         = var.front_end_origin
+    Cors__AllowedOrigins__1                         = var.front_end_origin_local
     HealthRecordApi__BaseAddress                    = var.health_record_api_base_address
     IdentityApi__TokenEndpoint                      = var.identity_api_token_endpoint
     IntegrationsApi__BaseAddress                    = var.integrations_api_base_address

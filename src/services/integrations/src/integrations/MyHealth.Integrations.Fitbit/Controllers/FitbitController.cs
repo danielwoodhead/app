@@ -60,6 +60,15 @@ namespace MyHealth.Integrations.Fitbit.Controllers
                 integration);
         }
 
+        [HttpGet("authenticationUri")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult GetFitbitAuthenticationUri([FromQuery] string redirectUri)
+        {
+            string authenticationUri = _fitbitService.GetAuthenticationUri(redirectUri);
+
+            return Ok(authenticationUri);
+        }
+
         [HttpGet("update")]
         [AllowAnonymous]
         [ApiExplorerSettings(IgnoreApi = true)]

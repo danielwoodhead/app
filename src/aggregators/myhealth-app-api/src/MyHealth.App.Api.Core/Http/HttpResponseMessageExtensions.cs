@@ -25,6 +25,14 @@ namespace MyHealth.App.Api.Core.Http
             }
         }
 
+        public static async Task<ActionResult> ToStringResultAsync(this HttpResponseMessage response)
+        {
+            return new ObjectResult(await response.Content.ReadAsStringAsync())
+            {
+                StatusCode = (int)response.StatusCode
+            };
+        }
+
         public static ActionResult ToResult(this HttpResponseMessage response)
         {
             return new StatusCodeResult((int)response.StatusCode);

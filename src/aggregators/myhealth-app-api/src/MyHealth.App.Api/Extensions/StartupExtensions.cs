@@ -11,7 +11,7 @@ namespace MyHealth.App.Api.Extensions
         {
             services.AddVersionAwareSwagger(options =>
             {
-                options.ApiName = "MyHealth Integrations API";
+                options.ApiName = "MyHealth App API";
             });
 
             return services;

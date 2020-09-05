@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.WebUtilities;
 using MyHealth.App.Api.Core.Http;
 using MyHealth.App.Api.Integrations.Models;
 
@@ -12,11 +13,6 @@ namespace MyHealth.App.Api.Integrations.Clients
         public IntegrationsClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
-        }
-
-        public async Task<HttpResponseMessage> CreateFitbitIntegrationAsync(CreateFitbitIntegrationRequest request)
-        {
-            return await _httpClient.SendAsync(HttpMethod.Post, Endpoints.FitbitIntegrations, request);
         }
 
         public async Task<HttpResponseMessage> DeleteIntegrationAsync(string id)
@@ -34,11 +30,31 @@ namespace MyHealth.App.Api.Integrations.Clients
             return await _httpClient.SendAsync(HttpMethod.Get, Endpoints.SearchIntegrations);
         }
 
+        #region Fitbit
+
+        public async Task<HttpResponseMessage> CreateFitbitIntegrationAsync(CreateFitbitIntegrationRequest request)
+        {
+            return await _httpClient.SendAsync(HttpMethod.Post, Endpoints.FitbitIntegrations, request);
+        }
+
+        public async Task<HttpResponseMessage> GetFitbitAuthenticationUri(string redirectUri)
+        {
+            return await _httpClient.SendAsync(HttpMethod.Get, Endpoints.FitbitAuthenticationUri(redirectUri));
+        }
+
+        #endregion Fitbit
+
         private class Endpoints
         {
-            public const string FitbitIntegrations = "integrations/fitbit";
             public const string SearchIntegrations = "integrations";
             public static string Integration(string id) => $"integrations/{id}";
+
+            #region Fitbit
+
+            public const string FitbitIntegrations = "integrations/fitbit";
+            public static string FitbitAuthenticationUri(string redirectUri) => QueryHelpers.AddQueryString("integrations/fitbit/authenticationUri", "redirectUri", redirectUri);
+
+            #endregion Fitbit
         }
     }
 }
