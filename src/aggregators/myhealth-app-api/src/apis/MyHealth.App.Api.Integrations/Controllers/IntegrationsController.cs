@@ -42,12 +42,20 @@ namespace MyHealth.App.Api.Integrations.Controllers
             return response.ToResult();
         }
 
-        [HttpPost]
+        [HttpPost("fitbit")]
         public async Task<ActionResult> CreateFitbitIntegration([FromBody] CreateFitbitIntegrationRequest request)
         {
             using HttpResponseMessage response = await _client.CreateFitbitIntegrationAsync(request);
 
             return response.ToResult();
+        }
+
+        [HttpGet("fitbit/authenticationUri")]
+        public async Task<ActionResult> GetFitbitAuthenticationUri(string redirectUri)
+        {
+            using HttpResponseMessage response = await _client.GetFitbitAuthenticationUri(redirectUri);
+
+            return await response.ToStringResultAsync();
         }
     }
 }

@@ -1,4 +1,10 @@
 az account set --subscription bc22730d-89ef-4562-9a78-dfb790976b9a
+
+# customize dockerignore to minimise the build context size
+$dockerIgnorePath = "../../../.dockerignore"
+$dockerIgnoreContent = "**`n!extensions`n!services/integrations`n**/.terraform`n**/.vs`n**/.bin`n**/.obj"
+$dockerIgnoreContent | Set-Content $dockerIgnorePath
+
 az acr build --registry myhealthregistry --image "myhealth/integrations.api`:latest" --file ../src/MyHealth.Integrations.Api/Dockerfile ../../..
 az acr build --registry myhealthregistry --image "myhealth/integrations.funcs`:latest" --file ../src/MyHealth.Integrations.FunctionApp/Dockerfile ../../..
 terraform init -backend-config="resource_group_name=DansTerraform" -backend-config="storage_account_name=dansterraform" -backend-config="container_name=tfstate" -backend-config="key=dev.integrations.tfstate"

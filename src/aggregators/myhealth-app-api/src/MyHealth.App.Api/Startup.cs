@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,6 +50,14 @@ namespace MyHealth.App.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder =>
+            {
+                builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithOrigins(Configuration.GetSection("Cors").GetSection("AllowedOrigins").Get<string[]>() ?? Array.Empty<string>());
+            });
 
             app.UseHttpsRedirection();
             app.UseRouting();

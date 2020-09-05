@@ -2,7 +2,7 @@ az account set --subscription bc22730d-89ef-4562-9a78-dfb790976b9a
 
 # customize dockerignore to minimise the build context size
 $dockerIgnorePath = "../../../.dockerignore"
-$dockerIgnoreContent = "**`n!aggregators`n!extensions`n**/.vs`n**/.bin`n**/.obj"
+$dockerIgnoreContent = "**`n!aggregators`n!extensions`n**/.terraform`n**/.vs`n**/.bin`n**/.obj"
 $dockerIgnoreContent | Set-Content $dockerIgnorePath
 
 az acr build --registry myhealthregistry --image "myhealth/app.api`:latest" --file ../src/MyHealth.App.Api/Dockerfile ../../..

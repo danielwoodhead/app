@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityModel.Client;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using MyHealth.Extensions.Cryptography;
 using MyHealth.Extensions.Events;
@@ -68,6 +69,19 @@ namespace MyHealth.Integrations.Fitbit.Services
         public async Task DeleteIntegrationAsync(string userId)
         {
             await _fitbitClient.DeleteSubscriptionAsync(subscriptionId: userId);
+        }
+
+        public string GetAuthenticationUri(string redirectUri)
+        {
+            return QueryHelpers.AddQueryString(
+                _fitbitSettings.AuthenticationUrl,
+                new Dictionary<string, string>
+                {
+                    { "response_type", "code" },
+                    { "client_id", _fitbitSettings.ClientId },
+                    { "redirect_uri", redirectUri },
+                    { "scope", "activity nutrition heartrate location nutrition profile settings sleep social weight" }
+                });
         }
 
         public async Task ProcessUpdateNotificationAsync(IEnumerable<FitbitUpdateNotification> request)
