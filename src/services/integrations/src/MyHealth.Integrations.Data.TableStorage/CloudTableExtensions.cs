@@ -37,10 +37,10 @@ namespace MyHealth.Integrations.Data.TableStorage
                 return resolvedEntity;
             };
 
-            var query = new TableQuery<DynamicTableEntity>()
+            TableQuery<DynamicTableEntity> query = new TableQuery<DynamicTableEntity>()
                 .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId));
 
-            var entities = await table.QueryAsync(query, resolver);
+            IEnumerable<TableEntity> entities = await table.QueryAsync(query, resolver);
 
             return entities.OfType<TEntity>();
         }

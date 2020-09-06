@@ -15,10 +15,10 @@ namespace MyHealth.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
 
             var wrappedDescriptors = services.Where(s => s.ServiceType == typeof(TInterface)).ToList();
-            foreach (var descriptor in wrappedDescriptors)
+            foreach (ServiceDescriptor descriptor in wrappedDescriptors)
                 services.Remove(descriptor);
 
-            var objectFactory = ActivatorUtilities.CreateFactory(
+            ObjectFactory objectFactory = ActivatorUtilities.CreateFactory(
                 typeof(TConcrete),
                 new[] { typeof(IEnumerable<TInterface>) });
 

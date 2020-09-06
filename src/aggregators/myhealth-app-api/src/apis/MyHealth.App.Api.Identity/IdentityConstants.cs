@@ -1,6 +1,6 @@
 ﻿namespace MyHealth.App.Api.Identity
 {
-    public static class IdentityConstants
+    internal static class IdentityConstants
     {
         public static class DelegationGrant
         {

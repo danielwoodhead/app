@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyHealth.Integrations.Core.Data;
@@ -12,8 +13,10 @@ namespace MyHealth.Integrations.Data.TableStorage
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            services.Configure<TableStorageSettings>(configuration.GetSection("TableStorage"));
-            services.AddSingleton<IIntegrationRepository, TableStorageIntegrationsRepository>();
+            services.AddSingleton(sp => CloudStorageAccount
+                .Parse(configuration.GetConnectionString("TableStorage"))
+                .CreateCloudTableClient());
+            services.AddTransient<IIntegrationRepository, TableStorageIntegrationsRepository>();
 
             return services;
         }

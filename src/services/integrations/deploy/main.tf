@@ -71,8 +71,12 @@ resource "azurerm_app_service" "as" {
     Fitbit__AuthenticationUrl                       = var.fitbit_authentication_url
     KeyVault__Name                                  = var.key_vault_name
     Logging__ApplicationInsights__LogLevel__Default = "Information"
-    TableStorage__ConnectionString                  = azurerm_storage_account.storage.primary_connection_string
-    TableStorage__IntegrationsTableName             = var.integrations_table_name
+  }
+
+  connection_string {
+    name  = "TableStorage"
+    type  = "Custom"
+    value = azurerm_storage_account.storage.primary_connection_string
   }
 }
 
@@ -114,8 +118,12 @@ resource "azurerm_function_app" "functions" {
     IoMT__EventHub__ConnectionString    = data.azurerm_eventhub_namespace.iomt.default_primary_connection_string
     IoMT__EventHub__Name                = var.iomt_event_hub_name
     KeyVault__Name                      = var.key_vault_name
-    TableStorage__ConnectionString      = azurerm_storage_account.storage.primary_connection_string
-    TableStorage__IntegrationsTableName = var.integrations_table_name
+  }
+
+  connection_string {
+    name  = "TableStorage"
+    type  = "Custom"
+    value = azurerm_storage_account.storage.primary_connection_string
   }
 
   site_config {
