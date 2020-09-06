@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
-using Microsoft.Extensions.Options;
 using MyHealth.Extensions.Azure.Storage.Table;
 using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Models;
@@ -13,16 +13,15 @@ namespace MyHealth.Integrations.Data.TableStorage
 {
     public class TableStorageIntegrationsRepository : IIntegrationRepository
     {
+        private const string TableName = "Integrations";
         private readonly CloudTable _table;
-        private readonly TableStorageSettings _settings;
 
-        public TableStorageIntegrationsRepository(IOptions<TableStorageSettings> settings)
+        public TableStorageIntegrationsRepository(CloudTableClient cloudTableClient)
         {
-            _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
+            if (cloudTableClient == null)
+                throw new ArgumentNullException(nameof(cloudTableClient));
 
-            _table = CloudStorageAccount.Parse(_settings.ConnectionString)
-                .CreateCloudTableClient()
-                .GetTableReference(_settings.IntegrationsTableName);
+            _table = cloudTableClient.GetTableReference(TableName);
         }
 
         public async Task<Integration> CreateIntegrationAsync(string userId, Provider provider, object data)
@@ -47,20 +46,14 @@ namespace MyHealth.Integrations.Data.TableStorage
         {
             var entity = await _table.RetrieveAsync<IntegrationByIdEntity>(userId, IntegrationByIdEntity.ToRowKey(id));
 
-            if (entity == null)
-                return null;
-
-            return entity.Map();
+            return entity?.Map();
         }
 
         public async Task<Integration> GetIntegrationAsync(string userId, Provider provider)
         {
             var entity = await _table.RetrieveAsync<IntegrationByProviderEntity>(userId, IntegrationByProviderEntity.ToRowKey(provider.ToString()));
 
-            if (entity == null)
-                return null;
-
-            return entity.Map();
+            return entity?.Map();
         }
 
         public async Task<IEnumerable<Integration>> GetIntegrationsAsync(string userId)

@@ -331,3 +331,6 @@ ASALocalRun/
   
 # Local .terraform directories
 **/.terraform/*
+
+# generated dockerignore used by build process
+src/.dockerignore

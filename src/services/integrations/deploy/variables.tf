@@ -59,11 +59,6 @@ variable "key_vault_name" {
   description = "The key vault name"
 }
 
-variable "integrations_table_name" {
-  description = "The integrations table name"
-  default     = "Integrations"
-}
-
 variable "function_name_integration_event" {
   description = "The name of the integration event processor function"
   default     = "IntegrationEventProcessor"

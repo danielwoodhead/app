@@ -30,7 +30,6 @@ namespace MyHealth.Extensions.Cryptography
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5350:Do Not Use Weak Cryptographic Algorithms", Justification = "Required for integration with Fitbit")]
         public static string HmacSha1(this string input, string key)
         {
             byte[] secretBytes = Encoding.UTF8.GetBytes(key);
