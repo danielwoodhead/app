@@ -16,11 +16,14 @@ namespace MyHealth.HealthRecord.Data.Fhir
 
     public class FhirObservationsRepository : IObservationsRepository
     {
-        private readonly IFhirClientFactory _fhirClientFactory;
+        private readonly IFhirClient _client;
 
         public FhirObservationsRepository(IFhirClientFactory fhirClientFactory)
         {
-            _fhirClientFactory = fhirClientFactory ?? throw new ArgumentNullException(nameof(fhirClientFactory));
+            if (fhirClientFactory == null)
+                throw new ArgumentNullException(nameof(fhirClientFactory));
+
+            _client = fhirClientFactory.Create();
         }
 
         public async Task<Observation> CreateObservationAsync(CreateObservationRequest request, string userId)
@@ -46,8 +49,7 @@ namespace MyHealth.HealthRecord.Data.Fhir
             // };
             // builder.Create(observation);
 
-            IFhirClient client = await _fhirClientFactory.InstanceAsync();
-            FHIR.Patient patient = await client.EnsurePatientAsync(userId);
+            FHIR.Patient patient = await _client.EnsurePatientAsync(userId);
 
             var newObservation = new FHIR.Observation
             {
@@ -61,7 +63,7 @@ namespace MyHealth.HealthRecord.Data.Fhir
                 Value = new FHIR.FhirString(request.Content)
             };
 
-            FHIR.Observation observation = await client.CreateAsync(newObservation);
+            FHIR.Observation observation = await _client.CreateAsync(newObservation);
 
             return new Observation
             {
@@ -72,18 +74,16 @@ namespace MyHealth.HealthRecord.Data.Fhir
 
         public async Task DeleteObservationAsync(string id)
         {
-            IFhirClient client = await _fhirClientFactory.InstanceAsync();
-            await client.DeleteAsync($"Observation/{id}");
+            await _client.DeleteAsync($"Observation/{id}");
         }
 
         public async Task<Observation> GetObservationAsync(string id)
         {
-            IFhirClient client = await _fhirClientFactory.InstanceAsync();
             FHIR.Observation observation;
 
             try
             {
-                observation = await client.ReadAsync<FHIR.Observation>($"Observation/{id}");
+                observation = await _client.ReadAsync<FHIR.Observation>($"Observation/{id}");
             }
             catch (FhirOperationException ex) when (ex.Status == HttpStatusCode.NotFound || ex.Status == HttpStatusCode.Gone)
             {
@@ -99,9 +99,7 @@ namespace MyHealth.HealthRecord.Data.Fhir
 
         public async Task<IEnumerable<Observation>> GetObservationsAsync(string userId)
         {
-            IFhirClient client = await _fhirClientFactory.InstanceAsync();
-
-            FHIR.Bundle result = await client.SearchAsync<FHIR.Observation>(new SearchParams().Add("subject:Patient.identifier", userId));
+            FHIR.Bundle result = await _client.SearchAsync<FHIR.Observation>(new SearchParams().Add("subject:Patient.identifier", userId));
 
             return result.Entry
                 .Select(e => (FHIR.Observation)e.Resource)
@@ -147,11 +145,10 @@ namespace MyHealth.HealthRecord.Data.Fhir
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
 
-            IFhirClient client = await _fhirClientFactory.InstanceAsync();
-            FHIR.Observation observation = await client.ReadAsync<FHIR.Observation>($"Observation/{id}");
+            FHIR.Observation observation = await _client.ReadAsync<FHIR.Observation>($"Observation/{id}");
             observation.Value = new FHIR.FhirString(request.Content);
 
-            FHIR.Observation updatedObservation = await client.UpdateAsync(observation);
+            FHIR.Observation updatedObservation = await _client.UpdateAsync(observation);
 
             return new Observation
             {

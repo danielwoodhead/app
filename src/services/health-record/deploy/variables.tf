@@ -12,11 +12,6 @@ variable "prefix" {
   default     = "myhealth-healthrecord"
 }
 
-variable "environment" {
-  description = "The ASPNETCORE_ENVIRONMENT environment variable"
-  default     = "Development"
-}
-
 variable "app_service_plan_name" {
   description = "The app service plan name"
 }
@@ -39,4 +34,8 @@ variable "authentication_authority" {
 
 variable "authentication_audience" {
   description = "The authentication audience"
+}
+
+variable "fhir_server_base_address" {
+  description = "The FHIR server base address"
 }

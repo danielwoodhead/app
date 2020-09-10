@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Swagger\MyHealth.Extensions.AspNetCore.Swagger.csproj" />
     <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Versioning\MyHealth.Extensions.AspNetCore.Versioning.csproj" />
+    <ProjectReference Include="..\apis\MyHealth.App.Api.HealthRecord\MyHealth.App.Api.HealthRecord.csproj" />
     <ProjectReference Include="..\apis\MyHealth.App.Api.Identity\MyHealth.App.Api.Identity.csproj" />
     <ProjectReference Include="..\apis\MyHealth.App.Api.Integrations\MyHealth.App.Api.Integrations.csproj" />
   </ItemGroup>

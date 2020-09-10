@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyHealth.App.Api.Core.Http;
 using MyHealth.App.Api.Integrations.Clients;
@@ -9,6 +10,7 @@ namespace MyHealth.App.Api.Integrations.Controllers
 {
     [Route("v{version:apiVersion}/integrations")]
     [ApiController]
+    [Authorize]
     public class IntegrationsController : ControllerBase
     {
         private readonly IIntegrationsClient _client;

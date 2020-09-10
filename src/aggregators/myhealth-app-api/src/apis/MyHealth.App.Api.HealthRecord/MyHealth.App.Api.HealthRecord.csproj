@@ -9,10 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\MyHealth.App.Api.Core\MyHealth.App.Api.Core.csproj" />
   </ItemGroup>
 
