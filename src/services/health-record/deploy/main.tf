@@ -34,12 +34,12 @@ resource "azurerm_app_service" "as" {
 
   app_settings = {
     APPINSIGHTS_INSTRUMENTATIONKEY      = data.azurerm_application_insights.ai.instrumentation_key
-    ASPNETCORE_ENVIRONMENT              = var.environment
     DOCKER_REGISTRY_SERVER_URL          = "https://${data.azurerm_container_registry.cr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.cr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.cr.admin_password
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     Authentication__Authority           = var.authentication_authority
     Authentication__Audience            = var.authentication_audience
+    FhirServer__BaseAddress             = var.fhir_server_base_address
   }
 }

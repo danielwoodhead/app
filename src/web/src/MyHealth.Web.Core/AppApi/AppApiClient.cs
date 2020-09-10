@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -15,6 +16,17 @@ namespace MyHealth.Web.Core.AppApi
         {
             _httpClient = httpClient;
         }
+
+        #region HealthRecord
+
+        public async Task<SearchObservationsResponse> GetObservationsAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<SearchObservationsResponse>("observations");
+        }
+
+        #endregion HealthRecord
+
+        #region Integrations
 
         public async Task CreateFitbitIntegrationAsync(string code, string redirectUri)
         {
@@ -45,5 +57,7 @@ namespace MyHealth.Web.Core.AppApi
                     "redirectUri",
                     redirectUri));
         }
+
+        #endregion
     }
 }

@@ -1,0 +1,51 @@
+﻿@page "/record"
+@attribute [Authorize]
+@inject IAppApiClient AppApiClient
+@using MyHealth.Web.Core.AppApi
+@using MyHealth.Web.Core.Models
+
+<h3>Record</h3>
+
+@if (!_observations.Any())
+{
+    <p>No observations found!</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Text</th>
+                <th scope="col">Value</th>
+                <th scope="col">Unit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Observation observation in _observations)
+            {
+                <tr>
+                    <td>@observation.DateTime</td>
+                    <td>@observation.Text</td>
+                    <td>@observation.Value</td>
+                    <td>@observation.Unit</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private IEnumerable<Observation> _observations = Enumerable.Empty<Observation>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetObservationsAsync();
+    }
+
+    private async Task GetObservationsAsync()
+    {
+        _observations = (await AppApiClient.GetObservationsAsync()).Observations;
+    }
+}

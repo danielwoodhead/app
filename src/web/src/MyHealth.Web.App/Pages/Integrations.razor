@@ -35,7 +35,7 @@ else
 
     private async Task AddFitbitIntegration()
     {
-        string fitbitAuthenticationUri = await AppApiClient.GetFitbitAuthenticationUri($"{NavigationManager.BaseUri}integrations/fitbitcallback");
+        string fitbitAuthenticationUri = await AppApiClient.GetFitbitAuthenticationUriAsync($"{NavigationManager.BaseUri}integrations/fitbitcallback");
         NavigationManager.NavigateTo(fitbitAuthenticationUri);
     }
 

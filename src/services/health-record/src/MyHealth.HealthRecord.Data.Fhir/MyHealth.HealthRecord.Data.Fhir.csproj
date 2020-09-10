@@ -5,12 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hl7.Fhir.R4" Version="1.6.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.2" />
+    <PackageReference Include="Hl7.Fhir.R4" Version="1.9.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.7" />
   </ItemGroup>
 
   <ItemGroup>

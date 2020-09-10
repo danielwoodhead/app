@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using MyHealth.App.Api.Core.Authentication;
 using MyHealth.App.Api.Core.Settings;
 using MyHealth.App.Api.Extensions;
+using MyHealth.App.Api.HealthRecord;
 using MyHealth.App.Api.Identity;
 using MyHealth.App.Api.Integrations;
 using MyHealth.Extensions.AspNetCore.Swagger;
@@ -39,6 +40,7 @@ namespace MyHealth.App.Api
             services.AddTransient<DelegationAuthenticationHandler>();
 
             // apis
+            services.AddHealthRecordApi(Configuration);
             services.AddIdentityApi(Configuration);
             services.AddIntegrationsApi(Configuration);
         }

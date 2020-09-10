@@ -10,7 +10,7 @@ using MyHealth.HealthRecord.Models.Responses;
 
 namespace MyHealth.HealthRecord.Api.Controllers
 {
-    [Route("api/v{version:apiVersion}/observations")]
+    [Route("v{version:apiVersion}/observations")]
     [ApiVersion("1.0")]
     [ApiController]
     [Authorize]

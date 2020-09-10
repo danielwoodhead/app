@@ -29,7 +29,6 @@ namespace MyHealth.HealthRecord.Api
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Standard ASP.NET Core pattern")]
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry();
@@ -54,18 +53,17 @@ namespace MyHealth.HealthRecord.Api
             services.AddScoped<IOperationContext, OperationContext>();
             services.AddTransient<IObservationsService, ObservationsService>();
 
-            services.Configure<FhirServerSettings>(Configuration.GetSection("FhirServerSettings"));
+            services.Configure<FhirServerSettings>(Configuration.GetSection("FhirServer"));
             services.AddTransient<IFhirClientFactory, FhirClientFactory>();
             services.AddTransient<IObservationsRepository, FhirObservationsRepository>();
 
-            services.Configure<EventGridSettings>(Configuration.GetSection("EventGridSettings"));
+            services.Configure<EventGridSettings>(Configuration.GetSection("EventGrid"));
             services.AddSingleton<IEventPublisher, EventGridEventPublisher>();
             services.AddTransient<IEventPublisher, ApplicationInsightsEventPublisher>();
             services.AddComposite<IEventPublisher, CompositeEventPublisher>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Standard ASP.NET Core pattern")]
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
