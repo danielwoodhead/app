@@ -1,12 +1,9 @@
 ﻿using System.Threading.Tasks;
 
-namespace MyHealth.HealthRecord.Utility
+namespace MyHealth.Extensions.AspNetCore.Context
 {
     public interface IOperationContext
     {
         string OperationId { get; }
-        string UserId { get; }
-
-        Task<string> GetAccessTokenAsync();
     }
 }

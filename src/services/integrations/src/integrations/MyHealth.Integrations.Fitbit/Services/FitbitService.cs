@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
+using MyHealth.Extensions.AspNetCore.Context;
 using MyHealth.Extensions.Cryptography;
 using MyHealth.Extensions.Events;
 using MyHealth.Integrations.Core.Events;

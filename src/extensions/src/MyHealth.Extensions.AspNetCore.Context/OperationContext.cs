@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
-using MyHealth.Integrations.Core.Utility;
 
-namespace MyHealth.Integrations.Utility
+namespace MyHealth.Extensions.AspNetCore.Context
 {
     public class OperationContext : IOperationContext
     {

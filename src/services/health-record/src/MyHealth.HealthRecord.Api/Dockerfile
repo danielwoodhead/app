@@ -11,7 +11,7 @@ COPY ["services/health-record/src/MyHealth.HealthRecord.Api/MyHealth.HealthRecor
 COPY ["services/health-record/src/MyHealth.HealthRecord.Core/MyHealth.HealthRecord.Core.csproj", "services/health-record/src/MyHealth.HealthRecord.Core/"]
 COPY ["services/health-record/src/MyHealth.HealthRecord.Data.Fhir/MyHealth.HealthRecord.Data.Fhir.csproj", "services/health-record/src/MyHealth.HealthRecord.Data.Fhir/"]
 COPY ["services/health-record/src/MyHealth.HealthRecord.Models/MyHealth.HealthRecord.Models.csproj", "services/health-record/src/MyHealth.HealthRecord.Models/"]
-COPY ["services/health-record/src/MyHealth.HealthRecord.Utility/MyHealth.HealthRecord.Utility.csproj", "services/health-record/src/MyHealth.HealthRecord.Utility/"]
+COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Context/MyHealth.Extensions.AspNetCore.Context.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Context/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Swagger/MyHealth.Extensions.AspNetCore.Swagger.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Swagger/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Versioning/MyHealth.Extensions.AspNetCore.Versioning.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Versioning/"]
 COPY ["extensions/src/MyHealth.Extensions.DependencyInjection/MyHealth.Extensions.DependencyInjection.csproj", "extensions/src/MyHealth.Extensions.DependencyInjection/"]

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using MyHealth.Extensions.AspNetCore.Swagger.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace MyHealth.Extensions.AspNetCore.Swagger
@@ -24,44 +25,40 @@ namespace MyHealth.Extensions.AspNetCore.Swagger
         {
             foreach (ApiVersionDescription description in _provider.ApiVersionDescriptions)
             {
-                options.SwaggerDoc(
-                  description.GroupName,
-                    new OpenApiInfo
-                    {
-                        Title = $"{_options.ApiName} {description.ApiVersion}",
-                        Version = description.ApiVersion.ToString(),
-                    });
+                options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
             }
 
             options.OperationFilter<TagByApiExplorerSettingsOperationFilter>();
-
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            options.OperationFilter<AuthorizeCheckOperationFilter>();
+            options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {
-                Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
-            });
-
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
+                Type = SecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows
                 {
-                    new OpenApiSecurityScheme
+                    AuthorizationCode = new OpenApiOAuthFlow
                     {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-                        Scheme = "oauth2",
-                        Name = "Bearer",
-                        In = ParameterLocation.Header,
-
-                    },
-                    new List<string>()
+                        AuthorizationUrl = new Uri(_options.AuthorizationUrl),
+                        TokenUrl = new Uri(_options.TokenUrl),
+                        Scopes = _options.AuthorizationScopes
+                    }
                 }
             });
+        }
+
+        private OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
+        {
+            var info = new OpenApiInfo
+            {
+                Title = $"{_options.ApiName} {description.ApiVersion}",
+                Version = description.ApiVersion.ToString()
+            };
+
+            if (description.IsDeprecated)
+            {
+                info.Description += " This API version has been deprecated.";
+            }
+
+            return info;
         }
     }
 }

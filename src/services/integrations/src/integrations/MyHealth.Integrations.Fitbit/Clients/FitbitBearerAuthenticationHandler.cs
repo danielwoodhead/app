@@ -2,7 +2,7 @@
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using MyHealth.Integrations.Core.Utility;
+using MyHealth.Extensions.AspNetCore.Context;
 using MyHealth.Integrations.Fitbit.Services;
 
 namespace MyHealth.Integrations.Fitbit.Clients

@@ -39,3 +39,20 @@ variable "authentication_audience" {
 variable "fhir_server_base_address" {
   description = "The FHIR server base address"
 }
+
+variable "swagger_enabled" {
+  description = "Should Swagger be enabled?"
+  type = bool
+}
+
+variable "swagger_authorization_url" {
+  description = "The authorization URL used by Swagger"
+}
+
+variable "swagger_token_url" {
+  description = "The token URL used by Swagger"
+}
+
+variable "swagger_oauth_client_id" {
+  description = "The OAuth client ID used by Swagger"
+}

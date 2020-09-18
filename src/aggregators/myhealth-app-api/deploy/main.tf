@@ -57,6 +57,10 @@ resource "azurerm_app_service" "as" {
     KeyVault__Name                                  = var.key_vault_name
     Logging__ApplicationInsights__LogLevel__Default = "Information"
     MyHealthAppApi__ClientScopes                    = var.my_health_app_api_client_scopes
+    Swagger__Enabled                                = var.swagger_enabled
+    Swagger__AuthorizationUrl                       = var.swagger_authorization_url
+    Swagger__TokenUrl                               = var.swagger_token_url
+    Swagger__OAuthClientId                          = var.swagger_oauth_client_id
   }
 }
 

@@ -7,7 +7,7 @@ namespace MyHealth.Extensions.AspNetCore.Swagger
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddVersionAwareSwagger(this IServiceCollection services, Action<SwaggerOptions> configure)
+        public static IServiceCollection AddMyHealthSwagger(this IServiceCollection services, Action<SwaggerOptions> configure)
         {
             services.Configure(configure);
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>();

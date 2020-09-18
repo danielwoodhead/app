@@ -1,16 +1,16 @@
 ﻿using System;
 using Hl7.Fhir.Rest;
 using Microsoft.Extensions.Options;
-using MyHealth.HealthRecord.Utility;
+using MyHealth.Extensions.AspNetCore.Context;
 
 namespace MyHealth.HealthRecord.Data.Fhir.Base
 {
     public class FhirClientFactory : IFhirClientFactory
     {
         private readonly FhirServerSettings _settings;
-        private readonly IOperationContext _operationContext;
+        private readonly IUserOperationContext _operationContext;
 
-        public FhirClientFactory(IOptions<FhirServerSettings> settings, IOperationContext operationContext)
+        public FhirClientFactory(IOptions<FhirServerSettings> settings, IUserOperationContext operationContext)
         {
             _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
             _operationContext = operationContext ?? throw new ArgumentNullException(nameof(operationContext));

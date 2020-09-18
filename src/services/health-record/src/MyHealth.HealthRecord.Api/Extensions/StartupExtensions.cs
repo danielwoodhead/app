@@ -8,7 +8,7 @@ using MyHealth.Extensions.Events;
 using MyHealth.Extensions.Events.ApplicationInsights;
 using MyHealth.Extensions.Events.Azure.EventGrid;
 
-namespace MyHealth.Integrations.Api.Extensions
+namespace MyHealth.HealthRecord.Api.Extensions
 {
     public static class StartupExtensions
     {
@@ -41,10 +41,11 @@ namespace MyHealth.Integrations.Api.Extensions
         {
             services.AddMyHealthSwagger(options =>
             {
-                options.ApiName = "MyHealth Integrations API";
+                options.ApiName = "MyHealth Health Record API";
                 options.AuthorizationScopes = new Dictionary<string, string>
                 {
-                    { "myhealth-integrations-api", "MyHealth Integrations API" }
+                    { "myhealth-healthrecord-api", "MyHealth Health Record API" },
+                    { "fhir-api", "FHIR API" }
                 };
                 options.AuthorizationUrl = configuration["Swagger:AuthorizationUrl"];
                 options.TokenUrl = configuration["Swagger:TokenUrl"];

@@ -17,13 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Events"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Events.Azure.EventGrid", "src\MyHealth.Extensions.Events.Azure.EventGrid\MyHealth.Extensions.Events.Azure.EventGrid.csproj", "{5C707D47-478A-4CB5-A63C-AE522607BC0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Extensions.Events.Logging", "src\MyHealth.Extensions.Events.Logging\MyHealth.Extensions.Events.Logging.csproj", "{6BB79B96-659C-4ED2-9F43-DAFAF99508EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Events.Logging", "src\MyHealth.Extensions.Events.Logging\MyHealth.Extensions.Events.Logging.csproj", "{6BB79B96-659C-4ED2-9F43-DAFAF99508EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Extensions.Logging", "src\MyHealth.Extensions.Logging\MyHealth.Extensions.Logging.csproj", "{3EE94491-457E-4F55-98EC-AC1540486378}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Logging", "src\MyHealth.Extensions.Logging\MyHealth.Extensions.Logging.csproj", "{3EE94491-457E-4F55-98EC-AC1540486378}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Extensions.Events.ApplicationInsights", "src\MyHealth.Extensions.Events.ApplicationInsights\MyHealth.Extensions.Events.ApplicationInsights.csproj", "{3172D2AC-EB6E-4FFA-B32E-6BFE04A1837E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Events.ApplicationInsights", "src\MyHealth.Extensions.Events.ApplicationInsights\MyHealth.Extensions.Events.ApplicationInsights.csproj", "{3172D2AC-EB6E-4FFA-B32E-6BFE04A1837E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Extensions.DependencyInjection", "src\MyHealth.Extensions.DependencyInjection\MyHealth.Extensions.DependencyInjection.csproj", "{1C99F852-85A0-4AE2-86AB-70DA1B5EB57E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.DependencyInjection", "src\MyHealth.Extensions.DependencyInjection\MyHealth.Extensions.DependencyInjection.csproj", "{1C99F852-85A0-4AE2-86AB-70DA1B5EB57E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Extensions.AspNetCore.Context", "src\MyHealth.Extensions.AspNetCore.Context\MyHealth.Extensions.AspNetCore.Context.csproj", "{E720F1BF-B966-4EAB-94EE-449C1CA32D76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{1C99F852-85A0-4AE2-86AB-70DA1B5EB57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C99F852-85A0-4AE2-86AB-70DA1B5EB57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C99F852-85A0-4AE2-86AB-70DA1B5EB57E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E720F1BF-B966-4EAB-94EE-449C1CA32D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E720F1BF-B966-4EAB-94EE-449C1CA32D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E720F1BF-B966-4EAB-94EE-449C1CA32D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E720F1BF-B966-4EAB-94EE-449C1CA32D76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{3EE94491-457E-4F55-98EC-AC1540486378} = {070D4A9C-AE66-4F8C-908D-28233A54C0F5}
 		{3172D2AC-EB6E-4FFA-B32E-6BFE04A1837E} = {070D4A9C-AE66-4F8C-908D-28233A54C0F5}
 		{1C99F852-85A0-4AE2-86AB-70DA1B5EB57E} = {070D4A9C-AE66-4F8C-908D-28233A54C0F5}
+		{E720F1BF-B966-4EAB-94EE-449C1CA32D76} = {070D4A9C-AE66-4F8C-908D-28233A54C0F5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5F0C8B0-2B7D-4865-B54B-B5448F24582A}

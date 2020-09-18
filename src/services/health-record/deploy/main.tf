@@ -41,5 +41,9 @@ resource "azurerm_app_service" "as" {
     Authentication__Authority           = var.authentication_authority
     Authentication__Audience            = var.authentication_audience
     FhirServer__BaseAddress             = var.fhir_server_base_address
+    Swagger__Enabled                    = var.swagger_enabled
+    Swagger__AuthorizationUrl           = var.swagger_authorization_url
+    Swagger__TokenUrl                   = var.swagger_token_url
+    Swagger__OAuthClientId              = var.swagger_oauth_client_id
   }
 }

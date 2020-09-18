@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace MyHealth.HealthRecord.Utility
+namespace MyHealth.Extensions.AspNetCore.Context
 {
-    public class OperationContext : IOperationContext
+    public class UserOperationContext : OperationContext, IUserOperationContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public OperationContext(IHttpContextAccessor httpContextAccessor)
+        public UserOperationContext(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
-
-        public string OperationId => Activity.Current?.RootId;
 
         public string UserId => _httpContextAccessor.HttpContext.User.FindFirst("sub").Value;
 
