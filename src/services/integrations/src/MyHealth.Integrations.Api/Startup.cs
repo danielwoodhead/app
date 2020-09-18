@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyHealth.Extensions.AspNetCore.Context;
 using MyHealth.Extensions.AspNetCore.Swagger;
 using MyHealth.Extensions.AspNetCore.Versioning;
 using MyHealth.Integrations.Api.Extensions;
+using MyHealth.Integrations.Core.Services;
 using MyHealth.Integrations.Data.TableStorage;
 using MyHealth.Integrations.Fitbit;
 using MyHealth.Integrations.Utility;
@@ -26,14 +28,16 @@ namespace MyHealth.Integrations.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry();
-            services.AddAuth(Configuration);
+            services.AddAuthentication(Configuration);
+            services.AddContext();
             services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            services.AddEvents(Configuration);
             services.AddHealthChecks();
-            services.AddIntegrationsCore(Configuration);
+            services.AddSwagger(Configuration);
             services.AddTableStorage(Configuration);
-            services.AddSwagger();
             services.AddUtility();
             services.AddVersioning();
+            services.AddTransient<IIntegrationService, IntegrationService>();
 
             // providers
             services.AddFitBitCore(Configuration);
@@ -46,14 +50,18 @@ namespace MyHealth.Integrations.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/error");
+            }
 
             app.UseHttpsRedirection();
 
-            if (!env.IsProduction())
+            app.UseMyHealthSwagger(options =>
             {
-                app.UseVersionAwareSwagger();
-            }
-
+                options.OAuthClientId = Configuration["Swagger:OAuthClientId"];
+                options.OAuthAppName = "MyHealth Integrations API";
+            });
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

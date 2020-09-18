@@ -6,3 +6,7 @@ application_insights_name = "myhealth-insights"
 authentication_authority = "https://myhealth-identity-sts.azurewebsites.net"
 authentication_audience = "myhealth-healthrecord-api"
 fhir_server_base_address = "https://myhealth-fhir.azurewebsites.net"
+swagger_enabled = true
+swagger_authorization_url = "https://myhealth-identity-sts.azurewebsites.net/connect/authorize"
+swagger_token_url = "https://myhealth-identity-sts.azurewebsites.net/connect/token"
+swagger_oauth_client_id = "myhealth-swaggerui"

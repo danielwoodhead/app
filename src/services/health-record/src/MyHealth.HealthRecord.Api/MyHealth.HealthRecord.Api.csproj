@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Context\MyHealth.Extensions.AspNetCore.Context.csproj" />
     <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Swagger\MyHealth.Extensions.AspNetCore.Swagger.csproj" />
     <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Versioning\MyHealth.Extensions.AspNetCore.Versioning.csproj" />
     <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.DependencyInjection\MyHealth.Extensions.DependencyInjection.csproj" />

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyHealth.Extensions.AspNetCore.Context;
 using MyHealth.Extensions.Events;
 using MyHealth.HealthRecord.Core.Data;
 using MyHealth.HealthRecord.Models;
 using MyHealth.HealthRecord.Models.Events;
 using MyHealth.HealthRecord.Models.Requests;
 using MyHealth.HealthRecord.Models.Responses;
-using MyHealth.HealthRecord.Utility;
 
 namespace MyHealth.HealthRecord.Core
 {
@@ -17,12 +17,12 @@ namespace MyHealth.HealthRecord.Core
         private const string EventSourceSystem = "myhealth:healthrecord:api";
         private readonly IObservationsRepository _repository;
         private readonly IEventPublisher _eventPublisher;
-        private readonly IOperationContext _operationContext;
+        private readonly IUserOperationContext _operationContext;
 
         public ObservationsService(
             IObservationsRepository repository,
             IEventPublisher eventPublisher,
-            IOperationContext operationContext)
+            IUserOperationContext operationContext)
         {
             _repository = repository;
             _eventPublisher = eventPublisher;

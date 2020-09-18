@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,20 +7,26 @@ namespace MyHealth.Extensions.AspNetCore.Swagger
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseVersionAwareSwagger(this IApplicationBuilder app)
+        public static IApplicationBuilder UseMyHealthSwagger(this IApplicationBuilder app, Action<SwaggerOptions> configure)
         {
+            var options = new SwaggerOptions();
+            configure(options);
+
             app.UseSwagger();
-            app.UseSwaggerUI(options =>
+            app.UseSwaggerUI(o =>
             {
-                options.RoutePrefix = string.Empty; // serve Swagger UI at app route
                 var provider = app.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
 
                 foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
                 {
-                    options.SwaggerEndpoint(
+                    o.SwaggerEndpoint(
                         $"/swagger/{description.GroupName}/swagger.json",
                         description.GroupName.ToUpperInvariant());
                 }
+
+                o.OAuthClientId(options.OAuthClientId);
+                o.OAuthAppName(options.OAuthAppName);
+                o.OAuthUsePkce();
             });
 
             return app;

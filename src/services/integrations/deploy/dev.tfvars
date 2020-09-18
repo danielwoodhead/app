@@ -10,3 +10,7 @@ key_vault_name = "myhealth-keyvault"
 iomt_event_hub_namespace = "myhealth-iomt-fhir"
 iomt_event_hub_name = "devicedata"
 iomt_event_hub_resource_group_name = "DansIomtFhir"
+swagger_enabled = true
+swagger_authorization_url = "https://myhealth-identity-sts.azurewebsites.net/connect/authorize"
+swagger_token_url = "https://myhealth-identity-sts.azurewebsites.net/connect/token"
+swagger_oauth_client_id = "myhealth-swaggerui"

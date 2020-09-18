@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace MyHealth.Extensions.AspNetCore.Swagger
+namespace MyHealth.Extensions.AspNetCore.Swagger.Filters
 {
-    public class TagByApiExplorerSettingsOperationFilter : IOperationFilter
+    internal class TagByApiExplorerSettingsOperationFilter : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {

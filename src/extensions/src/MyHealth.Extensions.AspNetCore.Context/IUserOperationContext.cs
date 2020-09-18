@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MyHealth.Integrations.Core.Utility
+namespace MyHealth.Extensions.AspNetCore.Context
 {
     public interface IUserOperationContext : IOperationContext
     {

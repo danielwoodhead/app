@@ -29,11 +29,11 @@ namespace MyHealth.App.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry();
-            services.AddAuth(Configuration);
+            services.AddAuthentication(Configuration);
             services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddDistributedMemoryCache();
             services.AddHealthChecks();
-            services.AddSwagger();
+            services.AddSwagger(Configuration);
             services.AddVersioning();
 
             services.Configure<MyHealthAppApiSettings>(Configuration.GetSection("MyHealthAppApi"));
@@ -62,10 +62,16 @@ namespace MyHealth.App.Api
             });
 
             app.UseHttpsRedirection();
+
+            app.UseMyHealthSwagger(options =>
+            {
+                options.OAuthClientId = Configuration["Swagger:OAuthClientId"];
+                options.OAuthAppName = "MyHealth App API";
+            });
+
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseVersionAwareSwagger();
 
             app.UseEndpoints(endpoints =>
             {

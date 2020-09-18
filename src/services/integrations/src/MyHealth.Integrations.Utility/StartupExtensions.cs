@@ -8,8 +8,6 @@ namespace MyHealth.Integrations.Utility
         public static IServiceCollection AddUtility(this IServiceCollection services)
         {
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-            services.AddSingleton<IOperationContext, OperationContext>();
-            services.AddScoped<IUserOperationContext, UserOperationContext>();
 
             return services;
         }

@@ -71,6 +71,10 @@ resource "azurerm_app_service" "as" {
     Fitbit__AuthenticationUrl                       = var.fitbit_authentication_url
     KeyVault__Name                                  = var.key_vault_name
     Logging__ApplicationInsights__LogLevel__Default = "Information"
+    Swagger__Enabled                                = var.swagger_enabled
+    Swagger__AuthorizationUrl                       = var.swagger_authorization_url
+    Swagger__TokenUrl                               = var.swagger_token_url
+    Swagger__OAuthClientId                          = var.swagger_oauth_client_id
   }
 
   connection_string {

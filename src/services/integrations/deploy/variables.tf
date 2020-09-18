@@ -75,3 +75,20 @@ variable "iomt_event_hub_name" {
 variable "iomt_event_hub_resource_group_name" {
   description = "The name of the IoMT event hub resource group"
 }
+
+variable "swagger_enabled" {
+  description = "Should Swagger be enabled?"
+  type = bool
+}
+
+variable "swagger_authorization_url" {
+  description = "The authorization URL used by Swagger"
+}
+
+variable "swagger_token_url" {
+  description = "The token URL used by Swagger"
+}
+
+variable "swagger_oauth_client_id" {
+  description = "The OAuth client ID used by Swagger"
+}

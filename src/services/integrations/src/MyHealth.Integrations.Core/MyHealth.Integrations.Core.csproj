@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Context\MyHealth.Extensions.AspNetCore.Context.csproj" />
     <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.Events\MyHealth.Extensions.Events.csproj" />
     <ProjectReference Include="..\MyHealth.Integrations.Models\MyHealth.Integrations.Models.csproj" />
   </ItemGroup>
