@@ -8,7 +8,7 @@ namespace MyHealth.App.Api.Integrations.Clients
     {
         Task<HttpResponseMessage> DeleteIntegrationAsync(string id);
         Task<HttpResponseMessage> GetIntegrationAsync(string id);
-        Task<HttpResponseMessage> SearchIntegrationsAsync();
+        Task<HttpResponseMessage> GetIntegrationsAsync();
 
         #region Fitbit
 

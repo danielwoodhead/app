@@ -23,15 +23,15 @@ namespace MyHealth.Integrations.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<SearchIntegrationsResponse>> Search()
+        public async Task<ActionResult<GetIntegrationsResponse>> GetIntegrations()
         {
-            return Ok(await _integrationService.SearchIntegrationsAsync());
+            return Ok(await _integrationService.GetIntegrationsAsync());
         }
 
         [HttpGet("{id}", Name = "GetIntegration")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Integration>> Get(string id)
+        public async Task<ActionResult<Integration>> GetIntegration(string id)
         {
             Integration integration = await _integrationService.GetIntegrationAsync(id);
 
@@ -43,7 +43,7 @@ namespace MyHealth.Integrations.Api.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> DeleteIntegration(string id)
         {
             await _integrationService.DeleteIntegrationAsync(id);
 

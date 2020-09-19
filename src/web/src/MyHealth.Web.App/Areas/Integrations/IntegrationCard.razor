@@ -1,0 +1,38 @@
+﻿@using MyHealth.Web.Core.Models;
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@Integration.Provider</h5>
+        @if (Integration.Enabled)
+        {
+            <p class="card-text">Enabled</p>
+            <button class="btn btn-danger" @onclick="@DeleteIntegrationAsync">Delete</button>
+        }
+        else
+        {
+            <p class="card-text">Disabled</p>
+            <button class="btn btn-primary" @onclick="@CreateIntegrationAsync">Enable</button>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Integration Integration { get; set; }
+
+    [Parameter]
+    public EventCallback<Integration> OnCreateIntegration { get; set; }
+
+    [Parameter]
+    public EventCallback<Integration> OnDeleteIntegration { get; set; }
+
+    private async Task CreateIntegrationAsync(MouseEventArgs e)
+    {
+        await OnCreateIntegration.InvokeAsync(Integration);
+    }
+
+    private async Task DeleteIntegrationAsync(MouseEventArgs e)
+    {
+        await OnDeleteIntegration.InvokeAsync(Integration);
+    }
+}

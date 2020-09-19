@@ -16,7 +16,7 @@ namespace MyHealth.Web.Core.AppApi
 
         Task CreateFitbitIntegrationAsync(string code, string redirectUri);
         Task DeleteIntegrationAsync(string id);
-        Task<SearchIntegrationsResponse> GetAllIntegrationsAsync();
+        Task<GetIntegrationsResponse> GetAllIntegrationsAsync();
         Task<string> GetFitbitAuthenticationUriAsync(string redirectUri);
 
         #endregion Integrations

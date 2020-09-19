@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace MyHealth.Web.Core.Models
 {
-    public class SearchIntegrationsResponse
+    public class GetIntegrationsResponse
     {
         public IEnumerable<Integration> Integrations { get; set; } = Enumerable.Empty<Integration>();
     }

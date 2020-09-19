@@ -7,11 +7,11 @@ namespace MyHealth.App.Api.Integrations.Models
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonPropertyName("userId")]
-        public string UserId { get; set; }
-
         [JsonPropertyName("provider")]
         public Provider Provider { get; set; }
+
+        [JsonPropertyName("enabled")]
+        public bool Enabled { get; set; }
     }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]

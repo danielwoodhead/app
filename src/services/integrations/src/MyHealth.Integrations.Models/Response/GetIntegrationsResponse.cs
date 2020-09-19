@@ -2,7 +2,7 @@
 
 namespace MyHealth.Integrations.Models.Response
 {
-    public class SearchIntegrationsResponse
+    public class GetIntegrationsResponse
     {
         public IEnumerable<Integration> Integrations { get; set; }
     }
