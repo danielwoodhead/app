@@ -4,9 +4,13 @@
 @using MyHealth.Web.Core.AppApi
 @using MyHealth.Web.Core.Models
 
-<h3>Record</h3>
+<h3>Health Record</h3>
 
-@if (!_observations.Any())
+@if (_observations is null)
+{
+    <LoadingIndicator />
+}
+else if (!_observations.Any())
 {
     <p>No observations found!</p>
 }
@@ -37,7 +41,7 @@ else
 
 
 @code {
-    private IEnumerable<Observation> _observations = Enumerable.Empty<Observation>();
+    private IEnumerable<Observation> _observations;
 
     protected override async Task OnInitializedAsync()
     {

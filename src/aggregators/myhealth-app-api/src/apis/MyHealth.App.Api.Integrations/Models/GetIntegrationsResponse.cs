@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MyHealth.App.Api.Integrations.Models
 {
-    public class SearchIntegrationsResponse
+    public class GetIntegrationsResponse
     {
         [JsonPropertyName("integrations")]
         public IEnumerable<Integration> Integrations { get; set; }

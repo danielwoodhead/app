@@ -21,15 +21,15 @@ namespace MyHealth.App.Api.Integrations.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<SearchIntegrationsResponse>> Search()
+        public async Task<ActionResult<GetIntegrationsResponse>> GetIntegrations()
         {
-            using HttpResponseMessage response = await _client.SearchIntegrationsAsync();
+            using HttpResponseMessage response = await _client.GetIntegrationsAsync();
 
-            return await response.ToResultAsync<SearchIntegrationsResponse>();
+            return await response.ToResultAsync<GetIntegrationsResponse>();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Integration>> Get(string id)
+        public async Task<ActionResult<Integration>> GetIntegration(string id)
         {
             using HttpResponseMessage response = await _client.GetIntegrationAsync(id);
 
@@ -37,7 +37,7 @@ namespace MyHealth.App.Api.Integrations.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> DeleteIntegration(string id)
         {
             using HttpResponseMessage response = await _client.DeleteIntegrationAsync(id);
 

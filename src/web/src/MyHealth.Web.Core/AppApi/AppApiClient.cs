@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
 using MyHealth.Web.Core.Models;
@@ -11,10 +12,17 @@ namespace MyHealth.Web.Core.AppApi
     public class AppApiClient : IAppApiClient
     {
         private readonly HttpClient _httpClient;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         public AppApiClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            _jsonSerializerOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
 
         #region HealthRecord
@@ -36,7 +44,8 @@ namespace MyHealth.Web.Core.AppApi
                 {
                     Code = code,
                     RedirectUri = new Uri(redirectUri)
-                });
+                },
+                _jsonSerializerOptions);
         }
 
         public async Task DeleteIntegrationAsync(string id)
@@ -44,9 +53,9 @@ namespace MyHealth.Web.Core.AppApi
             await _httpClient.DeleteAsync($"integrations/{id}");
         }
 
-        public async Task<SearchIntegrationsResponse> GetAllIntegrationsAsync()
+        public async Task<GetIntegrationsResponse> GetAllIntegrationsAsync()
         {
-            return await _httpClient.GetFromJsonAsync<SearchIntegrationsResponse>("integrations");
+            return await _httpClient.GetFromJsonAsync<GetIntegrationsResponse>("integrations", _jsonSerializerOptions);
         }
 
         public async Task<string> GetFitbitAuthenticationUriAsync(string redirectUri)

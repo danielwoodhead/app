@@ -3,6 +3,7 @@
     public class Integration
     {
         public string Id { get; set; }
-        public string Provider { get; set; }
+        public Provider Provider { get; set; }
+        public bool Enabled { get; set; }
     }
 }

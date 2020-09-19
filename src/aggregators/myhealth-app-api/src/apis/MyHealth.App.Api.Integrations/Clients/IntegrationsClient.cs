@@ -25,9 +25,9 @@ namespace MyHealth.App.Api.Integrations.Clients
             return await _httpClient.SendAsync(HttpMethod.Get, Endpoints.Integration(id));
         }
 
-        public async Task<HttpResponseMessage> SearchIntegrationsAsync()
+        public async Task<HttpResponseMessage> GetIntegrationsAsync()
         {
-            return await _httpClient.SendAsync(HttpMethod.Get, Endpoints.SearchIntegrations);
+            return await _httpClient.SendAsync(HttpMethod.Get, Endpoints.Integrations);
         }
 
         #region Fitbit
@@ -46,7 +46,7 @@ namespace MyHealth.App.Api.Integrations.Clients
 
         private class Endpoints
         {
-            public const string SearchIntegrations = "integrations";
+            public const string Integrations = "integrations";
             public static string Integration(string id) => $"integrations/{id}";
 
             #region Fitbit

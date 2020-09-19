@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MyHealth.Extensions.AspNetCore.Context;
 using MyHealth.Extensions.Events;
 using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Core.Events;
 using MyHealth.Integrations.Core.Extensions;
+using MyHealth.Integrations.Core.Utility;
 using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Events;
 using MyHealth.Integrations.Models.Response;
@@ -68,13 +70,21 @@ namespace MyHealth.Integrations.Core.Services
             return await _integrationRepository.GetIntegrationAsync(userId, provider);
         }
 
-        public async Task<SearchIntegrationsResponse> SearchIntegrationsAsync()
+        public async Task<GetIntegrationsResponse> GetIntegrationsAsync()
         {
-            IEnumerable<Integration> integrations = await _integrationRepository.GetIntegrationsAsync(_operationContext.UserId);
+            IDictionary<Provider, Integration> integrations = (await _integrationRepository.GetIntegrationsAsync(_operationContext.UserId))
+                .ToDictionary(integration => integration.Provider, integration => integration);
 
-            return new SearchIntegrationsResponse
+            return new GetIntegrationsResponse
             {
-                Integrations = integrations
+                Integrations = EnumHelper.GetValues<Provider>()
+                    .Select(provider => integrations.TryGetValue(provider, out var integration)
+                        ? integration
+                        : new Integration
+                        {
+                            Provider = provider,
+                            Enabled = false
+                        })
             };
         }
 

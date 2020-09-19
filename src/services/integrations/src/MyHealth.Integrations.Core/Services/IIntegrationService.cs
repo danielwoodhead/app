@@ -6,7 +6,7 @@ namespace MyHealth.Integrations.Core.Services
 {
     public interface IIntegrationService
     {
-        Task<SearchIntegrationsResponse> SearchIntegrationsAsync();
+        Task<GetIntegrationsResponse> GetIntegrationsAsync();
         Task<Integration> GetIntegrationAsync(string id);
         Task<Integration> GetIntegrationAsync(string userId, Provider provider);
         Task<Integration> CreateIntegrationAsync(ProviderRequest request);

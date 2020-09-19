@@ -1,0 +1,58 @@
+﻿@page "/integrations"
+@attribute [Authorize]
+@inject IAppApiClient AppApiClient
+@inject NavigationManager NavigationManager
+@using MyHealth.Web.Core.AppApi
+@using MyHealth.Web.Core.Models
+
+<h3>Integrations</h3>
+
+@if (_integrations is null)
+{
+    <LoadingIndicator />
+}
+else
+{
+<div class="card-deck">
+    @foreach (var integration in _integrations)
+    {
+        <IntegrationCard
+            Integration="@integration"
+            OnCreateIntegration="@CreateIntegrationAsync"
+            OnDeleteIntegration="@DeleteIntegrationAsync"/>
+    }
+</div>
+}
+
+@code {
+    private IEnumerable<Integration> _integrations;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetIntegrationsAsync();
+    }
+
+    private async Task GetIntegrationsAsync()
+    {
+        _integrations = (await AppApiClient.GetAllIntegrationsAsync()).Integrations;
+    }
+
+    private async Task CreateIntegrationAsync(Integration integration)
+    {
+        switch (integration.Provider)
+        {
+            case Provider.Fitbit:
+                string fitbitAuthenticationUri = await AppApiClient.GetFitbitAuthenticationUriAsync($"{NavigationManager.BaseUri}integrations/fitbitcallback");
+                NavigationManager.NavigateTo(fitbitAuthenticationUri);
+                break;
+            default:
+                throw new Exception($"Unsupported provider {integration.Provider}");
+        }
+    }
+
+    private async Task DeleteIntegrationAsync(Integration integration)
+    {
+        await AppApiClient.DeleteIntegrationAsync(integration.Id);
+        await GetIntegrationsAsync();
+    }
+}
