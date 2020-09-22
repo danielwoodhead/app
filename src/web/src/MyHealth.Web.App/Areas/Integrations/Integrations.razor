@@ -13,15 +13,15 @@
 }
 else
 {
-<div class="card-deck">
-    @foreach (var integration in _integrations)
-    {
-        <IntegrationCard
-            Integration="@integration"
-            OnCreateIntegration="@CreateIntegrationAsync"
-            OnDeleteIntegration="@DeleteIntegrationAsync"/>
-    }
-</div>
+    <div class="card-deck">
+        @foreach (var integration in _integrations)
+        {
+            <IntegrationCard
+                Integration="@integration"
+                OnCreateIntegration="@CreateIntegrationAsync"
+                OnDeleteIntegration="@DeleteIntegrationAsync"/>
+        }
+    </div>
 }
 
 @code {
@@ -44,6 +44,10 @@ else
             case Provider.Fitbit:
                 string fitbitAuthenticationUri = await AppApiClient.GetFitbitAuthenticationUriAsync($"{NavigationManager.BaseUri}integrations/fitbitcallback");
                 NavigationManager.NavigateTo(fitbitAuthenticationUri);
+                break;
+            case Provider.Strava:
+                string stravaAuthenticationUri = await AppApiClient.GetStravaAuthenticationUriAsync($"{NavigationManager.BaseUri}integrations/stravacallback");
+                NavigationManager.NavigateTo(stravaAuthenticationUri);
                 break;
             default:
                 throw new Exception($"Unsupported provider {integration.Provider}");

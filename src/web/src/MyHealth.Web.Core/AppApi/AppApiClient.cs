@@ -36,18 +36,6 @@ namespace MyHealth.Web.Core.AppApi
 
         #region Integrations
 
-        public async Task CreateFitbitIntegrationAsync(string code, string redirectUri)
-        {
-            await _httpClient.PostAsJsonAsync(
-                "integrations/fitbit",
-                new AuthorizationCodeRequest
-                {
-                    Code = code,
-                    RedirectUri = new Uri(redirectUri)
-                },
-                _jsonSerializerOptions);
-        }
-
         public async Task DeleteIntegrationAsync(string id)
         {
             await _httpClient.DeleteAsync($"integrations/{id}");
@@ -58,11 +46,43 @@ namespace MyHealth.Web.Core.AppApi
             return await _httpClient.GetFromJsonAsync<GetIntegrationsResponse>("integrations", _jsonSerializerOptions);
         }
 
+        public async Task CreateFitbitIntegrationAsync(string code, string redirectUri)
+        {
+            await _httpClient.PostAsJsonAsync(
+                "integrations/fitbit",
+                new CreateFitbitIntegrationRequest
+                {
+                    Code = code,
+                    RedirectUri = new Uri(redirectUri)
+                },
+                _jsonSerializerOptions);
+        }
+
         public async Task<string> GetFitbitAuthenticationUriAsync(string redirectUri)
         {
             return await _httpClient.GetStringAsync(
                 QueryHelpers.AddQueryString(
                     "integrations/fitbit/authenticationUri",
+                    "redirectUri",
+                    redirectUri));
+        }
+
+        public async Task CreateStravaIntegrationAsync(string code)
+        {
+            await _httpClient.PostAsJsonAsync(
+                "integrations/strava",
+                new CreateStravaIntegrationRequest
+                {
+                    Code = code
+                },
+                _jsonSerializerOptions);
+        }
+
+        public async Task<string> GetStravaAuthenticationUriAsync(string redirectUri)
+        {
+            return await _httpClient.GetStringAsync(
+                QueryHelpers.AddQueryString(
+                    "integrations/strava/authenticationUri",
                     "redirectUri",
                     redirectUri));
         }

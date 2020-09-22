@@ -14,10 +14,12 @@ namespace MyHealth.Web.Core.AppApi
 
         #region Integrations
 
-        Task CreateFitbitIntegrationAsync(string code, string redirectUri);
         Task DeleteIntegrationAsync(string id);
         Task<GetIntegrationsResponse> GetAllIntegrationsAsync();
+        Task CreateFitbitIntegrationAsync(string code, string redirectUri);
         Task<string> GetFitbitAuthenticationUriAsync(string redirectUri);
+        Task CreateStravaIntegrationAsync(string code);
+        Task<string> GetStravaAuthenticationUriAsync(string redirectUri);
 
         #endregion Integrations
     }

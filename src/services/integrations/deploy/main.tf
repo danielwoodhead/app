@@ -71,6 +71,8 @@ resource "azurerm_app_service" "as" {
     Fitbit__AuthenticationUrl                       = var.fitbit_authentication_url
     KeyVault__Name                                  = var.key_vault_name
     Logging__ApplicationInsights__LogLevel__Default = "Information"
+    Strava__ApiUrl                                  = var.strava_api_url
+    Strava__AuthenticationUrl                       = var.strava_authentication_url
     Swagger__Enabled                                = var.swagger_enabled
     Swagger__AuthorizationUrl                       = var.swagger_authorization_url
     Swagger__TokenUrl                               = var.swagger_token_url

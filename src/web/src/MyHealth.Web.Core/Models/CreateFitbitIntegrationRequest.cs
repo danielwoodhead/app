@@ -2,7 +2,7 @@
 
 namespace MyHealth.Web.Core.Models
 {
-    public class AuthorizationCodeRequest
+    public class CreateFitbitIntegrationRequest
     {
         public string Code { get; set; }
         public Uri RedirectUri { get; set; }

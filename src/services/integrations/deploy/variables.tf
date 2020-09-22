@@ -76,6 +76,16 @@ variable "iomt_event_hub_resource_group_name" {
   description = "The name of the IoMT event hub resource group"
 }
 
+variable "strava_api_url" {
+  description = "The Strava API URL"
+  default     = "https://www.strava.com/api/v3/"
+}
+
+variable "strava_authentication_url" {
+  description = "The Strava authentication URL"
+  default     = "https://www.strava.com/oauth/authorize"
+}
+
 variable "swagger_enabled" {
   description = "Should Swagger be enabled?"
   type = bool

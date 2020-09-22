@@ -54,6 +54,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.Core.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.AspNetCore.Context", "..\..\extensions\src\MyHealth.Extensions.AspNetCore.Context\MyHealth.Extensions.AspNetCore.Context.csproj", "{5584FA91-2293-4DF6-B15C-4F51ABBB290C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Integrations.Strava", "src\integrations\MyHealth.Integrations.Strava\MyHealth.Integrations.Strava.csproj", "{4FA11A4E-A520-487A-81A7-8D771F80C2BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +138,10 @@ Global
 		{5584FA91-2293-4DF6-B15C-4F51ABBB290C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5584FA91-2293-4DF6-B15C-4F51ABBB290C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5584FA91-2293-4DF6-B15C-4F51ABBB290C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FA11A4E-A520-487A-81A7-8D771F80C2BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FA11A4E-A520-487A-81A7-8D771F80C2BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FA11A4E-A520-487A-81A7-8D771F80C2BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FA11A4E-A520-487A-81A7-8D771F80C2BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,6 +167,7 @@ Global
 		{C9C634AB-BA24-4183-869A-05E8B727E13F} = {51BB26EA-BBA7-4367-8CA2-24730F7C414C}
 		{375AC660-2CED-4F6F-995A-935DC3E8120C} = {4E9A52AF-080F-4FE8-84B1-D91BC4639D99}
 		{5584FA91-2293-4DF6-B15C-4F51ABBB290C} = {51BB26EA-BBA7-4367-8CA2-24730F7C414C}
+		{4FA11A4E-A520-487A-81A7-8D771F80C2BB} = {513FE50C-563E-41E5-986F-CC5F62BC2BA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FC99EDFF-9ABA-417A-90B8-78F618E975DE}

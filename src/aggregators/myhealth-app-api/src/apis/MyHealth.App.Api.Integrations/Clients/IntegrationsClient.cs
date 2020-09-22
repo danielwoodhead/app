@@ -44,6 +44,20 @@ namespace MyHealth.App.Api.Integrations.Clients
 
         #endregion Fitbit
 
+        #region Strava
+
+        public async Task<HttpResponseMessage> CreateStravaIntegrationAsync(CreateStravaIntegrationRequest request)
+        {
+            return await _httpClient.SendAsync(HttpMethod.Post, Endpoints.StravaIntegrations, request);
+        }
+
+        public async Task<HttpResponseMessage> GetStravaAuthenticationUri(string redirectUri)
+        {
+            return await _httpClient.SendAsync(HttpMethod.Get, Endpoints.StravaAuthenticationUri(redirectUri));
+        }
+
+        #endregion
+
         private class Endpoints
         {
             public const string Integrations = "integrations";
@@ -55,6 +69,13 @@ namespace MyHealth.App.Api.Integrations.Clients
             public static string FitbitAuthenticationUri(string redirectUri) => QueryHelpers.AddQueryString("integrations/fitbit/authenticationUri", "redirectUri", redirectUri);
 
             #endregion Fitbit
+
+            #region Strava
+
+            public const string StravaIntegrations = "integrations/strava";
+            public static string StravaAuthenticationUri(string redirectUri) => QueryHelpers.AddQueryString("integrations/strava/authenticationUri", "redirectUri", redirectUri);
+
+            #endregion
         }
     }
 }

@@ -59,5 +59,21 @@ namespace MyHealth.App.Api.Integrations.Controllers
 
             return await response.ToStringResultAsync();
         }
+
+        [HttpPost("strava")]
+        public async Task<ActionResult> CreateStravaIntegration([FromBody] CreateStravaIntegrationRequest request)
+        {
+            using HttpResponseMessage response = await _client.CreateStravaIntegrationAsync(request);
+
+            return response.ToResult();
+        }
+
+        [HttpGet("strava/authenticationUri")]
+        public async Task<ActionResult> GetStravaAuthenticationUri(string redirectUri)
+        {
+            using HttpResponseMessage response = await _client.GetStravaAuthenticationUri(redirectUri);
+
+            return await response.ToStringResultAsync();
+        }
     }
 }
