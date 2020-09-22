@@ -11,6 +11,7 @@ using MyHealth.Integrations.Api.Extensions;
 using MyHealth.Integrations.Core.Services;
 using MyHealth.Integrations.Data.TableStorage;
 using MyHealth.Integrations.Fitbit;
+using MyHealth.Integrations.Strava;
 using MyHealth.Integrations.Utility;
 
 namespace MyHealth.Integrations.Api
@@ -39,8 +40,9 @@ namespace MyHealth.Integrations.Api
             services.AddVersioning();
             services.AddTransient<IIntegrationService, IntegrationService>();
 
-            // providers
-            services.AddFitBitCore(Configuration);
+            // integrations
+            services.AddFitbit(Configuration);
+            services.AddStrava(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

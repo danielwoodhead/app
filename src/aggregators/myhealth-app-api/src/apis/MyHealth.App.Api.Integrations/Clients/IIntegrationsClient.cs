@@ -16,5 +16,12 @@ namespace MyHealth.App.Api.Integrations.Clients
         Task<HttpResponseMessage> GetFitbitAuthenticationUri(string redirectUri);
 
         #endregion Fitbit
+
+        #region Strava
+
+        Task<HttpResponseMessage> CreateStravaIntegrationAsync(CreateStravaIntegrationRequest request);
+        Task<HttpResponseMessage> GetStravaAuthenticationUri(string redirectUri);
+
+        #endregion Strava
     }
 }

@@ -13,6 +13,7 @@ COPY ["services/integrations/src/MyHealth.Integrations.Core/MyHealth.Integration
 COPY ["services/integrations/src/MyHealth.Integrations.Models/MyHealth.Integrations.Models.csproj", "services/integrations/src/MyHealth.Integrations.Models/"]
 COPY ["services/integrations/src/MyHealth.Integrations.Utility/MyHealth.Integrations.Utility.csproj", "services/integrations/src/MyHealth.Integrations.Utility/"]
 COPY ["services/integrations/src/integrations/MyHealth.Integrations.Fitbit/MyHealth.Integrations.Fitbit.csproj", "services/integrations/src/integrations/MyHealth.Integrations.Fitbit/"]
+COPY ["services/integrations/src/integrations/MyHealth.Integrations.Strava/MyHealth.Integrations.Strava.csproj", "services/integrations/src/integrations/MyHealth.Integrations.Strava/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Context/MyHealth.Extensions.AspNetCore.Context.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Context/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Swagger/MyHealth.Extensions.AspNetCore.Swagger.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Swagger/"]
 COPY ["extensions/src/MyHealth.Extensions.Events/MyHealth.Extensions.Events.csproj", "extensions/src/MyHealth.Extensions.Events/"]

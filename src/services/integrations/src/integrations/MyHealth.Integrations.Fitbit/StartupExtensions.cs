@@ -14,7 +14,7 @@ namespace MyHealth.Integrations.Fitbit
 {
     public static class StartupExtensions
     {
-        public static IServiceCollection AddFitBitCore(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddFitbit(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<FitbitSettings>(configuration.GetSection("Fitbit"));
             services.AddTransient<IFitbitService, FitbitService>();

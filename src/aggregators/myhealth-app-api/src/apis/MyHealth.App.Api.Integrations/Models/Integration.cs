@@ -17,6 +17,7 @@ namespace MyHealth.App.Api.Integrations.Models
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum Provider
     {
-        Fitbit
+        Fitbit,
+        Strava
     }
 }

@@ -1,4 +1,4 @@
-﻿@page "/integrations/fitbitcallback"
+﻿@page "/integrations/stravacallback"
 @attribute [Authorize]
 @inject IAppApiClient AppApiClient
 @inject NavigationManager NavigationManager
@@ -13,7 +13,7 @@
         var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
         if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("code", out var code))
         {
-            await AppApiClient.CreateFitbitIntegrationAsync(code, $"{NavigationManager.BaseUri}integrations/fitbitcallback");
+            await AppApiClient.CreateStravaIntegrationAsync(code);
         }
 
         NavigationManager.NavigateTo("/integrations");
