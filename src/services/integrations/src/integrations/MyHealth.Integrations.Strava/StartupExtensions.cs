@@ -16,7 +16,7 @@ namespace MyHealth.Integrations.Strava
             services.AddTransient<IStravaService, StravaService>();
             services.AddTransient<IIntegrationSystemService, StravaService>();
 
-            services.AddHttpClient<IStravaAuthenticationClient, StravaAuthenticationClient>((s, client) =>
+            services.AddHttpClient<IStravaClient, StravaClient>((s, client) =>
             {
                 var settings = s.GetService<IOptions<StravaSettings>>();
                 client.BaseAddress = new Uri(settings.Value.ApiUrl);
