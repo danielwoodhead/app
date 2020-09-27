@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
@@ -13,14 +14,14 @@ namespace MyHealth.Integrations.Strava.Services
     public class StravaService : IStravaService, IIntegrationSystemService
     {
         private readonly StravaSettings _stravaSettings;
-        private readonly IStravaAuthenticationClient _stravaAuthenticationClient;
+        private readonly IStravaClient _stravaClient;
 
         public StravaService(
             IOptions<StravaSettings> stravaSettings,
-            IStravaAuthenticationClient stravaAuthenticationClient)
+            IStravaClient stravaClient)
         {
             _stravaSettings = stravaSettings.Value;
-            _stravaAuthenticationClient = stravaAuthenticationClient;
+            _stravaClient = stravaClient;
         }
 
         public Provider Provider => Provider.Strava;
@@ -28,7 +29,7 @@ namespace MyHealth.Integrations.Strava.Services
         public async Task<ProviderResult> CreateIntegrationAsync(ProviderRequest request)
         {
             var requestData = (CreateStravaIntegrationRequest)request.Data;
-            TokenResponse tokenResponse = await _stravaAuthenticationClient.AuthenticateAsync(requestData.Code);
+            TokenResponse tokenResponse = await _stravaClient.AuthenticateAsync(requestData.Code);
 
             return new ProviderResult
             {
@@ -42,10 +43,25 @@ namespace MyHealth.Integrations.Strava.Services
             };
         }
 
+        public async Task<StravaSubscription> CreateSubscriptionAsync(string callbackUrl)
+        {
+            return await _stravaClient.CreateSubscriptionAsync(callbackUrl);
+        }
+
         public Task DeleteIntegrationAsync(string userId)
         {
             // nothing to do - the Strava subscription is for the application, not the user
             return Task.CompletedTask;
+        }
+
+        public async Task DeleteSubscriptionAsync()
+        {
+            var subscriptions = await GetSubscriptionsAsync();
+
+            if (subscriptions != null && subscriptions.Any())
+            {
+                await _stravaClient.DeleteSubscriptionAsync(subscriptions.First().Id);
+            }
         }
 
         public string GetAuthenticationUri(string redirectUri)
@@ -60,6 +76,16 @@ namespace MyHealth.Integrations.Strava.Services
                     { "approval_prompt", "force" },
                     { "scope", "read" }
                 });
+        }
+
+        public async Task<IEnumerable<StravaSubscription>> GetSubscriptionsAsync()
+        {
+            return await _stravaClient.GetSubscriptionsAsync();
+        }
+
+        public bool ValidateSubscription(string verifyToken)
+        {
+            return verifyToken == _stravaSettings.SubscriptionVerifyToken;
         }
     }
 }
