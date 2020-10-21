@@ -3,9 +3,10 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyHealth.Integrations.Core.Events;
-using MyHealth.Integrations.Data.TableStorage;
+using MyHealth.Integrations.Data.Cosmos;
 using MyHealth.Integrations.Fitbit;
 using MyHealth.Integrations.IoMT.EventHub;
+using MyHealth.Integrations.Strava;
 using MyHealth.Integrations.Utility;
 using EventHandler = MyHealth.Integrations.Core.Events.EventHandler;
 
@@ -25,10 +26,14 @@ namespace MyHealth.Integrations.FunctionApp
 
             builder.Services.AddTransient<IEventHandler, EventHandler>();
             builder.Services.AddIoMTEventHub(configuration);
-            builder.Services.AddTableStorage(configuration);
+            builder.Services.AddCosmos(configuration);
             builder.Services.AddUtility();
+
+            // integrations
             builder.Services.AddFitbit(configuration);
             builder.Services.AddFitbitEventHandlers();
+            builder.Services.AddStrava(configuration);
+            builder.Services.AddStravaEventHandlers();
         }
     }
 }

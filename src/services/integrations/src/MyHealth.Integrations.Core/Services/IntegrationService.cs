@@ -41,7 +41,11 @@ namespace MyHealth.Integrations.Core.Services
             IIntegrationSystemService integrationSystemService = _integrationSystemServices.GetService(request.Provider);
             ProviderResult creationResult = await integrationSystemService.CreateIntegrationAsync(request);
 
-            Integration integration = await _integrationRepository.CreateIntegrationAsync(_operationContext.UserId, creationResult.Provider, creationResult.Data);
+            Integration integration = await _integrationRepository.CreateIntegrationAsync(
+                _operationContext.UserId,
+                creationResult.Provider,
+                creationResult.ProviderUserId,
+                creationResult.Data);
             await _eventPublisher.PublishAsync(CreateIntegrationCreatedEvent(integration));
 
             return integration;
@@ -88,9 +92,9 @@ namespace MyHealth.Integrations.Core.Services
             };
         }
 
-        public async Task UpdateIntegrationAsync(string userId, Provider provider, object integrationData)
+        public async Task UpdateIntegrationAsync(string userId, Provider provider, IProviderData providerData)
         {
-            await _integrationRepository.UpdateIntegrationAsync(userId, provider, integrationData);
+            await _integrationRepository.UpdateIntegrationAsync(userId, provider, providerData);
         }
 
         private IntegrationCreatedEvent CreateIntegrationCreatedEvent(Integration integration) =>

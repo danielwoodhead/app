@@ -2,8 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using MyHealth.Integrations.Core.Events.Handlers;
 using MyHealth.Integrations.Core.Services;
 using MyHealth.Integrations.Strava.Clients;
+using MyHealth.Integrations.Strava.EventHandlers;
 using MyHealth.Integrations.Strava.Services;
 
 namespace MyHealth.Integrations.Strava
@@ -21,6 +23,13 @@ namespace MyHealth.Integrations.Strava
                 var settings = s.GetService<IOptions<StravaSettings>>();
                 client.BaseAddress = new Uri(settings.Value.ApiUrl);
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddStravaEventHandlers(this IServiceCollection services)
+        {
+            services.AddTransient<IIntegrationProviderUpdateEventHandler, StravaProviderUpdateEventHandler>();
 
             return services;
         }

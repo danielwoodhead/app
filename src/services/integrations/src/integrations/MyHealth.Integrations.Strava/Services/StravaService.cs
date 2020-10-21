@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyHealth.Extensions.AspNetCore.Context;
+using MyHealth.Extensions.Caching.Distributed;
+using MyHealth.Extensions.Events;
+using MyHealth.Integrations.Core.Events;
 using MyHealth.Integrations.Core.Services;
+using MyHealth.Integrations.Core.Utility;
 using MyHealth.Integrations.Models;
+using MyHealth.Integrations.Models.Events;
 using MyHealth.Integrations.Strava.Clients;
 using MyHealth.Integrations.Strava.Models;
 
@@ -15,13 +23,28 @@ namespace MyHealth.Integrations.Strava.Services
     {
         private readonly StravaSettings _stravaSettings;
         private readonly IStravaClient _stravaClient;
+        private readonly IEventPublisher _eventPublisher;
+        private readonly IOperationContext _operationContext;
+        private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly IDistributedCache _cache;
+        private readonly ILogger<StravaService> _logger;
 
         public StravaService(
             IOptions<StravaSettings> stravaSettings,
-            IStravaClient stravaClient)
+            IStravaClient stravaClient,
+            IEventPublisher eventPublisher,
+            IOperationContext operationContext,
+            IDateTimeProvider dateTimeProvider,
+            IDistributedCache cache,
+            ILogger<StravaService> logger)
         {
             _stravaSettings = stravaSettings.Value;
             _stravaClient = stravaClient;
+            _eventPublisher = eventPublisher;
+            _operationContext = operationContext;
+            _dateTimeProvider = dateTimeProvider;
+            _cache = cache;
+            _logger = logger;
         }
 
         public Provider Provider => Provider.Strava;
@@ -34,6 +57,7 @@ namespace MyHealth.Integrations.Strava.Services
             return new ProviderResult
             {
                 Provider = Provider,
+                ProviderUserId = tokenResponse.Athlete.Id.ToString(),
                 Data = new StravaIntegrationData
                 {
                     AccessToken = tokenResponse.AccessToken,
@@ -45,7 +69,10 @@ namespace MyHealth.Integrations.Strava.Services
 
         public async Task<StravaSubscription> CreateSubscriptionAsync(string callbackUrl)
         {
-            return await _stravaClient.CreateSubscriptionAsync(callbackUrl);
+            StravaSubscription subscription = await _stravaClient.CreateSubscriptionAsync(callbackUrl);
+            await CacheSubscriptionAsync(subscription);
+
+            return subscription;
         }
 
         public Task DeleteIntegrationAsync(string userId)
@@ -56,11 +83,12 @@ namespace MyHealth.Integrations.Strava.Services
 
         public async Task DeleteSubscriptionAsync()
         {
-            var subscriptions = await GetSubscriptionsAsync();
+            StravaSubscription subscription = await GetSubscriptionAsync();
 
-            if (subscriptions != null && subscriptions.Any())
+            if (subscription != null)
             {
-                await _stravaClient.DeleteSubscriptionAsync(subscriptions.First().Id);
+                await _stravaClient.DeleteSubscriptionAsync(subscription.Id);
+                await _cache.RemoveAsync(Cache.StravaSubscription);
             }
         }
 
@@ -74,18 +102,65 @@ namespace MyHealth.Integrations.Strava.Services
                     { "response_type", "code" },
                     { "redirect_uri", redirectUri },
                     { "approval_prompt", "force" },
-                    { "scope", "read" }
+                    { "scope", "activity:read" }
                 });
         }
 
-        public async Task<IEnumerable<StravaSubscription>> GetSubscriptionsAsync()
+        public async Task<StravaSubscription> GetSubscriptionAsync()
         {
-            return await _stravaClient.GetSubscriptionsAsync();
+            var cached = await _cache.GetAsync<StravaSubscription>(Cache.StravaSubscription);
+
+            if (cached != null)
+            {
+                return cached;
+            }
+
+            IEnumerable<StravaSubscription> subscriptions = await _stravaClient.GetSubscriptionsAsync();
+            StravaSubscription subscription = subscriptions.FirstOrDefault();
+
+            await CacheSubscriptionAsync(subscription);
+
+            return subscription;
+        }
+
+        public async Task ProcessUpdateNotification(StravaUpdateNotification updateNotification)
+        {
+            StravaSubscription subscription = await GetSubscriptionAsync();
+
+            if (updateNotification.SubscriptionId != subscription.Id)
+            {
+                _logger.LogWarning($"Received Strava update for unrecognised subscription ID: {updateNotification.SubscriptionId}");
+                return;
+            }
+
+            await _eventPublisher.PublishAsync(
+                new IntegrationProviderUpdateEvent(
+                    id: Guid.NewGuid().ToString(),
+                    subject: updateNotification.OwnerId.ToString(),
+                    eventTime: _dateTimeProvider.UtcNow,
+                    dataVersion: EventConstants.EventDataVersion,
+                    data: new IntegrationProviderEventData
+                    {
+                        OperationId = _operationContext.OperationId,
+                        SourceSystem = EventConstants.IntegrationsApi,
+                        SubjectSystem = Provider.Strava.ToString(),
+                        Provider = Provider,
+                        ProviderData = updateNotification
+                    }));
         }
 
         public bool ValidateSubscription(string verifyToken)
         {
             return verifyToken == _stravaSettings.SubscriptionVerifyToken;
         }
+
+        private async Task CacheSubscriptionAsync(StravaSubscription subscription) =>
+            await _cache.SetAsync(
+                Cache.StravaSubscription,
+                subscription,
+                new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+                });
     }
 }

@@ -25,7 +25,7 @@
     <ProjectReference Include="..\integrations\MyHealth.Integrations.Fitbit\MyHealth.Integrations.Fitbit.csproj" />
     <ProjectReference Include="..\integrations\MyHealth.Integrations.Strava\MyHealth.Integrations.Strava.csproj" />
     <ProjectReference Include="..\MyHealth.Integrations.Core\MyHealth.Integrations.Core.csproj" />
-    <ProjectReference Include="..\MyHealth.Integrations.Data.TableStorage\MyHealth.Integrations.Data.TableStorage.csproj" />
+    <ProjectReference Include="..\MyHealth.Integrations.Data.Cosmos\MyHealth.Integrations.Data.Cosmos.csproj" />
     <ProjectReference Include="..\MyHealth.Integrations.Models\MyHealth.Integrations.Models.csproj" />
     <ProjectReference Include="..\MyHealth.Integrations.Utility\MyHealth.Integrations.Utility.csproj" />
   </ItemGroup>

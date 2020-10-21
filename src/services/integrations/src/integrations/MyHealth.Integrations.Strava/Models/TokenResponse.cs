@@ -19,6 +19,13 @@ namespace MyHealth.Integrations.Strava.Models
         [JsonPropertyName("access_token")]
         public string AccessToken { get; set; }
 
-        // also returns "athlete" which we don't need right now
+        [JsonPropertyName("athlete")]
+        public Athlete Athlete { get; set; }
+    }
+
+    public class Athlete
+    {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
     }
 }
