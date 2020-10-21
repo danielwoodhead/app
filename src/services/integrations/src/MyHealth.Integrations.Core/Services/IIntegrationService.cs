@@ -11,6 +11,6 @@ namespace MyHealth.Integrations.Core.Services
         Task<Integration> GetIntegrationAsync(string userId, Provider provider);
         Task<Integration> CreateIntegrationAsync(ProviderRequest request);
         Task DeleteIntegrationAsync(string id);
-        Task UpdateIntegrationAsync(string userId, Provider fitbit, object integrationData);
+        Task UpdateIntegrationAsync(string userId, Provider fitbit, IProviderData providerData);
     }
 }

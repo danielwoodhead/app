@@ -82,12 +82,7 @@ namespace MyHealth.Integrations.Strava.Clients
                     { "client_secret", _stravaSettings.ClientSecret }
                 });
 
-            var response = await _httpClient.GetAsync(requestUri);
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-                return null;
-
-            return await response.Content.ReadFromJsonAsync<IEnumerable<StravaSubscription>>();
+            return await _httpClient.GetFromJsonAsync<IEnumerable<StravaSubscription>>(requestUri);
         }
 
         public Task<TokenResponse> RefreshTokenAsync(string refreshToken)

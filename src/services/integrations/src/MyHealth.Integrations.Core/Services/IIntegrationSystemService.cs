@@ -10,16 +10,17 @@ namespace MyHealth.Integrations.Core.Services
         Task<ProviderResult> CreateIntegrationAsync(ProviderRequest request);
     }
 
-    public class ProviderRequest : ProviderData
+    public class ProviderRequest
     {
         public string UserId { get; set; }
-    }
-
-    public class ProviderResult : ProviderData { }
-
-    public class ProviderData
-    {
         public Provider Provider { get; set; }
         public object Data { get; set; }
+    }
+
+    public class ProviderResult
+    {
+        public Provider Provider { get; set; }
+        public string ProviderUserId { get; set; }
+        public IProviderData Data { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.Json;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using MyHealth.Integrations.Core.Data;
@@ -33,7 +32,7 @@ namespace MyHealth.Integrations.Fitbit.Services
             if (fitbitIntegration == null)
                 throw new ArgumentException($"Fitbit integration not found for userId '{userId}'");
 
-            FitbitIntegrationData fitbitIntegrationData = JsonSerializer.Deserialize<FitbitIntegrationData>(fitbitIntegration.Data);
+            var fitbitIntegrationData = (FitbitIntegrationData)fitbitIntegration.Data;
 
             // TODO: add expiry offset
             if (fitbitIntegrationData.AccessTokenExpiresUtc > _dateTimeProvider.UtcNow)
@@ -50,7 +49,6 @@ namespace MyHealth.Integrations.Fitbit.Services
             await _integrationsRepository.UpdateIntegrationAsync(userId, Provider.Fitbit, fitbitIntegrationData);
 
             return tokenResponse.AccessToken;
-            
         }
     }
 }

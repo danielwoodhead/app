@@ -9,7 +9,7 @@
         "Fitbit:ClientSecret": "",
         "IoMT:EventHub:ConnectionString": "",
         "IoMT:EventHub:Name": "",
-        "TableStorage:ConnectionString": "UseDevelopmentStorage=true",
-        "TableStorage:IntegrationsTableName": "Integrations"
+        "Strava:ApiUrl": "https://www.strava.com/api/v3/",
+        "Strava:AuthenticationUrl": "https://www.strava.com/oauth/authorize"
     }
 }

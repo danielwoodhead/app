@@ -8,7 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["services/integrations/src/MyHealth.Integrations.Api/MyHealth.Integrations.Api.csproj", "services/integrations/src/MyHealth.Integrations.Api/"]
-COPY ["services/integrations/src/MyHealth.Integrations.Data.TableStorage/MyHealth.Integrations.Data.TableStorage.csproj", "services/integrations/src/MyHealth.Integrations.Data.TableStorage/"]
+COPY ["services/integrations/src/MyHealth.Integrations.Data.Cosmos/MyHealth.Integrations.Data.Cosmos.csproj", "services/integrations/src/MyHealth.Integrations.Data.Cosmos/"]
 COPY ["services/integrations/src/MyHealth.Integrations.Core/MyHealth.Integrations.Core.csproj", "services/integrations/src/MyHealth.Integrations.Core/"]
 COPY ["services/integrations/src/MyHealth.Integrations.Models/MyHealth.Integrations.Models.csproj", "services/integrations/src/MyHealth.Integrations.Models/"]
 COPY ["services/integrations/src/MyHealth.Integrations.Utility/MyHealth.Integrations.Utility.csproj", "services/integrations/src/MyHealth.Integrations.Utility/"]
@@ -17,7 +17,6 @@ COPY ["services/integrations/src/integrations/MyHealth.Integrations.Strava/MyHea
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Context/MyHealth.Extensions.AspNetCore.Context.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Context/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Swagger/MyHealth.Extensions.AspNetCore.Swagger.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Swagger/"]
 COPY ["extensions/src/MyHealth.Extensions.Events/MyHealth.Extensions.Events.csproj", "extensions/src/MyHealth.Extensions.Events/"]
-COPY ["extensions/src/MyHealth.Extensions.Azure.Storage.Table/MyHealth.Extensions.Azure.Storage.Table.csproj", "extensions/src/MyHealth.Extensions.Azure.Storage.Table/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Versioning/MyHealth.Extensions.AspNetCore.Versioning.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Versioning/"]
 COPY ["extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/MyHealth.Extensions.Events.Azure.EventGrid.csproj", "extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/"]
 COPY ["extensions/src/MyHealth.Extensions.DependencyInjection/MyHealth.Extensions.DependencyInjection.csproj", "extensions/src/MyHealth.Extensions.DependencyInjection/"]

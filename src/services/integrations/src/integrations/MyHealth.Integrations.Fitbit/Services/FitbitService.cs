@@ -58,6 +58,7 @@ namespace MyHealth.Integrations.Fitbit.Services
             return new ProviderResult
             {
                 Provider = Provider,
+                ProviderUserId = request.UserId,
                 Data = new FitbitIntegrationData
                 {
                     AccessToken = tokenResponse.AccessToken,

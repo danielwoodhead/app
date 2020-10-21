@@ -9,7 +9,7 @@ using MyHealth.Extensions.AspNetCore.Swagger;
 using MyHealth.Extensions.AspNetCore.Versioning;
 using MyHealth.Integrations.Api.Extensions;
 using MyHealth.Integrations.Core.Services;
-using MyHealth.Integrations.Data.TableStorage;
+using MyHealth.Integrations.Data.Cosmos;
 using MyHealth.Integrations.Fitbit;
 using MyHealth.Integrations.Strava;
 using MyHealth.Integrations.Utility;
@@ -32,10 +32,11 @@ namespace MyHealth.Integrations.Api
             services.AddAuthentication(Configuration);
             services.AddContext();
             services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            services.AddCosmos(Configuration);
+            services.AddDistributedMemoryCache(); // TODO: use real distributed cache
             services.AddEvents(Configuration);
             services.AddHealthChecks();
             services.AddSwagger(Configuration);
-            services.AddTableStorage(Configuration);
             services.AddUtility();
             services.AddVersioning();
             services.AddTransient<IIntegrationService, IntegrationService>();

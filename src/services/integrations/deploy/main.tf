@@ -41,6 +41,23 @@ resource "azurerm_storage_account" "storage" {
   account_replication_type = "LRS"
 }
 
+resource "azurerm_cosmosdb_account" "db" {
+  name                = "${var.prefix}-cosmos"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  offer_type          = "Standard"
+  kind                = "GlobalDocumentDB"
+
+  consistency_policy {
+    consistency_level = "Session"
+  }
+
+  geo_location {
+    location          = var.location
+    failover_priority = 0
+  }
+}
+
 resource "azurerm_app_service" "as" {
   name                = "${var.prefix}-api"
   location            = var.location
@@ -80,9 +97,9 @@ resource "azurerm_app_service" "as" {
   }
 
   connection_string {
-    name  = "TableStorage"
+    name  = "Cosmos"
     type  = "Custom"
-    value = azurerm_storage_account.storage.primary_connection_string
+    value = azurerm_cosmosdb_account.db.connection_strings[0]
   }
 }
 
@@ -110,6 +127,12 @@ resource "azurerm_function_app" "functions" {
     type = "SystemAssigned"
   }
 
+  site_config {
+    always_on                 = true
+    linux_fx_version          = "DOCKER|${data.azurerm_container_registry.cr.login_server}/${var.functions_container_image_name}"
+    use_32_bit_worker_process = true
+  }
+
   app_settings = {
     APPINSIGHTS_INSTRUMENTATIONKEY      = data.azurerm_application_insights.ai.instrumentation_key
     DOCKER_REGISTRY_SERVER_URL          = "https://${data.azurerm_container_registry.cr.login_server}"
@@ -124,18 +147,14 @@ resource "azurerm_function_app" "functions" {
     IoMT__EventHub__ConnectionString    = data.azurerm_eventhub_namespace.iomt.default_primary_connection_string
     IoMT__EventHub__Name                = var.iomt_event_hub_name
     KeyVault__Name                      = var.key_vault_name
+    Strava__ApiUrl                      = var.strava_api_url
+    Strava__AuthenticationUrl           = var.strava_authentication_url
   }
 
   connection_string {
-    name  = "TableStorage"
+    name  = "Cosmos"
     type  = "Custom"
-    value = azurerm_storage_account.storage.primary_connection_string
-  }
-
-  site_config {
-    always_on                 = true
-    linux_fx_version          = "DOCKER|${data.azurerm_container_registry.cr.login_server}/${var.functions_container_image_name}"
-    use_32_bit_worker_process = true
+    value = azurerm_cosmosdb_account.db.connection_strings[0]
   }
 }
 
@@ -164,4 +183,15 @@ resource "azurerm_eventgrid_event_subscription" "sub" {
     max_events_per_batch              = 1 # default (added to prevent constant TF changes)
     preferred_batch_size_in_kilobytes = 64 # default (added to prevent constant TF changes)
   }
+
+  storage_blob_dead_letter_destination {
+    storage_account_id = azurerm_storage_account.storage.id
+    storage_blob_container_name = "provider-update-event-dead-letter"
+  }
+}
+
+resource "azurerm_storage_container" "provider_update_event_dead_letter" {
+  name                  = "provider-update-event-dead-letter"
+  storage_account_name  = azurerm_storage_account.storage.name
+  container_access_type = "private"
 }

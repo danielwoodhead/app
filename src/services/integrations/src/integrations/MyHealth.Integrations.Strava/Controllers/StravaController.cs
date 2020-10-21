@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -97,12 +97,12 @@ namespace MyHealth.Integrations.Strava.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StravaSubscription>> GetStravaSubscription()
         {
-            var subscriptions = await _stravaService.GetSubscriptionsAsync();
+            var subscription = await _stravaService.GetSubscriptionAsync();
 
-            if (subscriptions is null || !subscriptions.Any())
+            if (subscription is null)
                 return NotFound();
 
-            return subscriptions.First();
+            return subscription;
         }
 
         [HttpGet("update")]
@@ -139,6 +139,9 @@ namespace MyHealth.Integrations.Strava.Controllers
             string request = await reader.ReadToEndAsync();
 
             _logger.LogInformation(request);
+
+            await _stravaService.ProcessUpdateNotification(
+                JsonSerializer.Deserialize<StravaUpdateNotification>(request));
 
             return Ok();
         }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MyHealth.Integrations.Strava.Models;
 
 namespace MyHealth.Integrations.Strava.Services
@@ -8,8 +7,9 @@ namespace MyHealth.Integrations.Strava.Services
     {
         string GetAuthenticationUri(string redirectUri);
         Task<StravaSubscription> CreateSubscriptionAsync(string callbackUrl);
-        Task<IEnumerable<StravaSubscription>> GetSubscriptionsAsync();
+        Task<StravaSubscription> GetSubscriptionAsync();
         bool ValidateSubscription(string verifyToken);
         Task DeleteSubscriptionAsync();
+        Task ProcessUpdateNotification(StravaUpdateNotification stravaUpdateNotification);
     }
 }
