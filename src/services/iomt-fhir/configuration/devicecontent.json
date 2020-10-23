@@ -17,6 +17,28 @@
           }
         ]
       }
+    },
+    {
+      "templateType": "JsonPathContent",
+      "template": {
+        "typeName": "bikeRide",
+        "typeMatchExpression": "$..[?(@type == 'bikeRide')]",
+        "deviceIdExpression": "$.deviceId",
+        "patientIdExpression": "$.patientId",
+        "timestampExpression": "$.measurementDateTime",
+        "values": [
+          {
+            "required": "true",
+            "valueExpression": "$.distance",
+            "valueName": "distance"
+          },
+          {
+            "required": "true",
+            "valueExpression": "$.duration",
+            "valueName": "duration"
+          }
+        ]
+      }
     }
   ]
 }

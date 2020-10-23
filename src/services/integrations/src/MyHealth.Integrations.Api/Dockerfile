@@ -8,8 +8,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["services/integrations/src/MyHealth.Integrations.Api/MyHealth.Integrations.Api.csproj", "services/integrations/src/MyHealth.Integrations.Api/"]
-COPY ["services/integrations/src/MyHealth.Integrations.Data.Cosmos/MyHealth.Integrations.Data.Cosmos.csproj", "services/integrations/src/MyHealth.Integrations.Data.Cosmos/"]
 COPY ["services/integrations/src/MyHealth.Integrations.Core/MyHealth.Integrations.Core.csproj", "services/integrations/src/MyHealth.Integrations.Core/"]
+COPY ["services/integrations/src/MyHealth.Integrations.Data.Cosmos/MyHealth.Integrations.Data.Cosmos.csproj", "services/integrations/src/MyHealth.Integrations.Data.Cosmos/"]
+COPY ["services/integrations/src/MyHealth.Integrations.IoMT.EventHub/MyHealth.Integrations.IoMT.EventHub.csproj", "services/integrations/src/MyHealth.Integrations.IoMT.EventHub/"]
 COPY ["services/integrations/src/MyHealth.Integrations.Models/MyHealth.Integrations.Models.csproj", "services/integrations/src/MyHealth.Integrations.Models/"]
 COPY ["services/integrations/src/MyHealth.Integrations.Utility/MyHealth.Integrations.Utility.csproj", "services/integrations/src/MyHealth.Integrations.Utility/"]
 COPY ["services/integrations/src/integrations/MyHealth.Integrations.Fitbit/MyHealth.Integrations.Fitbit.csproj", "services/integrations/src/integrations/MyHealth.Integrations.Fitbit/"]

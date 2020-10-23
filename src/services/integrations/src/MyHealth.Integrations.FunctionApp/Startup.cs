@@ -33,7 +33,6 @@ namespace MyHealth.Integrations.FunctionApp
             builder.Services.AddFitbit(configuration);
             builder.Services.AddFitbitEventHandlers();
             builder.Services.AddStrava(configuration);
-            builder.Services.AddStravaEventHandlers();
         }
     }
 }

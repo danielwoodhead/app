@@ -15,21 +15,17 @@ namespace MyHealth.Integrations.Strava
         public static IServiceCollection AddStrava(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<StravaSettings>(configuration.GetSection("Strava"));
-            services.AddTransient<IStravaService, StravaService>();
-            services.AddTransient<IIntegrationSystemService, StravaService>();
+            services.AddTransient<IIntegrationSystemService, StravaIntegrationService>();
+            services.AddTransient<IStravaAuthenticationService, StravaAuthenticationService>();
+            services.AddTransient<IStravaSubscriptionService, StravaSubscriptionService>();
+            services.AddTransient<IStravaUpdateService, StravaUpdateService>();
+            services.AddTransient<IIntegrationProviderUpdateEventHandler, StravaProviderUpdateEventHandler>();
 
             services.AddHttpClient<IStravaClient, StravaClient>((s, client) =>
             {
                 var settings = s.GetService<IOptions<StravaSettings>>();
                 client.BaseAddress = new Uri(settings.Value.ApiUrl);
             });
-
-            return services;
-        }
-
-        public static IServiceCollection AddStravaEventHandlers(this IServiceCollection services)
-        {
-            services.AddTransient<IIntegrationProviderUpdateEventHandler, StravaProviderUpdateEventHandler>();
 
             return services;
         }

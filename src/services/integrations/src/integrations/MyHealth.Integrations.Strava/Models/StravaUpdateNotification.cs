@@ -15,7 +15,7 @@ namespace MyHealth.Integrations.Strava.Models
         public long ObjectId { get; set; }
 
         [JsonPropertyName("object_type")]
-        public string ObjectType { get; set; }
+        public string ObjectType { get; set; } // "activity", "athlete"
 
         [JsonPropertyName("owner_id")]
         public long OwnerId { get; set; }

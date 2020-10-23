@@ -21,6 +21,54 @@
           "valueType": "Quantity"
         }
       }
+    },
+    {
+      "templateType": "CodeValueFhir",
+      "template": {
+        "codes": [
+          {
+            "code": "61686008",
+            "system": "http://snomed.info/sct",
+            "display": "Physical exercise"
+          }
+        ],
+        "periodInterval": 0,
+        "typeName": "bikeRide",
+        "components": [
+          {
+            "codes": [
+              {
+                "code": "246132006",
+                "system": "http://snomed.info/sct",
+                "display": "Distance"
+              }
+            ],
+            "value": {
+              "unit": "meter",
+              "code": "m",
+              "system": "http://unitsofmeasure.org",
+              "valueName": "distance",
+              "valueType": "Quantity"
+            }
+          },
+          {
+            "codes": [
+              {
+                "code": "762636008",
+                "system": "http://snomed.info/sct",
+                "display": "Duration"
+              }
+            ],
+            "value": {
+              "unit": "second",
+              "code": "s",
+              "system": "http://unitsofmeasure.org",
+              "valueName": "duration",
+              "valueType": "Quantity"
+            }
+          }
+        ]
+      }
     }
   ]
 }
