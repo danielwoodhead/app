@@ -1,15 +1,13 @@
 ﻿using System.Threading.Tasks;
-using MyHealth.Integrations.Strava.Models;
+using MyHealth.Integrations.Strava.Clients.Models;
 
 namespace MyHealth.Integrations.Strava.Services
 {
-    public interface IStravaService
+    public interface IStravaSubscriptionService
     {
-        string GetAuthenticationUri(string redirectUri);
         Task<StravaSubscription> CreateSubscriptionAsync(string callbackUrl);
+        Task DeleteSubscriptionAsync();
         Task<StravaSubscription> GetSubscriptionAsync();
         bool ValidateSubscription(string verifyToken);
-        Task DeleteSubscriptionAsync();
-        Task ProcessUpdateNotification(StravaUpdateNotification stravaUpdateNotification);
     }
 }

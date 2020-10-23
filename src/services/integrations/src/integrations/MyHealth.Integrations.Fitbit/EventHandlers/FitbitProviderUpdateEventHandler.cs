@@ -55,29 +55,21 @@ namespace MyHealth.Integrations.Fitbit.EventHandlers
                 date: fitbitUpdate.Date,
                 accessToken: accessToken);
 
-            IoMTModel model = ConvertToIoMTModel(resource, fitbitUpdate);
-
-            if (model == null)
+            if (resource.Body is null)
             {
                 _logger.LogWarning($"Data mapping not supported: {JsonConvert.SerializeObject(resource)}");
                 return;
             }
 
-            await _iomtDataPublisher.PublishAsync(model);
-        }
-
-        private static IoMTModel ConvertToIoMTModel(ResourceContainer resource, FitbitUpdateNotification fitbitUpdate)
-        {
-            if (resource.Body == null)
-                return null;
-
-            return new BodyWeight
+            IoMTModel iomtModel = new BodyWeight
             {
                 Weight = resource.Body.Weight,
                 MeasurementDateTime = fitbitUpdate.Date,
-                DeviceId = fitbitUpdate.SubscriptionId,
-                PatientId = fitbitUpdate.SubscriptionId
+                DeviceId = providerUpdateEvent.Data.UserId,
+                PatientId = providerUpdateEvent.Data.UserId
             };
+
+            await _iomtDataPublisher.PublishAsync(iomtModel);
         }
     }
 }

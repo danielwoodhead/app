@@ -8,9 +8,11 @@ using MyHealth.Extensions.AspNetCore.Context;
 using MyHealth.Extensions.AspNetCore.Swagger;
 using MyHealth.Extensions.AspNetCore.Versioning;
 using MyHealth.Integrations.Api.Extensions;
+using MyHealth.Integrations.Core.Events;
 using MyHealth.Integrations.Core.Services;
 using MyHealth.Integrations.Data.Cosmos;
 using MyHealth.Integrations.Fitbit;
+using MyHealth.Integrations.IoMT.EventHub;
 using MyHealth.Integrations.Strava;
 using MyHealth.Integrations.Utility;
 
@@ -36,10 +38,12 @@ namespace MyHealth.Integrations.Api
             services.AddDistributedMemoryCache(); // TODO: use real distributed cache
             services.AddEvents(Configuration);
             services.AddHealthChecks();
+            services.AddIoMTEventHub(Configuration);
             services.AddSwagger(Configuration);
             services.AddUtility();
             services.AddVersioning();
             services.AddTransient<IIntegrationService, IntegrationService>();
+            services.AddTransient<IEventHandler, EventHandler>();
 
             // integrations
             services.AddFitbit(Configuration);

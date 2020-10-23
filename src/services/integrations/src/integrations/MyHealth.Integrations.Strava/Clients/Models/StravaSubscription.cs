@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MyHealth.Integrations.Strava.Models
+namespace MyHealth.Integrations.Strava.Clients.Models
 {
     public class StravaSubscription
     {

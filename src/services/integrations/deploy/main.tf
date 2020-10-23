@@ -86,6 +86,8 @@ resource "azurerm_app_service" "as" {
     EventGrid__TopicKey                             = azurerm_eventgrid_topic.topic.primary_access_key
     Fitbit__BaseUrl                                 = var.fitbit_base_url
     Fitbit__AuthenticationUrl                       = var.fitbit_authentication_url
+    IoMT__EventHub__ConnectionString                = data.azurerm_eventhub_namespace.iomt.default_primary_connection_string
+    IoMT__EventHub__Name                            = var.iomt_event_hub_name
     KeyVault__Name                                  = var.key_vault_name
     Logging__ApplicationInsights__LogLevel__Default = "Information"
     Strava__ApiUrl                                  = var.strava_api_url

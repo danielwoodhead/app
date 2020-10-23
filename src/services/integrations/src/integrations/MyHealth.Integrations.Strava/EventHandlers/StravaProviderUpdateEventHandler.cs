@@ -4,10 +4,14 @@ using MyHealth.Extensions.Events;
 using MyHealth.Extensions.Logging;
 using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Core.Events.Handlers;
+using MyHealth.Integrations.Core.IoMT;
+using MyHealth.Integrations.Core.IoMT.Models;
 using MyHealth.Integrations.Models;
 using MyHealth.Integrations.Models.Events;
 using MyHealth.Integrations.Strava.Clients;
+using MyHealth.Integrations.Strava.Clients.Models;
 using MyHealth.Integrations.Strava.Models;
+using MyHealth.Integrations.Strava.Services;
 using Newtonsoft.Json.Linq;
 
 namespace MyHealth.Integrations.Strava.EventHandlers
@@ -15,17 +19,23 @@ namespace MyHealth.Integrations.Strava.EventHandlers
     public class StravaProviderUpdateEventHandler : IIntegrationProviderUpdateEventHandler
     {
         private readonly IStravaClient _stravaClient;
+        private readonly IStravaAuthenticationService _stravaAuthenticationService;
         private readonly ILogger<StravaProviderUpdateEventHandler> _logger;
         private readonly IIntegrationRepository _integrationRepository;
+        private readonly IIoMTDataPublisher _iomtDataPublisher;
 
         public StravaProviderUpdateEventHandler(
             IStravaClient stravaClient,
+            IStravaAuthenticationService stravaAuthenticationService,
             ILogger<StravaProviderUpdateEventHandler> logger,
-            IIntegrationRepository integrationRepository)
+            IIntegrationRepository integrationRepository,
+            IIoMTDataPublisher iomtDataPublisher)
         {
             _stravaClient = stravaClient;
+            _stravaAuthenticationService = stravaAuthenticationService;
             _logger = logger;
             _integrationRepository = integrationRepository;
+            _iomtDataPublisher = iomtDataPublisher;
         }
 
         public Provider Provider => Provider.Strava;
@@ -40,19 +50,38 @@ namespace MyHealth.Integrations.Strava.EventHandlers
                 ((JObject)providerUpdateEvent.Data.ProviderData)
                     .ToObject<StravaUpdateNotification>();
 
-            var integration = await _integrationRepository.GetIntegrationAsync(Provider, stravaUpdate.OwnerId.ToString());
-
-            if (integration is null)
+            if (stravaUpdate.ObjectType != "activity")
             {
-                _logger.LogError($"Failed to process Strava update event. Integration not found for OwnerId '{stravaUpdate.OwnerId}'.");
+                _logger.LogWarning($"Unsupported Strava object type '{stravaUpdate.ObjectType}'.");
                 return;
             }
 
-            _logger.LogInformation($"Integration found!"); // TEMP
+            string accessToken = await _stravaAuthenticationService.GetAccessTokenAsync(stravaUpdate.OwnerId);
 
-            // TODO: get new data from Strava
-            // TODO: convert data to IoMT model
-            // TODO: publish data to IoMT
+            if (accessToken is null)
+            {
+                _logger.LogWarning($"Failed to retrieve Strava access token for owner ID '{stravaUpdate.OwnerId}'.");
+                return;
+            }
+
+            DetailedActivity activity = await _stravaClient.GetActivityAsync(stravaUpdate.ObjectId, accessToken);
+
+            if (activity.Type != ActivityType.Ride)
+            {
+                _logger.LogWarning($"Unsupported Strava activity type '{activity.Type}'.");
+                return;
+            }
+
+            IoMTModel ioMTModel = new BikeRide
+            {
+                Distance = activity.Distance.Value,
+                Duration = activity.ElapsedTime.Value,
+                DeviceId = providerUpdateEvent.Data.UserId,
+                PatientId = providerUpdateEvent.Data.UserId,
+                MeasurementDateTime = activity.StartDate.Value
+            };
+
+            await _iomtDataPublisher.PublishAsync(ioMTModel);
         }
     }
 }

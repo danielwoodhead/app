@@ -22,23 +22,26 @@ namespace MyHealth.Integrations.Strava.Controllers
     public class StravaController : ControllerBase
     {
         private readonly IIntegrationService _integrationService;
-        private readonly IStravaService _stravaService;
+        private readonly IStravaAuthenticationService _stravaAuthenticationService;
+        private readonly IStravaSubscriptionService _stravaSubscriptionService;
+        private readonly IStravaUpdateService _stravaUpdateService;
         private readonly IUserOperationContext _operationContext;
         private readonly ILogger<StravaController> _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public StravaController(
             IIntegrationService integrationService,
-            IStravaService stravaService,
+            IStravaAuthenticationService stravaAuthenticationService,
+            IStravaSubscriptionService stravaSubscriptionService,
+            IStravaUpdateService stravaUpdateService,
             IUserOperationContext operationContext,
-            ILogger<StravaController> logger,
-            IHttpContextAccessor httpContextAccessor)
+            ILogger<StravaController> logger)
         {
             _integrationService = integrationService;
-            _stravaService = stravaService;
+            _stravaAuthenticationService = stravaAuthenticationService;
+            _stravaSubscriptionService = stravaSubscriptionService;
+            _stravaUpdateService = stravaUpdateService;
             _operationContext = operationContext;
             _logger = logger;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -63,46 +66,9 @@ namespace MyHealth.Integrations.Strava.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult GetStravaAuthenticationUri([FromQuery] string redirectUri)
         {
-            string authenticationUri = _stravaService.GetAuthenticationUri(redirectUri);
+            string authenticationUri = _stravaAuthenticationService.GetAuthenticationUri(redirectUri);
 
             return Ok(authenticationUri);
-        }
-
-        [HttpPost("subscription")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult> CreateStravaSubscription(ApiVersion apiVersion)
-        {
-            string hostAddress = _httpContextAccessor.HttpContext.Request.Host.Value;
-
-            StravaSubscription subscription = await _stravaService.CreateSubscriptionAsync(
-                $"https://{hostAddress}/{apiVersion.ToUrlString()}/integrations/strava/update");
-
-            return CreatedAtRoute(
-                "GetStravaSubscription",
-                new { version = apiVersion.ToUrlString() },
-                subscription);
-        }
-
-        [HttpDelete("subscription")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> DeleteStravaSubscription()
-        {
-            await _stravaService.DeleteSubscriptionAsync();
-
-            return NoContent();
-        }
-
-        [HttpGet("subscription", Name = "GetStravaSubscription")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<StravaSubscription>> GetStravaSubscription()
-        {
-            var subscription = await _stravaService.GetSubscriptionAsync();
-
-            if (subscription is null)
-                return NotFound();
-
-            return subscription;
         }
 
         [HttpGet("update")]
@@ -114,7 +80,7 @@ namespace MyHealth.Integrations.Strava.Controllers
             [FromQuery(Name = "hub.challenge")] string challenge,
             [FromQuery(Name = "hub.verify_token")] string verifyToken)
         {
-            bool isValid = _stravaService.ValidateSubscription(verifyToken);
+            bool isValid = _stravaSubscriptionService.ValidateSubscription(verifyToken);
 
             if (isValid)
             {
@@ -140,7 +106,7 @@ namespace MyHealth.Integrations.Strava.Controllers
 
             _logger.LogInformation(request);
 
-            await _stravaService.ProcessUpdateNotification(
+            await _stravaUpdateService.ProcessUpdateNotification(
                 JsonSerializer.Deserialize<StravaUpdateNotification>(request));
 
             return Ok();

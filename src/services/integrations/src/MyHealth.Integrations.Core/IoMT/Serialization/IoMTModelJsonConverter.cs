@@ -19,10 +19,17 @@ namespace MyHealth.Integrations.Core.IoMT.Serialization
 
         public override void Write(Utf8JsonWriter writer, IoMTModel value, JsonSerializerOptions options)
         {
-            if (value is BodyWeight bodyWeight)
-                JsonSerializer.Serialize(writer, bodyWeight, options);
-            else
-                throw new ArgumentOutOfRangeException(nameof(value), $"Unknown implementation of the interface {nameof(IoMTModel)} for the parameter {nameof(value)}. Unknown implementation: {value?.GetType().Name}");
+            switch (value)
+            {
+                case BodyWeight bodyWeight:
+                    JsonSerializer.Serialize(writer, bodyWeight, options);
+                    break;
+                case BikeRide bikeRide:
+                    JsonSerializer.Serialize(writer, bikeRide, options);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), $"Unknown implementation of the interface {nameof(IoMTModel)} for the parameter {nameof(value)}. Unknown implementation: {value?.GetType().Name}");
+            }
         }
     }
 }

@@ -123,19 +123,7 @@ namespace MyHealth.HealthRecord.Data.Fhir
                 throw new ArgumentException($"Unsupported FHIR date type {observation.Effective.GetType().Name}.");
             }
 
-            if (observation.Value is FHIR.FhirString stringValue)
-            {
-                result.Value = stringValue.Value;
-            }
-            else if (observation.Value is FHIR.Quantity quantityValue)
-            {
-                result.Value = quantityValue.Value.ToString();
-                result.Unit = quantityValue.Unit;
-            }
-            else
-            {
-                throw new ArgumentException($"Unsupported FHIR value type {observation.Value.GetType().Name}.");
-            }
+            result.Value = observation.ToValue();
 
             return result;
         }

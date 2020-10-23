@@ -34,8 +34,7 @@ namespace MyHealth.Integrations.Fitbit.Services
 
             var fitbitIntegrationData = (FitbitIntegrationData)fitbitIntegration.Data;
 
-            // TODO: add expiry offset
-            if (fitbitIntegrationData.AccessTokenExpiresUtc > _dateTimeProvider.UtcNow)
+            if (fitbitIntegrationData.AccessTokenExpiresUtc > _dateTimeProvider.UtcNow.AddMinutes(1))
                 return fitbitIntegrationData.AccessToken;
 
             TokenResponse tokenResponse = await _fitbitAuthenticationClient.RefreshTokenAsync(fitbitIntegrationData.RefreshToken);
