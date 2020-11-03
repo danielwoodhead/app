@@ -84,8 +84,12 @@ resource "azurerm_app_service" "as" {
     EventGrid__Enabled                              = true
     EventGrid__TopicEndpoint                        = azurerm_eventgrid_topic.topic.endpoint
     EventGrid__TopicKey                             = azurerm_eventgrid_topic.topic.primary_access_key
+    Fhir__BaseUrl                                   = var.fhir_base_url
     Fitbit__BaseUrl                                 = var.fitbit_base_url
     Fitbit__AuthenticationUrl                       = var.fitbit_authentication_url
+    IntegrationsApi__AuthenticationClientId         = var.authentication_client_id
+    IntegrationsApi__AuthenticationScope            = var.authentication_scope
+    IntegrationsApi__AuthenticationTokenEndpoint    = var.authentication_token_endpoint
     IoMT__EventHub__ConnectionString                = data.azurerm_eventhub_namespace.iomt.default_primary_connection_string
     IoMT__EventHub__Name                            = var.iomt_event_hub_name
     KeyVault__Name                                  = var.key_vault_name
@@ -136,21 +140,26 @@ resource "azurerm_function_app" "functions" {
   }
 
   app_settings = {
-    APPINSIGHTS_INSTRUMENTATIONKEY      = data.azurerm_application_insights.ai.instrumentation_key
-    DOCKER_REGISTRY_SERVER_URL          = "https://${data.azurerm_container_registry.cr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.cr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.cr.admin_password
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-    FUNCTIONS_WORKER_RUNTIME            = "dotnet"
-    Fitbit__BaseUrl                     = var.fitbit_base_url
-    Fitbit__VerificationCode            = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--VerificationCode/cfedf313627c40aca593ed84ef41e0ad)"
-    Fitbit__ClientId                    = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--ClientId/45c7f90d003845af98100be07c951c3d)"
-    Fitbit__ClientSecret                = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--ClientSecret/d425992ab34546029d8cffb83be6b887)"
-    IoMT__EventHub__ConnectionString    = data.azurerm_eventhub_namespace.iomt.default_primary_connection_string
-    IoMT__EventHub__Name                = var.iomt_event_hub_name
-    KeyVault__Name                      = var.key_vault_name
-    Strava__ApiUrl                      = var.strava_api_url
-    Strava__AuthenticationUrl           = var.strava_authentication_url
+    APPINSIGHTS_INSTRUMENTATIONKEY               = data.azurerm_application_insights.ai.instrumentation_key
+    DOCKER_REGISTRY_SERVER_URL                   = "https://${data.azurerm_container_registry.cr.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME              = data.azurerm_container_registry.cr.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD              = data.azurerm_container_registry.cr.admin_password
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE          = false
+    FUNCTIONS_WORKER_RUNTIME                     = "dotnet"
+    Fhir__BaseUrl                                = var.fhir_base_url
+    Fitbit__BaseUrl                              = var.fitbit_base_url
+    Fitbit__VerificationCode                     = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--VerificationCode/cfedf313627c40aca593ed84ef41e0ad)"
+    Fitbit__ClientId                             = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--ClientId/45c7f90d003845af98100be07c951c3d)"
+    Fitbit__ClientSecret                         = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--ClientSecret/d425992ab34546029d8cffb83be6b887)"
+    IntegrationsApi__AuthenticationClientId      = var.authentication_client_id
+    IntegrationsApi__AuthenticationClientSecret  = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/IntegrationsApi--AuthenticationClientSecret/c2ab264b42904906a9104f06b1ed9f50)"
+    IntegrationsApi__AuthenticationScope         = var.authentication_scope
+    IntegrationsApi__AuthenticationTokenEndpoint = var.authentication_token_endpoint
+    IoMT__EventHub__ConnectionString             = data.azurerm_eventhub_namespace.iomt.default_primary_connection_string
+    IoMT__EventHub__Name                         = var.iomt_event_hub_name
+    KeyVault__Name                               = var.key_vault_name
+    Strava__ApiUrl                               = var.strava_api_url
+    Strava__AuthenticationUrl                    = var.strava_authentication_url
   }
 
   connection_string {

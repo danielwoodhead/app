@@ -17,12 +17,13 @@ COPY ["services/integrations/src/integrations/MyHealth.Integrations.Fitbit/MyHea
 COPY ["services/integrations/src/integrations/MyHealth.Integrations.Strava/MyHealth.Integrations.Strava.csproj", "services/integrations/src/integrations/MyHealth.Integrations.Strava/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Context/MyHealth.Extensions.AspNetCore.Context.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Context/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Swagger/MyHealth.Extensions.AspNetCore.Swagger.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Swagger/"]
-COPY ["extensions/src/MyHealth.Extensions.Events/MyHealth.Extensions.Events.csproj", "extensions/src/MyHealth.Extensions.Events/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Versioning/MyHealth.Extensions.AspNetCore.Versioning.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Versioning/"]
-COPY ["extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/MyHealth.Extensions.Events.Azure.EventGrid.csproj", "extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/"]
-COPY ["extensions/src/MyHealth.Extensions.DependencyInjection/MyHealth.Extensions.DependencyInjection.csproj", "extensions/src/MyHealth.Extensions.DependencyInjection/"]
-COPY ["extensions/src/MyHealth.Extensions.Events.ApplicationInsights/MyHealth.Extensions.Events.ApplicationInsights.csproj", "extensions/src/MyHealth.Extensions.Events.ApplicationInsights/"]
 COPY ["extensions/src/MyHealth.Extensions.Cryptography/MyHealth.Extensions.Cryptography.csproj", "extensions/src/MyHealth.Extensions.Cryptography/"]
+COPY ["extensions/src/MyHealth.Extensions.DependencyInjection/MyHealth.Extensions.DependencyInjection.csproj", "extensions/src/MyHealth.Extensions.DependencyInjection/"]
+COPY ["extensions/src/MyHealth.Extensions.Events/MyHealth.Extensions.Events.csproj", "extensions/src/MyHealth.Extensions.Events/"]
+COPY ["extensions/src/MyHealth.Extensions.Events.ApplicationInsights/MyHealth.Extensions.Events.ApplicationInsights.csproj", "extensions/src/MyHealth.Extensions.Events.ApplicationInsights/"]
+COPY ["extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/MyHealth.Extensions.Events.Azure.EventGrid.csproj", "extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/"]
+COPY ["extensions/src/MyHealth.Extensions.Fhir/MyHealth.Extensions.Fhir.csproj", "extensions/src/MyHealth.Extensions.Fhir/"]
 RUN dotnet restore "services/integrations/src/MyHealth.Integrations.Api/MyHealth.Integrations.Api.csproj"
 COPY . .
 WORKDIR "/src/services/integrations/src/MyHealth.Integrations.Api"

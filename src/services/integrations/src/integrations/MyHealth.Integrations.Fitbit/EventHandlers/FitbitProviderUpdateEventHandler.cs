@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Hl7.Fhir.Rest;
 using Microsoft.Extensions.Logging;
 using MyHealth.Extensions.Events;
+using MyHealth.Extensions.Fhir;
 using MyHealth.Extensions.Logging;
 using MyHealth.Integrations.Core.Events.Handlers;
 using MyHealth.Integrations.Core.IoMT;
@@ -21,17 +23,20 @@ namespace MyHealth.Integrations.Fitbit.EventHandlers
         private readonly IFitbitClient _fitbitClient;
         private readonly IFitbitTokenService _fitbitTokenService;
         private readonly IIoMTDataPublisher _iomtDataPublisher;
+        private readonly IFhirClient _fhirClient;
         private readonly ILogger<FitbitProviderUpdateEventHandler> _logger;
 
         public FitbitProviderUpdateEventHandler(
             IFitbitClient fitbitClient,
             IFitbitTokenService fitbitTokenService,
             IIoMTDataPublisher iomtDataPublisher,
+            IFhirClient fhirClient,
             ILogger<FitbitProviderUpdateEventHandler> logger)
         {
             _fitbitClient = fitbitClient ?? throw new ArgumentNullException(nameof(fitbitClient));
             _fitbitTokenService = fitbitTokenService ?? throw new ArgumentNullException(nameof(fitbitTokenService));
             _iomtDataPublisher = iomtDataPublisher ?? throw new ArgumentNullException(nameof(iomtDataPublisher));
+            _fhirClient = fhirClient ?? throw new ArgumentNullException(nameof(fhirClient));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -60,6 +65,8 @@ namespace MyHealth.Integrations.Fitbit.EventHandlers
                 _logger.LogWarning($"Data mapping not supported: {JsonConvert.SerializeObject(resource)}");
                 return;
             }
+
+            await _fhirClient.EnsurePatientDeviceAsync(providerUpdateEvent.Data.UserId);
 
             IoMTModel iomtModel = new BodyWeight
             {
