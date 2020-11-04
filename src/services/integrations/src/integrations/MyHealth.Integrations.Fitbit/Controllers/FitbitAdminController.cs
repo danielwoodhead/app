@@ -14,7 +14,7 @@ namespace MyHealth.Integrations.Fitbit.Controllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "Admin")]
     [ApiVersion("1.0")]
-    [AllowAnonymous]
+    [Authorize(Policy = "IntegrationsAdmin")]
     [Route("v{version:apiVersion}/admin/fitbit")]
     public class FitbitAdminController : ControllerBase
     {

@@ -27,6 +27,20 @@ namespace MyHealth.Integrations.Api.Extensions
             return services;
         }
 
+        public static IServiceCollection AddAuthorizationPolicies(this IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IntegrationsAdmin", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "myhealth-integrations-api:admin");
+                });
+            });
+
+            return services;
+        }
+
         public static IServiceCollection AddEvents(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<EventGridSettings>(configuration.GetSection("EventGrid"));

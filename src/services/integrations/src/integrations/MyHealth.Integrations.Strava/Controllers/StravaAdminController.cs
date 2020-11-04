@@ -19,7 +19,7 @@ namespace MyHealth.Integrations.Strava.Controllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "Admin")]
     [ApiVersion("1.0")]
-    [AllowAnonymous]
+    [Authorize(Policy = "IntegrationsAdmin")]
     [Route("v{version:apiVersion}/admin/strava")]
     public class StravaAdminController : ControllerBase
     {

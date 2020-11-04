@@ -33,6 +33,7 @@ namespace MyHealth.Integrations.Api
         {
             services.AddApplicationInsightsTelemetry();
             services.AddAuthentication(Configuration);
+            services.AddAuthorizationPolicies();
             services.AddContext();
             services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddCosmos(Configuration);
