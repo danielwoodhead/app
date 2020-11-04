@@ -89,6 +89,8 @@ namespace MyHealth.Integrations.Fitbit.Controllers
             var reader = new StreamReader(Request.Body);
             string request = await reader.ReadToEndAsync();
 
+            _logger.LogInformation(request);
+
             if (!Request.Headers.TryGetValue(FitbitConstants.RequestSignatureHeader, out StringValues fitbitSignatureHeader)
                 || !_fitbitService.VerifyUpdateNotification(request, fitbitSignatureHeader[0]))
             {

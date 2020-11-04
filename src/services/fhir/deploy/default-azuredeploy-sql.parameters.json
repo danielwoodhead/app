@@ -29,6 +29,9 @@
     },
     "enableExport": {
       "value": true
+    },
+    "sqlSchemaAutomaticUpdatesEnabled": {
+      "value": true
     }
   }
 }

@@ -45,6 +45,25 @@ variable "authentication_audience" {
   description = "The authentication audience"
 }
 
+variable "fhir_base_url" {
+  description = "The FHIR API base URL"
+}
+
+variable "authentication_client_id" {
+  description = "The authentication client ID"
+  default     = "myhealth-integrations-api" 
+}
+
+variable "authentication_scope" {
+  description = "The authentication scope"
+  default     = "fhir-api" 
+}
+
+variable "authentication_token_endpoint" {
+  description = "The authentication token endpoint"
+  default     = "https://myhealth-identity-sts.azurewebsites.net/connect/token" 
+}
+
 variable "fitbit_base_url" {
   description = "The Fitbit API base URL"
   default     = "https://api.fitbit.com" 

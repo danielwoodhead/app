@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Hl7.Fhir.Rest;
 using Microsoft.Extensions.Logging;
 using MyHealth.Extensions.Events;
+using MyHealth.Extensions.Fhir;
 using MyHealth.Extensions.Logging;
 using MyHealth.Integrations.Core.Data;
 using MyHealth.Integrations.Core.Events.Handlers;
@@ -23,19 +25,22 @@ namespace MyHealth.Integrations.Strava.EventHandlers
         private readonly ILogger<StravaProviderUpdateEventHandler> _logger;
         private readonly IIntegrationRepository _integrationRepository;
         private readonly IIoMTDataPublisher _iomtDataPublisher;
+        private readonly IFhirClient _fhirClient;
 
         public StravaProviderUpdateEventHandler(
             IStravaClient stravaClient,
             IStravaAuthenticationService stravaAuthenticationService,
             ILogger<StravaProviderUpdateEventHandler> logger,
             IIntegrationRepository integrationRepository,
-            IIoMTDataPublisher iomtDataPublisher)
+            IIoMTDataPublisher iomtDataPublisher,
+            IFhirClient fhirClient)
         {
             _stravaClient = stravaClient;
             _stravaAuthenticationService = stravaAuthenticationService;
             _logger = logger;
             _integrationRepository = integrationRepository;
             _iomtDataPublisher = iomtDataPublisher;
+            _fhirClient = fhirClient;
         }
 
         public Provider Provider => Provider.Strava;
@@ -71,6 +76,8 @@ namespace MyHealth.Integrations.Strava.EventHandlers
                 _logger.LogWarning($"Unsupported Strava activity type '{activity.Type}'.");
                 return;
             }
+
+            await _fhirClient.EnsurePatientDeviceAsync(providerUpdateEvent.Data.UserId);
 
             IoMTModel ioMTModel = new BikeRide
             {

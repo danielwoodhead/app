@@ -2,6 +2,7 @@
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyHealth.Extensions.Fhir;
 using MyHealth.Integrations.Core.Events;
 using MyHealth.Integrations.Data.Cosmos;
 using MyHealth.Integrations.Fitbit;
@@ -25,13 +26,13 @@ namespace MyHealth.Integrations.FunctionApp
             var configuration = services.GetRequiredService<IConfiguration>();
 
             builder.Services.AddTransient<IEventHandler, EventHandler>();
+            builder.Services.AddFhirClient(configuration);
             builder.Services.AddIoMTEventHub(configuration);
             builder.Services.AddCosmos(configuration);
             builder.Services.AddUtility();
 
             // integrations
             builder.Services.AddFitbit(configuration);
-            builder.Services.AddFitbitEventHandlers();
             builder.Services.AddStrava(configuration);
         }
     }
