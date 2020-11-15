@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.EntityFramework.Shared.Constants
+﻿namespace MyHealth.Identity.Admin.EntityFramework.Shared.Constants
 {
     public static class TableConsts
     {

@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Configuration.Interfaces
+﻿namespace MyHealth.Identity.Admin.Configuration.Interfaces
 {
     public interface IRootConfiguration
     {

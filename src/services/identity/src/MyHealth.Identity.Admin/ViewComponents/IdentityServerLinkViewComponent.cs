@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyHealth.Identity.Admin.Configuration.Interfaces;
 
 namespace MyHealth.Identity.Admin.ViewComponents

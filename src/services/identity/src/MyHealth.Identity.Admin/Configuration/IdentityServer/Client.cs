@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MyHealth.Identity.Admin.Configuration.Identity;
 
 namespace MyHealth.Identity.Admin.Configuration.IdentityServer

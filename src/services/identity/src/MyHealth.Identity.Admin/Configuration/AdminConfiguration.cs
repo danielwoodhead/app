@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Configuration
+﻿namespace MyHealth.Identity.Admin.Configuration
 {
     public class AdminConfiguration
     {
@@ -16,6 +16,11 @@ namespace MyHealth.Identity.Admin.Configuration
         public string ClientId { get; set; } 
         public string ClientSecret { get; set; }
         public string OidcResponseType { get; set; }
+        public bool HideUIForMSSqlErrorLogging { get; set; }
+        public string Theme { get; set; }
+
+        public string CustomThemeCss { get; set; }
+
     }
 }
 

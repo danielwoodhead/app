@@ -1,4 +1,4 @@
-using MyHealth.Identity.Admin.Api.ExceptionHandling;
+﻿using MyHealth.Identity.Admin.Api.ExceptionHandling;
 
 namespace MyHealth.Identity.Admin.Api.Resources
 {

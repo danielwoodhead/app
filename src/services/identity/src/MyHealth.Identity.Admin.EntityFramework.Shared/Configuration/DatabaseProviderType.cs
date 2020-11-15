@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.EntityFramework.Shared.Configuration
+﻿namespace MyHealth.Identity.Admin.EntityFramework.Shared.Configuration
 {
     public enum DatabaseProviderType
     {

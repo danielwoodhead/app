@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Api.Dtos.IdentityResources
+﻿namespace MyHealth.Identity.Admin.Api.Dtos.IdentityResources
 {
     public class IdentityResourcePropertyApiDto
     {

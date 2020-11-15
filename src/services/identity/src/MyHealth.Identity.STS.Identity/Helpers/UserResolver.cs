@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using MyHealth.Identity.STS.Identity.Configuration;
 using System.Threading.Tasks;
+using MyHealth.Identity.Shared.Configuration.Identity;
 
 namespace MyHealth.Identity.STS.Identity.Helpers
 {

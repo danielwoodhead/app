@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.STS.Identity.ViewModels.Manage
+﻿namespace MyHealth.Identity.STS.Identity.ViewModels.Manage
 {
     public class RemoveLoginViewModel
     {

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyHealth.Identity.STS.Identity.Configuration.Interfaces;
 
 namespace MyHealth.Identity.STS.Identity.ViewComponents

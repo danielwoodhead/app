@@ -1,4 +1,4 @@
-using HealthChecks.UI.Client;
+﻿using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -10,8 +10,10 @@ using MyHealth.Identity.Admin.EntityFramework.Shared.Entities.Identity;
 using MyHealth.Identity.STS.Identity.Configuration;
 using MyHealth.Identity.STS.Identity.Configuration.Constants;
 using MyHealth.Identity.STS.Identity.Configuration.Interfaces;
-using MyHealth.Identity.STS.Identity.ExtensionGrants;
 using MyHealth.Identity.STS.Identity.Helpers;
+using System;
+using Microsoft.AspNetCore.DataProtection;
+using MyHealth.Identity.Shared.Helpers;
 
 namespace MyHealth.Identity.STS.Identity
 {
@@ -32,16 +34,21 @@ namespace MyHealth.Identity.STS.Identity
 
             var rootConfiguration = CreateRootConfiguration();
             services.AddSingleton(rootConfiguration);
-
             // Register DbContexts for IdentityServer and Identity
             RegisterDbContexts(services);
+
+            // Save data protection keys to db, using a common application name shared between Admin and STS
+            services.AddDataProtection<IdentityServerDataProtectionDbContext>(Configuration);
 
             // Add email senders which is currently setup for SendGrid and SMTP
             services.AddEmailSenders(Configuration);
 
             // Add services for authentication, including Identity model and external providers
             RegisterAuthentication(services);
-            
+
+            // Add HSTS options
+            RegisterHstsOptions(services);
+
             // Add all dependencies for Asp.Net Core Identity in MVC - these dependencies are injected into generic Controllers
             // Including settings for MVC and Localization
             // If you want to change primary keys or use another db model for Asp.Net Core Identity:
@@ -50,18 +57,26 @@ namespace MyHealth.Identity.STS.Identity
             // Add authorization policies for MVC
             RegisterAuthorization(services);
 
-            services.AddIdSHealthChecks<IdentityServerConfigurationDbContext, IdentityServerPersistedGrantDbContext, AdminIdentityDbContext>(Configuration);
+            services.AddIdSHealthChecks<IdentityServerConfigurationDbContext, IdentityServerPersistedGrantDbContext, AdminIdentityDbContext, IdentityServerDataProtectionDbContext>(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCookiePolicy();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
+
+            app.UsePathBase(Configuration.GetValue<string>("BasePath"));
 
             // Add custom security headers
-            app.UseSecurityHeaders();
+            app.UseSecurityHeaders(Configuration);
 
             app.UseStaticFiles();
             UseAuthentication(app);
@@ -69,8 +84,8 @@ namespace MyHealth.Identity.STS.Identity
 
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoint => 
-            { 
+            app.UseEndpoints(endpoint =>
+            {
                 endpoint.MapDefaultControllerRoute();
                 endpoint.MapHealthChecks("/health", new HealthCheckOptions
                 {
@@ -81,14 +96,13 @@ namespace MyHealth.Identity.STS.Identity
 
         public virtual void RegisterDbContexts(IServiceCollection services)
         {
-            services.RegisterDbContexts<AdminIdentityDbContext, IdentityServerConfigurationDbContext, IdentityServerPersistedGrantDbContext>(Configuration);
+            services.RegisterDbContexts<AdminIdentityDbContext, IdentityServerConfigurationDbContext, IdentityServerPersistedGrantDbContext, IdentityServerDataProtectionDbContext>(Configuration);
         }
 
         public virtual void RegisterAuthentication(IServiceCollection services)
         {
             services.AddAuthenticationServices<AdminIdentityDbContext, UserIdentity, UserIdentityRole>(Configuration);
-            services.AddIdentityServer<IdentityServerConfigurationDbContext, IdentityServerPersistedGrantDbContext, UserIdentity>(Configuration)
-                .AddExtensionGrantValidator<DelegationGrantValidator>();
+            services.AddIdentityServer<IdentityServerConfigurationDbContext, IdentityServerPersistedGrantDbContext, UserIdentity>(Configuration);
         }
 
         public virtual void RegisterAuthorization(IServiceCollection services)
@@ -100,6 +114,16 @@ namespace MyHealth.Identity.STS.Identity
         public virtual void UseAuthentication(IApplicationBuilder app)
         {
             app.UseIdentityServer();
+        }
+
+        public virtual void RegisterHstsOptions(IServiceCollection services)
+        {
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromDays(365);
+            });
         }
 
         protected IRootConfiguration CreateRootConfiguration()

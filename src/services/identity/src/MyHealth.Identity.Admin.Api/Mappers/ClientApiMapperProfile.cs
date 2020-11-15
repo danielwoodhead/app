@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using MyHealth.Identity.Admin.Api.Dtos.Clients;
 using Skoruba.IdentityServer4.Admin.BusinessLogic.Dtos.Configuration;
 

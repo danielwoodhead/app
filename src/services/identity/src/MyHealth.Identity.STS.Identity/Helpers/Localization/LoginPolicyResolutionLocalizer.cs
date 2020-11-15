@@ -1,3 +1,4 @@
+﻿using MyHealth.Identity.Shared.Configuration.Identity;
 using MyHealth.Identity.STS.Identity.Configuration;
 
 namespace MyHealth.Identity.STS.Identity.Helpers.Localization

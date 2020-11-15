@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Api.Configuration
+﻿namespace MyHealth.Identity.Admin.Api.Configuration
 {
     public class AdminApiConfiguration
     {

@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Configuration
+﻿namespace MyHealth.Identity.Admin.Configuration
 {
     public class AuditLoggingConfiguration
     {

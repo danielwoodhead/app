@@ -2,16 +2,16 @@
   "IdentityData": {
     "Roles": [
       {
-        "Name": "IdentityAdmin"
+        "Name": "MyRole"
       }
     ],
     "Users": [
       {
         "Username": "admin",
-        "Password": "P@ssword!",
-        "Email": "admin@myhealth.com",
+        "Password": "Pa$$word123",
+        "Email": "admin@example.com",
         "Roles": [
-          "IdentityAdmin"
+          "MyRole"
         ],
         "Claims": [
           {

@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Configuration.Constants
+﻿namespace MyHealth.Identity.Admin.Configuration.Constants
 {
     public class AuthenticationConsts
     {

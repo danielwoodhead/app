@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace MyHealth.Identity.Admin.EntityFramework.Shared.Entities.Identity
 {
