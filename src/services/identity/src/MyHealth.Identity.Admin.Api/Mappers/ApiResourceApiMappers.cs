@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 
 namespace MyHealth.Identity.Admin.Api.Mappers
 {

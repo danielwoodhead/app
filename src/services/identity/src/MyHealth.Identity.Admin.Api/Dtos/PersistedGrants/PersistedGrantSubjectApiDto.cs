@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Api.Dtos.PersistedGrants
+﻿namespace MyHealth.Identity.Admin.Api.Dtos.PersistedGrants
 {
     public class PersistedGrantSubjectApiDto
     {

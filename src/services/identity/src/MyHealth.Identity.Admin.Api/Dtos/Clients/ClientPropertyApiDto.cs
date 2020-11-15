@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Api.Dtos.Clients
+﻿namespace MyHealth.Identity.Admin.Api.Dtos.Clients
 {
     public class ClientPropertyApiDto
     {

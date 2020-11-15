@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.STS.Identity.Configuration
+﻿namespace MyHealth.Identity.STS.Identity.Configuration
 {
     public class AdminConfiguration
     {
@@ -7,6 +7,10 @@ namespace MyHealth.Identity.STS.Identity.Configuration
         public string FaviconUri { get; set; }
         public string IdentityAdminBaseUrl { get; set; }
         public string AdministrationRole { get; set; }
+
+        public string Theme { get; set; }
+
+        public string CustomThemeCss { get; set; }
     }
 }
 

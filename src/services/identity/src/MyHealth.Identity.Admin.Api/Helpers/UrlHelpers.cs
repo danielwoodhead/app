@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Api.Helpers
+﻿namespace MyHealth.Identity.Admin.Api.Helpers
 {
     public static class UrlHelpers
     {

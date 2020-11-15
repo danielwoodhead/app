@@ -63,7 +63,7 @@ resource "azurerm_app_service" "as" {
   }
 
   dynamic "connection_string" {
-    for_each = toset(["ConfigurationDbConnection", "PersistedGrantDbConnection", "IdentityDbConnection", "AdminLogDbConnection", "AdminAuditLogDbConnection"])
+    for_each = toset(["ConfigurationDbConnection", "PersistedGrantDbConnection", "IdentityDbConnection", "AdminLogDbConnection", "AdminAuditLogDbConnection", "DataProtectionDbConnection"])
 
     content {
       name  = connection_string.value
@@ -78,6 +78,7 @@ resource "azurerm_app_service" "as" {
     DOCKER_REGISTRY_SERVER_PASSWORD              = data.azurerm_container_registry.cr.admin_password
     WEBSITES_ENABLE_APP_SERVICE_STORAGE          = false
     APPINSIGHTS_INSTRUMENTATIONKEY               = data.azurerm_application_insights.ai.instrumentation_key
+    AdminConfiguration__AdministrationRole       = "IdentityAdmin"
     AdminConfiguration__IdentityAdminRedirectUri = "https://${local.app_service_name}.azurewebsites.net/signin-oidc"
     AdminConfiguration__IdentityServerBaseUrl    = var.identity_server_base_url
     AdminConfiguration__ClientId                 = var.identity_client_id

@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
@@ -8,6 +9,7 @@ COPY ["src/MyHealth.Identity.Admin/MyHealth.Identity.Admin.csproj", "src/MyHealt
 COPY ["src/MyHealth.Identity.Admin.EntityFramework.Shared/MyHealth.Identity.Admin.EntityFramework.Shared.csproj", "src/MyHealth.Identity.Admin.EntityFramework.Shared/"]
 COPY ["src/MyHealth.Identity.Admin.EntityFramework.SqlServer/MyHealth.Identity.Admin.EntityFramework.SqlServer.csproj", "src/MyHealth.Identity.Admin.EntityFramework.SqlServer/"]
 COPY ["src/MyHealth.Identity.Admin.EntityFramework.PostgreSQL/MyHealth.Identity.Admin.EntityFramework.PostgreSQL.csproj", "src/MyHealth.Identity.Admin.EntityFramework.PostgreSQL/"]
+COPY ["src/MyHealth.Identity.Shared/MyHealth.Identity.Shared.csproj", "src/MyHealth.Identity.Shared/"]
 COPY ["src/MyHealth.Identity.Admin.EntityFramework.MySql/MyHealth.Identity.Admin.EntityFramework.MySql.csproj", "src/MyHealth.Identity.Admin.EntityFramework.MySql/"]
 RUN dotnet restore "src/MyHealth.Identity.Admin/MyHealth.Identity.Admin.csproj"
 COPY . .

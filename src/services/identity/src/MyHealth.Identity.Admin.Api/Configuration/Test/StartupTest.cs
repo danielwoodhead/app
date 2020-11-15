@@ -1,5 +1,4 @@
-using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +8,7 @@ using MyHealth.Identity.Admin.Api.Helpers;
 using MyHealth.Identity.Admin.Api.Middlewares;
 using MyHealth.Identity.Admin.EntityFramework.Shared.DbContexts;
 using MyHealth.Identity.Admin.EntityFramework.Shared.Entities.Identity;
+using MyHealth.Identity.Shared.Configuration.Identity;
 
 namespace MyHealth.Identity.Admin.Api.Configuration.Test
 {
@@ -20,12 +20,13 @@ namespace MyHealth.Identity.Admin.Api.Configuration.Test
 
         public override void RegisterDbContexts(IServiceCollection services)
         {
-            services.RegisterDbContextsStaging<AdminIdentityDbContext, IdentityServerConfigurationDbContext, IdentityServerPersistedGrantDbContext, AdminLogDbContext, AdminAuditLogDbContext>();
+            services.RegisterDbContextsStaging<AdminIdentityDbContext, IdentityServerConfigurationDbContext, IdentityServerPersistedGrantDbContext, AdminLogDbContext, AdminAuditLogDbContext, IdentityServerDataProtectionDbContext>();
         }
 
         public override void RegisterAuthentication(IServiceCollection services)
         {
-            services.AddIdentity<UserIdentity, UserIdentityRole>(options => { options.User.RequireUniqueEmail = true; })
+            services
+                .AddIdentity<UserIdentity, UserIdentityRole>(options => Configuration.GetSection(nameof(IdentityOptions)).Bind(options))
                 .AddEntityFrameworkStores<AdminIdentityDbContext>()
                 .AddDefaultTokenProviders();
 

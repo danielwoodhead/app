@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.STS.Identity.Helpers
+﻿namespace MyHealth.Identity.STS.Identity.Helpers
 {
     public class OpenIdProfile
     {

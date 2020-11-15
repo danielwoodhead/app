@@ -1,10 +1,12 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MyHealth.Identity.Shared.Configuration.Common;
+using MyHealth.Identity.Shared.Helpers;
 using MyHealth.Identity.STS.Identity.Configuration;
 
 namespace MyHealth.Identity.STS.Identity.Helpers
@@ -27,6 +29,7 @@ namespace MyHealth.Identity.STS.Identity.Helpers
         public static IIdentityServerBuilder AddCustomSigningCredential(this IIdentityServerBuilder builder, IConfiguration configuration)
         {
             var certificateConfiguration = configuration.GetSection(nameof(CertificateConfiguration)).Get<CertificateConfiguration>();
+            var azureKeyVaultConfiguration = configuration.GetSection(nameof(AzureKeyVaultConfiguration)).Get<AzureKeyVaultConfiguration>();
 
             if (certificateConfiguration.UseSigningCertificateThumbprint)
             {
@@ -65,6 +68,12 @@ namespace MyHealth.Identity.STS.Identity.Helpers
                 var certificate = certCollection[0];
 
                 builder.AddSigningCredential(certificate);
+            }
+            else if (certificateConfiguration.UseSigningCertificateForAzureKeyVault)
+            {
+                var x509Certificate2Certs = AzureKeyVaultHelpers.GetCertificates(azureKeyVaultConfiguration).GetAwaiter().GetResult();
+
+                builder.AddSigningCredential(x509Certificate2Certs.ActiveCertificate);
             }
             else if (certificateConfiguration.UseSigningCertificatePfxFile)
             {
@@ -112,6 +121,7 @@ namespace MyHealth.Identity.STS.Identity.Helpers
         public static IIdentityServerBuilder AddCustomValidationKey(this IIdentityServerBuilder builder, IConfiguration configuration)
         {
             var certificateConfiguration = configuration.GetSection(nameof(CertificateConfiguration)).Get<CertificateConfiguration>();
+            var azureKeyVaultConfiguration = configuration.GetSection(nameof(AzureKeyVaultConfiguration)).Get<AzureKeyVaultConfiguration>();
 
             if (certificateConfiguration.UseValidationCertificateThumbprint)
             {
@@ -134,6 +144,15 @@ namespace MyHealth.Identity.STS.Identity.Helpers
                 builder.AddValidationKey(certificate);
 
             }
+            else if (certificateConfiguration.UseValidationCertificateForAzureKeyVault)
+            {
+                var x509Certificate2Certs = AzureKeyVaultHelpers.GetCertificates(azureKeyVaultConfiguration).GetAwaiter().GetResult();
+
+                if (x509Certificate2Certs.SecondaryCertificate != null)
+                {
+                    builder.AddValidationKey(x509Certificate2Certs.SecondaryCertificate);
+                }
+            }
             else if (certificateConfiguration.UseValidationCertificatePfxFile)
             {
                 if (string.IsNullOrWhiteSpace(certificateConfiguration.ValidationCertificatePfxFilePath))
@@ -155,7 +174,7 @@ namespace MyHealth.Identity.STS.Identity.Helpers
                 }
                 else
                 {
-                    throw new Exception($"Validation key file: {certificateConfiguration.SigningCertificatePfxFilePath} not found");
+                    throw new Exception($"Validation key file: {certificateConfiguration.ValidationCertificatePfxFilePath} not found");
                 }
             }
 

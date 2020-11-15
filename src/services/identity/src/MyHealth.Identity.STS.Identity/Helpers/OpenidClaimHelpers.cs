@@ -1,4 +1,4 @@
-using IdentityModel;
+﻿using IdentityModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using MyHealth.Identity.STS.Identity.Configuration.Constants;

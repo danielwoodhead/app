@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Helpers
+﻿namespace MyHealth.Identity.Admin.Helpers
 {
     public class NotificationHelpers
     {

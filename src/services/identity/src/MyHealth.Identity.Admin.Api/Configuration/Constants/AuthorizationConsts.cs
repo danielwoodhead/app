@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Api.Configuration.Constants
+﻿namespace MyHealth.Identity.Admin.Api.Configuration.Constants
 {
     public class AuthorizationConsts
     {

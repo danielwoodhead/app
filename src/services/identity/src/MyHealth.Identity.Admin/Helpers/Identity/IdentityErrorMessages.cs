@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
 namespace MyHealth.Identity.Admin.Helpers.Identity

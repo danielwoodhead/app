@@ -4,22 +4,17 @@ services:
   myhealth.identity.admin:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+  
   myhealth.identity.admin.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
 
   myhealth.identity.sts.identity:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro

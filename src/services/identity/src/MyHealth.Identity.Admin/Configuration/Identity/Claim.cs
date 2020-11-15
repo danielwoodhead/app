@@ -1,4 +1,4 @@
-namespace MyHealth.Identity.Admin.Configuration.Identity
+﻿namespace MyHealth.Identity.Admin.Configuration.Identity
 {
     public class Claim
     {

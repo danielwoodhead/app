@@ -63,7 +63,7 @@ resource "azurerm_app_service" "as" {
   }
 
   dynamic "connection_string" {
-    for_each = toset(["ConfigurationDbConnection", "PersistedGrantDbConnection", "IdentityDbConnection"])
+    for_each = toset(["ConfigurationDbConnection", "PersistedGrantDbConnection", "IdentityDbConnection", "DataProtectionDbConnection"])
 
     content {
       name  = connection_string.value
