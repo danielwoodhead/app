@@ -8,5 +8,10 @@
             public const string Scopes = "scopes";
             public const string Token = "token";
         }
+
+        public static class PersistedGrant
+        {
+            public const string RefreshToken = "refresh_token";
+        }
     }
 }

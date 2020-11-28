@@ -1,0 +1,21 @@
+﻿@using MyHealth.Web.Core.Models;
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@DataSharingAgreement.Name</h5>
+        <button class="btn btn-danger" @onclick="@DeleteDataSharingAgreementAsync">Delete</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public DataSharingAgreement DataSharingAgreement { get; set; }
+
+    [Parameter]
+    public EventCallback<DataSharingAgreement> OnDeleteDataSharingAgreement { get; set; }
+
+    private async Task DeleteDataSharingAgreementAsync(MouseEventArgs e)
+    {
+        await OnDeleteDataSharingAgreement.InvokeAsync(DataSharingAgreement);
+    }
+}

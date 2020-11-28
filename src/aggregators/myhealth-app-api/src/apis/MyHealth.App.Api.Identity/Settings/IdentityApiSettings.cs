@@ -2,6 +2,7 @@
 {
     public class IdentityApiSettings
     {
+        public string BaseAddress { get; set; }
         public string TokenEndpoint { get; set; }
     }
 }

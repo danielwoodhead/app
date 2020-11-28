@@ -1,0 +1,47 @@
+﻿@page "/sharing"
+@attribute [Authorize]
+@inject IAppApiClient AppApiClient
+@using MyHealth.Web.Core.AppApi
+@using MyHealth.Web.Core.Models
+
+<h3>Data Sharing</h3>
+
+@if (_dataSharingAgreements is null)
+{
+    <LoadingIndicator />
+}
+else if (!_dataSharingAgreements.Any())
+{
+    <p>You are not sharing your data</p>
+}
+else
+{
+    <div class="card-deck">
+        @foreach (var dataSharingAgreement in _dataSharingAgreements)
+        {
+            <DataSharingCard DataSharingAgreement="@dataSharingAgreement"
+                OnDeleteDataSharingAgreement="@DeleteDataSharingAgreementAsync" />
+        }
+    </div>
+}
+
+
+@code {
+    private IEnumerable<DataSharingAgreement> _dataSharingAgreements;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetDataSharingAgreementsAsync();
+    }
+
+    private async Task GetDataSharingAgreementsAsync()
+    {
+        _dataSharingAgreements = (await AppApiClient.GetDataSharingAgreements());
+    }
+
+    private async Task DeleteDataSharingAgreementAsync(DataSharingAgreement dataSharingAgreement)
+    {
+        await AppApiClient.DeleteDataSharingAgreementAsync(dataSharingAgreement.Name);
+        await GetDataSharingAgreementsAsync();
+    }
+}
