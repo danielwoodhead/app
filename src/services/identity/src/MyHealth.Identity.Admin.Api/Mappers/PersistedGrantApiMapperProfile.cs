@@ -12,6 +12,9 @@ namespace MyHealth.Identity.Admin.Api.Mappers
             CreateMap<PersistedGrantDto, PersistedGrantSubjectApiDto>(MemberList.Destination);
             CreateMap<PersistedGrantsDto, PersistedGrantsApiDto>(MemberList.Destination);
             CreateMap<PersistedGrantsDto, PersistedGrantSubjectsApiDto>(MemberList.Destination);
+
+            CreateMap<Skoruba.IdentityServer4.Admin.BusinessLogic.Identity.Dtos.Grant.PersistedGrantDto, PersistedGrantApiDto>(MemberList.Destination);
+            CreateMap<Skoruba.IdentityServer4.Admin.BusinessLogic.Identity.Dtos.Grant.PersistedGrantsDto, PersistedGrantsApiDto>(MemberList.Destination);
         }
     }
 }

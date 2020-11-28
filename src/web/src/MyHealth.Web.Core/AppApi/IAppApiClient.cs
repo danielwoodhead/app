@@ -6,6 +6,13 @@ namespace MyHealth.Web.Core.AppApi
 {
     public interface IAppApiClient
     {
+        #region Data Sharing
+
+        Task DeleteDataSharingAgreementAsync(string name);
+        Task<IEnumerable<DataSharingAgreement>> GetDataSharingAgreements();
+
+        #endregion Data Sharing
+
         #region Health Record
 
         Task<SearchObservationsResponse> GetObservationsAsync();

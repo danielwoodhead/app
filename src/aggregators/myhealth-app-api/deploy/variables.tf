@@ -44,8 +44,12 @@ variable "health_record_api_base_address" {
   description = "The Health Record API base address"
 }
 
-variable "identity_api_token_endpoint" {
+variable "identity_api_base_address" {
   description = "The Identity API base address"
+}
+
+variable "identity_api_token_endpoint" {
+  description = "The Identity API token endpoint"
 }
 
 variable "integrations_api_base_address" {

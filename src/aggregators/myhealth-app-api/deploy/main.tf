@@ -52,6 +52,7 @@ resource "azurerm_app_service" "as" {
     Cors__AllowedOrigins__0                         = var.front_end_origin
     Cors__AllowedOrigins__1                         = var.front_end_origin_local
     HealthRecordApi__BaseAddress                    = var.health_record_api_base_address
+    IdentityApi__BaseAddress                        = var.identity_api_base_address
     IdentityApi__TokenEndpoint                      = var.identity_api_token_endpoint
     IntegrationsApi__BaseAddress                    = var.integrations_api_base_address
     KeyVault__Name                                  = var.key_vault_name

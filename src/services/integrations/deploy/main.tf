@@ -160,6 +160,8 @@ resource "azurerm_function_app" "functions" {
     KeyVault__Name                               = var.key_vault_name
     Strava__ApiUrl                               = var.strava_api_url
     Strava__AuthenticationUrl                    = var.strava_authentication_url
+    Strava__ClientId                             = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Strava--ClientId/b1c8e6084b4f4a918dc62dc1d4b4bbd2)"
+    Strava__ClientSecret                         = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Strava--ClientSecret/ec8801aa4d0246fdbde6e3fcc6b5856d)"
   }
 
   connection_string {
