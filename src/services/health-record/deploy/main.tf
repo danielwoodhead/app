@@ -40,7 +40,8 @@ resource "azurerm_app_service" "as" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     Authentication__Authority           = var.authentication_authority
     Authentication__Audience            = var.authentication_audience
-    FhirServer__BaseAddress             = var.fhir_server_base_address
+    FhirServer__BaseUrl                 = var.fhir_server_base_url
+    FhirServer__Timeout                 = var.fhir_server_timeout
     Swagger__Enabled                    = var.swagger_enabled
     Swagger__AuthorizationUrl           = var.swagger_authorization_url
     Swagger__TokenUrl                   = var.swagger_token_url

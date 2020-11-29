@@ -49,6 +49,11 @@ variable "fhir_base_url" {
   description = "The FHIR API base URL"
 }
 
+variable "fhir_timeout" {
+  description = "The FHIR API timeout"
+  default = "00:00:30"
+}
+
 variable "authentication_client_id" {
   description = "The authentication client ID"
   default     = "myhealth-integrations-api" 

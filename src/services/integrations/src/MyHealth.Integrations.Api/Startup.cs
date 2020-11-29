@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using MyHealth.Extensions.AspNetCore.Context;
 using MyHealth.Extensions.AspNetCore.Swagger;
 using MyHealth.Extensions.AspNetCore.Versioning;
-using MyHealth.Extensions.Fhir;
 using MyHealth.Integrations.Api.Extensions;
 using MyHealth.Integrations.Core.Events;
 using MyHealth.Integrations.Core.Services;
@@ -39,7 +38,7 @@ namespace MyHealth.Integrations.Api
             services.AddCosmos(Configuration);
             services.AddDistributedMemoryCache(); // TODO: use real distributed cache
             services.AddEvents(Configuration);
-            services.AddFhirClient(Configuration);
+            services.AddFhir(Configuration);
             services.AddHealthChecks();
             services.AddIoMTEventHub(Configuration);
             services.AddSwagger(Configuration);

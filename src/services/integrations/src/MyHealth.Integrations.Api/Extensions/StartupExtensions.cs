@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +8,7 @@ using MyHealth.Extensions.DependencyInjection;
 using MyHealth.Extensions.Events;
 using MyHealth.Extensions.Events.ApplicationInsights;
 using MyHealth.Extensions.Events.Azure.EventGrid;
+using MyHealth.Extensions.Fhir;
 
 namespace MyHealth.Integrations.Api.Extensions
 {
@@ -47,6 +49,22 @@ namespace MyHealth.Integrations.Api.Extensions
             services.AddSingleton<IEventPublisher, EventGridEventPublisher>();
             services.AddTransient<IEventPublisher, ApplicationInsightsEventPublisher>();
             services.AddComposite<IEventPublisher, CompositeEventPublisher>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddFhir(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddFhirClient(settings =>
+            {
+                settings.BaseUrl = configuration.GetSection("Fhir").GetValue<string>("BaseUrl");
+                settings.Timeout = configuration.GetSection("Fhir").GetValue<TimeSpan>("Timeout");
+                settings.AuthenticationMode = AuthenticationMode.ClientCredentials;
+                settings.AuthenticationTokenEndpoint = configuration.GetSection("IntegrationsApi").GetValue<string>("AuthenticationTokenEndpoint");
+                settings.AuthenticationClientId = configuration.GetSection("IntegrationsApi").GetValue<string>("AuthenticationClientId");
+                settings.AuthenticationClientSecret = configuration.GetSection("IntegrationsApi").GetValue<string>("AuthenticationClientSecret");
+                settings.AuthenticationScope = configuration.GetSection("IntegrationsApi").GetValue<string>("AuthenticationScope");
+            });
 
             return services;
         }

@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Events.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.AspNetCore.Context", "..\..\extensions\src\MyHealth.Extensions.AspNetCore.Context\MyHealth.Extensions.AspNetCore.Context.csproj", "{A35D6031-77D2-4EF0-9349-199F66314ADC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Fhir", "..\..\extensions\src\MyHealth.Extensions.Fhir\MyHealth.Extensions.Fhir.csproj", "{C29C5797-948C-4726-8432-94B5634F2DB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{A35D6031-77D2-4EF0-9349-199F66314ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A35D6031-77D2-4EF0-9349-199F66314ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A35D6031-77D2-4EF0-9349-199F66314ADC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C29C5797-948C-4726-8432-94B5634F2DB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C29C5797-948C-4726-8432-94B5634F2DB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C29C5797-948C-4726-8432-94B5634F2DB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C29C5797-948C-4726-8432-94B5634F2DB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{005EE99A-5E8F-40E6-A09D-A00B3B381CBD} = {7C93D599-2616-42F6-9E5A-E112CFB2E81D}
 		{3BF25B52-7B6D-4117-AF75-355A5E97B609} = {7C93D599-2616-42F6-9E5A-E112CFB2E81D}
 		{A35D6031-77D2-4EF0-9349-199F66314ADC} = {7C93D599-2616-42F6-9E5A-E112CFB2E81D}
+		{C29C5797-948C-4726-8432-94B5634F2DB7} = {7C93D599-2616-42F6-9E5A-E112CFB2E81D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {377E9136-5899-47AC-9E43-3CDCDFB330DF}

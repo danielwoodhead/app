@@ -36,8 +36,13 @@ variable "authentication_audience" {
   description = "The authentication audience"
 }
 
-variable "fhir_server_base_address" {
-  description = "The FHIR server base address"
+variable "fhir_server_base_url" {
+  description = "The FHIR server base URL"
+}
+
+variable "fhir_server_timeout" {
+  description = "The FHIR server timeout"
+  default = "00:00:30"
 }
 
 variable "swagger_enabled" {
