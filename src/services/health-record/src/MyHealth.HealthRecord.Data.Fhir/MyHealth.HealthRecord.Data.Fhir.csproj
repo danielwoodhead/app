@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.Fhir\MyHealth.Extensions.Fhir.csproj" />
     <ProjectReference Include="..\MyHealth.HealthRecord.Core\MyHealth.HealthRecord.Core.csproj" />
   </ItemGroup>
 

@@ -22,6 +22,7 @@ namespace MyHealth.Extensions.Fhir.Client
             var client = new FhirClient(_fhirClientSettings.BaseUrl)
             {
                 PreferredFormat = ResourceFormat.Json,
+                Timeout = (int)_fhirClientSettings.Timeout.TotalMilliseconds
             };
 
             client.OnBeforeRequest += (sender, e) =>

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using MyHealth.Extensions.Fhir.Authentication;
 using MyHealth.Extensions.Fhir.Client;
@@ -7,23 +7,30 @@ namespace MyHealth.Extensions.Fhir
 {
     public static class StartupExtensions
     {
-        public static IServiceCollection AddFhirClient(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddFhirClient(this IServiceCollection services, Action<FhirClientSettings> configure)
         {
-            services.AddMemoryCache();
-            services.Configure<FhirClientSettings>(settings =>
-            {
-                settings.AuthenticationClientId = configuration.GetSection("IntegrationsApi").GetValue<string>("AuthenticationClientId");
-                settings.AuthenticationClientSecret = configuration.GetSection("IntegrationsApi").GetValue<string>("AuthenticationClientSecret");
-                settings.AuthenticationScope = configuration.GetSection("IntegrationsApi").GetValue<string>("AuthenticationScope");
-                settings.AuthenticationTokenEndpoint = configuration.GetSection("IntegrationsApi").GetValue<string>("AuthenticationTokenEndpoint");
-                settings.BaseUrl = configuration.GetSection("Fhir").GetValue<string>("BaseUrl");
-            });
-            services.AddHttpClient<IAuthenticationService, AuthenticationService>();
+            var settings = new FhirClientSettings();
+            configure(settings);
+            services.Configure(configure);
+
             services.AddTransient<IFhirClientFactory, FhirClientFactory>();
             services.AddTransient(s =>
             {
                 return s.GetRequiredService<IFhirClientFactory>().Create();
             });
+
+            switch (settings.AuthenticationMode)
+            {
+                case AuthenticationMode.AuthenticatedUser:
+                    services.AddScoped<IAuthenticationService, AuthenticatedUserAuthenticationService>();
+                    break;
+                case AuthenticationMode.ClientCredentials:
+                    services.AddMemoryCache();
+                    services.AddHttpClient<IAuthenticationService, ClientCredentialsAuthenticationService>();
+                    break;
+                default:
+                    throw new ArgumentException($"Unsupported AuthenticationMode: '{settings.AuthenticationMode}'");
+            }
 
             return services;
         }

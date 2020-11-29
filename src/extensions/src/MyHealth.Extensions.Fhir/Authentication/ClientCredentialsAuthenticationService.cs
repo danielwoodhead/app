@@ -7,13 +7,13 @@ using Microsoft.Extensions.Options;
 
 namespace MyHealth.Extensions.Fhir.Authentication
 {
-    internal class AuthenticationService : IAuthenticationService
+    internal class ClientCredentialsAuthenticationService : IAuthenticationService
     {
         private readonly HttpClient _httpClient;
         private readonly IMemoryCache _cache;
         private readonly FhirClientSettings _fhirClientSettings;
 
-        public AuthenticationService(
+        public ClientCredentialsAuthenticationService(
             HttpClient httpClient,
             IMemoryCache cache,
             IOptions<FhirClientSettings> fhirClientSettings)

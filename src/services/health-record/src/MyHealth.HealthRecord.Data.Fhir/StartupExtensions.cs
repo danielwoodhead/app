@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyHealth.Extensions.Fhir;
 using MyHealth.HealthRecord.Core.Data;
-using MyHealth.HealthRecord.Data.Fhir.Base;
 
 namespace MyHealth.HealthRecord.Data.Fhir
 {
@@ -9,8 +10,13 @@ namespace MyHealth.HealthRecord.Data.Fhir
     {
         public static IServiceCollection AddFhir(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<FhirServerSettings>(configuration.GetSection("FhirServer"));
-            services.AddTransient<IFhirClientFactory, FhirClientFactory>();
+            services.AddFhirClient(settings =>
+            {
+                settings.BaseUrl = configuration.GetSection("FhirServer").GetValue<string>("BaseUrl");
+                settings.Timeout = configuration.GetSection("FhirServer").GetValue<TimeSpan>("Timeout");
+                settings.AuthenticationMode = AuthenticationMode.AuthenticatedUser;
+            });
+
             services.AddTransient<IObservationsRepository, FhirObservationsRepository>();
 
             return services;

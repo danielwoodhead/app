@@ -18,6 +18,7 @@ COPY ["extensions/src/MyHealth.Extensions.DependencyInjection/MyHealth.Extension
 COPY ["extensions/src/MyHealth.Extensions.Events/MyHealth.Extensions.Events.csproj", "extensions/src/MyHealth.Extensions.Events/"]
 COPY ["extensions/src/MyHealth.Extensions.Events.ApplicationInsights/MyHealth.Extensions.Events.ApplicationInsights.csproj", "extensions/src/MyHealth.Extensions.Events.ApplicationInsights/"]
 COPY ["extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/MyHealth.Extensions.Events.Azure.EventGrid.csproj", "extensions/src/MyHealth.Extensions.Events.Azure.EventGrid/"]
+COPY ["extensions/src/MyHealth.Extensions.Fhir/MyHealth.Extensions.Fhir.csproj", "extensions/src/MyHealth.Extensions.Fhir/"]
 
 RUN dotnet restore "services/health-record/src/MyHealth.HealthRecord.Api/MyHealth.HealthRecord.Api.csproj"
 COPY . .

@@ -85,6 +85,7 @@ resource "azurerm_app_service" "as" {
     EventGrid__TopicEndpoint                        = azurerm_eventgrid_topic.topic.endpoint
     EventGrid__TopicKey                             = azurerm_eventgrid_topic.topic.primary_access_key
     Fhir__BaseUrl                                   = var.fhir_base_url
+    Fhir__Timeout                                   = var.fhir_timeout
     Fitbit__BaseUrl                                 = var.fitbit_base_url
     Fitbit__AuthenticationUrl                       = var.fitbit_authentication_url
     IntegrationsApi__AuthenticationClientId         = var.authentication_client_id
@@ -147,6 +148,7 @@ resource "azurerm_function_app" "functions" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE          = false
     FUNCTIONS_WORKER_RUNTIME                     = "dotnet"
     Fhir__BaseUrl                                = var.fhir_base_url
+    Fhir__Timeout                                = var.fhir_timeout
     Fitbit__BaseUrl                              = var.fitbit_base_url
     Fitbit__VerificationCode                     = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--VerificationCode/cfedf313627c40aca593ed84ef41e0ad)"
     Fitbit__ClientId                             = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--ClientId/45c7f90d003845af98100be07c951c3d)"
