@@ -26,6 +26,11 @@ namespace MyHealth.Fhir.Proxy.Authorization
                 return false;
             }
 
+            if (httpContext.Request.Method != HttpMethods.Get)
+            {
+                return false;
+            }
+
             string requestPath = httpContext.Request.Path.Value;
 
             if (requestPath.StartsWith($"/Patient/{userId}"))
