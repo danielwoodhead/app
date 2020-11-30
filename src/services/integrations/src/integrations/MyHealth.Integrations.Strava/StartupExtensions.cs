@@ -19,7 +19,7 @@ namespace MyHealth.Integrations.Strava
             services.AddTransient<IStravaAuthenticationService, StravaAuthenticationService>();
             services.AddTransient<IStravaSubscriptionService, StravaSubscriptionService>();
             services.AddTransient<IStravaUpdateService, StravaUpdateService>();
-            services.AddTransient<IIntegrationProviderUpdateEventHandler, StravaProviderUpdateEventHandler>();
+            services.AddTransient<IIntegrationEventHandler, StravaProviderUpdateEventHandler>();
 
             services.AddHttpClient<IStravaClient, StravaClient>((s, client) =>
             {

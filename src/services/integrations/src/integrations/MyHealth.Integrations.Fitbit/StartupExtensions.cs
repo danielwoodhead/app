@@ -22,7 +22,7 @@ namespace MyHealth.Integrations.Fitbit
             services.AddTransient<IFitbitTokenService, FitbitTokenService>();
             services.AddTransient<FitbitBasicAuthenticationHandler>();
             services.AddTransient<FitbitBearerAuthenticationHandler>();
-            services.AddTransient<IIntegrationProviderUpdateEventHandler, FitbitProviderUpdateEventHandler>();
+            services.AddTransient<IIntegrationEventHandler, FitbitProviderUpdateEventHandler>();
             services.AddFitbitClient<IFitbitClient, FitbitClient, FitbitBearerAuthenticationHandler>();
             services.AddFitbitClient<IFitbitAuthenticationClient, FitbitAuthenticationClient, FitbitBasicAuthenticationHandler>();
 

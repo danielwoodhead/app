@@ -18,7 +18,7 @@ using Newtonsoft.Json.Linq;
 
 namespace MyHealth.Integrations.Fitbit.EventHandlers
 {
-    public class FitbitProviderUpdateEventHandler : IIntegrationProviderUpdateEventHandler
+    public class FitbitProviderUpdateEventHandler : IIntegrationEventHandler
     {
         private readonly IFitbitClient _fitbitClient;
         private readonly IFitbitTokenService _fitbitTokenService;
@@ -40,9 +40,10 @@ namespace MyHealth.Integrations.Fitbit.EventHandlers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        public string EventType => EventTypes.IntegrationProviderUpdate;
         public Provider Provider => Provider.Fitbit;
 
-        public async Task RunAsync(IEvent @event)
+        public async Task ProcessAsync(IEvent @event)
         {
             var providerUpdateEvent = (IntegrationProviderUpdateEvent)@event;
 

@@ -1,5 +1,4 @@
 using System.Text.Json;
-using MyHealth.Integrations.Core.IoMT;
 using MyHealth.Integrations.Core.IoMT.Models;
 using Xunit;
 

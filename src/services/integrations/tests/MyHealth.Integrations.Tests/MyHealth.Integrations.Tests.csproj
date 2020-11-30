@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\MyHealth.Integrations.Core\MyHealth.Integrations.Core.csproj" />
+    <ProjectReference Include="..\..\src\MyHealth.Integrations.FunctionApp\MyHealth.Integrations.FunctionApp.csproj" />
   </ItemGroup>
 
 </Project>

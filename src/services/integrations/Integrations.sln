@@ -46,7 +46,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Logging
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4E9A52AF-080F-4FE8-84B1-D91BC4639D99}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.Core.Tests", "tests\MyHealth.Integrations.Core.Tests\MyHealth.Integrations.Core.Tests.csproj", "{375AC660-2CED-4F6F-995A-935DC3E8120C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Integrations.Tests", "tests\MyHealth.Integrations.Tests\MyHealth.Integrations.Tests.csproj", "{375AC660-2CED-4F6F-995A-935DC3E8120C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.AspNetCore.Context", "..\..\extensions\src\MyHealth.Extensions.AspNetCore.Context\MyHealth.Extensions.AspNetCore.Context.csproj", "{5584FA91-2293-4DF6-B15C-4F51ABBB290C}"
 EndProject

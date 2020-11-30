@@ -18,7 +18,7 @@ using Newtonsoft.Json.Linq;
 
 namespace MyHealth.Integrations.Strava.EventHandlers
 {
-    public class StravaProviderUpdateEventHandler : IIntegrationProviderUpdateEventHandler
+    public class StravaProviderUpdateEventHandler : IIntegrationEventHandler
     {
         private readonly IStravaClient _stravaClient;
         private readonly IStravaAuthenticationService _stravaAuthenticationService;
@@ -43,9 +43,10 @@ namespace MyHealth.Integrations.Strava.EventHandlers
             _fhirClient = fhirClient;
         }
 
+        public string EventType => EventTypes.IntegrationProviderUpdate;
         public Provider Provider => Provider.Strava;
 
-        public async Task RunAsync(IEvent @event)
+        public async Task ProcessAsync(IEvent @event)
         {
             var providerUpdateEvent = (IntegrationProviderUpdateEvent)@event;
 
