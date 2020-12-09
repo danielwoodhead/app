@@ -83,6 +83,7 @@ resource "azurerm_app_service" "as" {
     AdminConfiguration__IdentityServerBaseUrl    = var.identity_server_base_url
     AdminConfiguration__ClientId                 = var.identity_client_id
     AdminConfiguration__ClientSecret             = var.identity_client_secret
+    AdminConfiguration__PageTitle                = "MyHealth"
     ASPNETCORE_ENVIRONMENT                       = "Development"
   }
 }

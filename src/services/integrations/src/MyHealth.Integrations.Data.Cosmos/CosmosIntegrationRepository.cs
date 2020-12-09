@@ -45,7 +45,7 @@ namespace MyHealth.Integrations.Data.Cosmos
 
         public async Task<Integration> GetIntegrationAsync(string id, string userId)
         {
-            var entities = await QueryIntegrationsAsync($"SELECT * FROM i WHERE i.Id = '{id}'");
+            var entities = await QueryIntegrationsAsync($"SELECT * FROM i WHERE i.id = '{id}'");
 
             var entity = entities.FirstOrDefault();
 
