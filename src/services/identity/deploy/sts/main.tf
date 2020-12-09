@@ -79,6 +79,7 @@ resource "azurerm_app_service" "as" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE      = false
     APPINSIGHTS_INSTRUMENTATIONKEY           = data.azurerm_application_insights.ai.instrumentation_key
     AdminConfiguration__IdentityAdminBaseUrl = var.identity_admin_base_url
+    AdminConfiguration__PageTitle            = "MyHealth"
   }
 }
 
