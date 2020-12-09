@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.Azure.Storage.Table\MyHealth.Extensions.Azure.Storage.Table.csproj" />
+    <ProjectReference Include="..\MyHealth.Subscriptions.Core\MyHealth.Subscriptions.Core.csproj" />
+  </ItemGroup>
+
+</Project>
