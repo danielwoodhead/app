@@ -11,7 +11,7 @@ When a new subscription webhook is created a HTTP GET request is sent to it with
 
 ## 1.1.1
 
-> Status: Automated ([CreateSubscriptionWebhook_InvalidWebhookUrl_ReturnsBadRequest](..\..\tests\MyHealth.Subscriptions.Tests\Api\SubscriptionWebhookTests.cs))
+> Status: Automated ([CreateSubscriptionWebhook_InvalidWebhookUrl_ReturnsBadRequest](../../tests/MyHealth.Subscriptions.Tests/Api/SubscriptionWebhookTests.cs))
 
 Title: Invalid webhook URL
 
@@ -40,7 +40,7 @@ Example response:
 
 ## 1.1.2
 
-> Status: Automated ([CreateSubscriptionWebhook_WebhookValidationFails_IncorrectStatusCode_ReturnsBadRequest](..\..\tests\MyHealth.Subscriptions.Tests\Api\SubscriptionWebhookTests.cs))
+> Status: Automated ([CreateSubscriptionWebhook_WebhookValidationFails_IncorrectStatusCode_ReturnsBadRequest](../../tests/MyHealth.Subscriptions.Tests/Api/SubscriptionWebhookTests.cs))
 
 Title: Webhook validation failed (incorrect status code)
 
@@ -71,7 +71,7 @@ Example response:
 
 ## 1.1.3
 
-> Status: Automated ([CreateSubscriptionWebhook_WebhookValidationFails_IncorrectResponseFormat_ReturnsBadRequest](..\..\tests\MyHealth.Subscriptions.Tests\Api\SubscriptionWebhookTests.cs))
+> Status: Automated ([CreateSubscriptionWebhook_WebhookValidationFails_IncorrectResponseFormat_ReturnsBadRequest](../../tests/MyHealth.Subscriptions.Tests/Api/SubscriptionWebhookTests.cs))
 
 Title: Webhook validation failed (incorrect response format)
 
@@ -105,7 +105,7 @@ Example response:
 
 ## 1.1.4
 
-> Status: Automated ([CreateSubscriptionWebhook_WebhookValidationFails_IncorrectVerificationCode_ReturnsBadRequest](..\..\tests\MyHealth.Subscriptions.Tests\Api\SubscriptionWebhookTests.cs))
+> Status: Automated ([CreateSubscriptionWebhook_WebhookValidationFails_IncorrectVerificationCode_ReturnsBadRequest](../../tests/MyHealth.Subscriptions.Tests/Api/SubscriptionWebhookTests.cs))
 
 Title: Webhook validation failed (incorrect verification code)
 
@@ -160,7 +160,7 @@ Example response:
 
 ## 1.1.6
 
-> Status: Automated ([CreateSubscriptionWebhook_ApplicationAlreadyHasWebhook_ReturnsConflict](..\..\tests\MyHealth.Subscriptions.Tests\Api\SubscriptionWebhookTests.cs))
+> Status: Automated ([CreateSubscriptionWebhook_ApplicationAlreadyHasWebhook_ReturnsConflict](../../tests/MyHealth.Subscriptions.Tests/Api/SubscriptionWebhookTests.cs))
 
 Title: Webhook already exists
 
@@ -219,7 +219,7 @@ Expected outcome:
 
 ## 1.1.11
 
-> Status: Automated ([CreateSubscriptionWebhook_Success_ReturnsCreated](..\..\tests\MyHealth.Subscriptions.Tests\Api\SubscriptionWebhookTests.cs))
+> Status: Automated ([CreateSubscriptionWebhook_Success_ReturnsCreated](../../tests/MyHealth.Subscriptions.Tests/Api/SubscriptionWebhookTests.cs))
 
 Title: Successful subscription webhook creation
 
