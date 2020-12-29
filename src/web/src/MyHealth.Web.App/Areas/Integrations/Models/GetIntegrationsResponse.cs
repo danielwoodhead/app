@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MyHealth.Web.Core.Models
+namespace MyHealth.Web.App.Areas.Integrations.Models
 {
     public class GetIntegrationsResponse
     {

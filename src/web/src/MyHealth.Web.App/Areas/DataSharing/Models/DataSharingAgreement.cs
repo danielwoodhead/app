@@ -1,4 +1,4 @@
-﻿namespace MyHealth.Web.Core.Models
+﻿namespace MyHealth.Web.App.Areas.DataSharing.Models
 {
     public class DataSharingAgreement
     {

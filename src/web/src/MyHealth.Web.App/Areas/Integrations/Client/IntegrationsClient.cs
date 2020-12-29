@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
-using MyHealth.Web.Core.Models;
+using MyHealth.Web.App.Areas.Integrations.Models;
 
-namespace MyHealth.Web.Core.AppApi
+namespace MyHealth.Web.App.Areas.Integrations.Client
 {
-    public class AppApiClient : IAppApiClient
+    public class IntegrationsClient : IIntegrationsClient
     {
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-        public AppApiClient(HttpClient httpClient)
+        public IntegrationsClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
             _jsonSerializerOptions = new JsonSerializerOptions
@@ -25,31 +24,6 @@ namespace MyHealth.Web.Core.AppApi
             };
             _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
-
-        #region Data Sharing
-
-        public async Task DeleteDataSharingAgreementAsync(string name)
-        {
-            await _httpClient.DeleteAsync($"datasharing/agreements/{name}");
-        }
-
-        public async Task<IEnumerable<DataSharingAgreement>> GetDataSharingAgreements()
-        {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<DataSharingAgreement>>("datasharing/agreements");
-        }
-
-        #endregion Data Sharing
-
-        #region Health Record
-
-        public async Task<SearchObservationsResponse> GetObservationsAsync()
-        {
-            return await _httpClient.GetFromJsonAsync<SearchObservationsResponse>("observations");
-        }
-
-        #endregion Health Record
-
-        #region Integrations
 
         public async Task DeleteIntegrationAsync(string id)
         {
@@ -101,7 +75,5 @@ namespace MyHealth.Web.Core.AppApi
                     "redirectUri",
                     redirectUri));
         }
-
-        #endregion
     }
 }
