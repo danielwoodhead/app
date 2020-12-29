@@ -8,7 +8,6 @@ using MyHealth.Web.App.Areas.DataSharing.Models;
 
 namespace MyHealth.Web.App.Areas.DataSharing.Client
 {
-
     public class DataSharingClient : IDataSharingClient
     {
         private readonly HttpClient _httpClient;
