@@ -1,4 +1,4 @@
-﻿namespace MyHealth.Web.Core.Models
+﻿namespace MyHealth.Web.App.Areas.Integrations.Models
 {
     public enum Provider
     {

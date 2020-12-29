@@ -1,8 +1,8 @@
 ﻿@page "/record"
 @attribute [Authorize]
-@inject IAppApiClient AppApiClient
-@using MyHealth.Web.Core.AppApi
-@using MyHealth.Web.Core.Models
+@inject IHealthRecordClient HealthRecordClient
+@using MyHealth.Web.App.Areas.HealthRecord.Client
+@using MyHealth.Web.App.Areas.HealthRecord.Models
 
 <h3>Health Record</h3>
 
@@ -48,6 +48,6 @@ else
 
     private async Task GetObservationsAsync()
     {
-        _observations = (await AppApiClient.GetObservationsAsync()).Observations;
+        _observations = (await HealthRecordClient.GetObservationsAsync()).Observations;
     }
 }

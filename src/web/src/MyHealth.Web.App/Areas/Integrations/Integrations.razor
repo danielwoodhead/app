@@ -1,9 +1,9 @@
 ﻿@page "/integrations"
 @attribute [Authorize]
-@inject IAppApiClient AppApiClient
+@inject IIntegrationsClient IntegrationsClient
 @inject NavigationManager NavigationManager
-@using MyHealth.Web.Core.AppApi
-@using MyHealth.Web.Core.Models
+@using MyHealth.Web.App.Areas.Integrations.Client
+@using MyHealth.Web.App.Areas.Integrations.Models
 
 <h3>Integrations</h3>
 
@@ -16,10 +16,9 @@ else
     <div class="card-deck">
         @foreach (var integration in _integrations)
         {
-            <IntegrationCard
-                Integration="@integration"
-                OnCreateIntegration="@CreateIntegrationAsync"
-                OnDeleteIntegration="@DeleteIntegrationAsync"/>
+            <IntegrationCard Integration="@integration"
+                             OnCreateIntegration="@CreateIntegrationAsync"
+                             OnDeleteIntegration="@DeleteIntegrationAsync" />
         }
     </div>
 }
@@ -34,7 +33,7 @@ else
 
     private async Task GetIntegrationsAsync()
     {
-        _integrations = (await AppApiClient.GetAllIntegrationsAsync()).Integrations;
+        _integrations = (await IntegrationsClient.GetAllIntegrationsAsync()).Integrations;
     }
 
     private async Task CreateIntegrationAsync(Integration integration)
@@ -42,11 +41,11 @@ else
         switch (integration.Provider)
         {
             case Provider.Fitbit:
-                string fitbitAuthenticationUri = await AppApiClient.GetFitbitAuthenticationUriAsync($"{NavigationManager.BaseUri}integrations/fitbitcallback");
+                string fitbitAuthenticationUri = await IntegrationsClient.GetFitbitAuthenticationUriAsync($"{NavigationManager.BaseUri}integrations/fitbitcallback");
                 NavigationManager.NavigateTo(fitbitAuthenticationUri);
                 break;
             case Provider.Strava:
-                string stravaAuthenticationUri = await AppApiClient.GetStravaAuthenticationUriAsync($"{NavigationManager.BaseUri}integrations/stravacallback");
+                string stravaAuthenticationUri = await IntegrationsClient.GetStravaAuthenticationUriAsync($"{NavigationManager.BaseUri}integrations/stravacallback");
                 NavigationManager.NavigateTo(stravaAuthenticationUri);
                 break;
             default:
@@ -56,7 +55,7 @@ else
 
     private async Task DeleteIntegrationAsync(Integration integration)
     {
-        await AppApiClient.DeleteIntegrationAsync(integration.Id);
+        await IntegrationsClient.DeleteIntegrationAsync(integration.Id);
         await GetIntegrationsAsync();
     }
 }

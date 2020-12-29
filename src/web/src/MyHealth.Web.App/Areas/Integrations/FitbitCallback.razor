@@ -1,9 +1,9 @@
 ﻿@page "/integrations/fitbitcallback"
 @attribute [Authorize]
-@inject IAppApiClient AppApiClient
+@inject IIntegrationsClient IntegrationsClient
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.WebUtilities
-@using MyHealth.Web.Core.AppApi
+@using MyHealth.Web.App.Areas.Integrations.Client
 
 <LoadingIndicator />
 
@@ -13,7 +13,7 @@
         var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
         if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("code", out var code))
         {
-            await AppApiClient.CreateFitbitIntegrationAsync(code, $"{NavigationManager.BaseUri}integrations/fitbitcallback");
+            await IntegrationsClient.CreateFitbitIntegrationAsync(code, $"{NavigationManager.BaseUri}integrations/fitbitcallback");
         }
 
         NavigationManager.NavigateTo("/integrations");

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyHealth.Web.Core.Models
+namespace MyHealth.Web.App.Areas.HealthRecord.Models
 {
     public class Observation
     {

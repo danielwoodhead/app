@@ -1,8 +1,8 @@
 ﻿@page "/sharing"
 @attribute [Authorize]
-@inject IAppApiClient AppApiClient
-@using MyHealth.Web.Core.AppApi
-@using MyHealth.Web.Core.Models
+@inject IDataSharingClient DataSharingClient
+@using MyHealth.Web.App.Areas.DataSharing.Client
+@using MyHealth.Web.App.Areas.DataSharing.Models
 
 <h3>Data Sharing</h3>
 
@@ -20,7 +20,7 @@ else
         @foreach (var dataSharingAgreement in _dataSharingAgreements)
         {
             <DataSharingCard DataSharingAgreement="@dataSharingAgreement"
-                OnDeleteDataSharingAgreement="@DeleteDataSharingAgreementAsync" />
+                             OnDeleteDataSharingAgreement="@DeleteDataSharingAgreementAsync" />
         }
     </div>
 }
@@ -36,12 +36,12 @@ else
 
     private async Task GetDataSharingAgreementsAsync()
     {
-        _dataSharingAgreements = (await AppApiClient.GetDataSharingAgreements());
+        _dataSharingAgreements = (await DataSharingClient.GetDataSharingAgreements());
     }
 
     private async Task DeleteDataSharingAgreementAsync(DataSharingAgreement dataSharingAgreement)
     {
-        await AppApiClient.DeleteDataSharingAgreementAsync(dataSharingAgreement.Name);
+        await DataSharingClient.DeleteDataSharingAgreementAsync(dataSharingAgreement.Name);
         await GetDataSharingAgreementsAsync();
     }
 }
