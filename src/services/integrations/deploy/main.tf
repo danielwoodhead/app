@@ -120,81 +120,29 @@ resource "azurerm_key_vault_access_policy" "api" {
   ]
 }
 
-resource "azurerm_function_app" "functions" {
-  name                       = "${var.prefix}-funcs"
-  location                   = var.location
-  resource_group_name        = var.resource_group_name
-  app_service_plan_id        = data.azurerm_app_service_plan.asp.id
-  storage_account_name       = azurerm_storage_account.storage.name
-  storage_account_access_key = azurerm_storage_account.storage.primary_access_key
-  os_type                    = "linux"
-  version                    = "~3"
-
-  identity {
-    type = "SystemAssigned"
-  }
-
-  site_config {
-    always_on                 = true
-    linux_fx_version          = "DOCKER|${data.azurerm_container_registry.cr.login_server}/${var.functions_container_image_name}"
-    use_32_bit_worker_process = true
-  }
-
-  app_settings = {
-    APPINSIGHTS_INSTRUMENTATIONKEY               = data.azurerm_application_insights.ai.instrumentation_key
-    DOCKER_REGISTRY_SERVER_URL                   = "https://${data.azurerm_container_registry.cr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME              = data.azurerm_container_registry.cr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD              = data.azurerm_container_registry.cr.admin_password
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE          = false
-    FUNCTIONS_WORKER_RUNTIME                     = "dotnet"
-    Fhir__BaseUrl                                = var.fhir_base_url
-    Fhir__Timeout                                = var.fhir_timeout
-    Fitbit__BaseUrl                              = var.fitbit_base_url
-    Fitbit__VerificationCode                     = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--VerificationCode/cfedf313627c40aca593ed84ef41e0ad)"
-    Fitbit__ClientId                             = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--ClientId/45c7f90d003845af98100be07c951c3d)"
-    Fitbit__ClientSecret                         = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Fitbit--ClientSecret/d425992ab34546029d8cffb83be6b887)"
-    IntegrationsApi__AuthenticationClientId      = var.authentication_client_id
-    IntegrationsApi__AuthenticationClientSecret  = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/IntegrationsApi--AuthenticationClientSecret/c2ab264b42904906a9104f06b1ed9f50)"
-    IntegrationsApi__AuthenticationScope         = var.authentication_scope
-    IntegrationsApi__AuthenticationTokenEndpoint = var.authentication_token_endpoint
-    IoMT__EventHub__ConnectionString             = data.azurerm_eventhub_namespace.iomt.default_primary_connection_string
-    IoMT__EventHub__Name                         = var.iomt_event_hub_name
-    KeyVault__Name                               = var.key_vault_name
-    Strava__ApiUrl                               = var.strava_api_url
-    Strava__AuthenticationUrl                    = var.strava_authentication_url
-    Strava__ClientId                             = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Strava--ClientId/b1c8e6084b4f4a918dc62dc1d4b4bbd2)"
-    Strava__ClientSecret                         = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.kv.vault_uri}secrets/Strava--ClientSecret/ec8801aa4d0246fdbde6e3fcc6b5856d)"
-  }
-
-  connection_string {
-    name  = "Cosmos"
-    type  = "Custom"
-    value = azurerm_cosmosdb_account.db.connection_strings[0]
-  }
-}
-
-resource "azurerm_key_vault_access_policy" "functions" {
-  key_vault_id = data.azurerm_key_vault.kv.id
-  tenant_id    = azurerm_function_app.functions.identity[0].tenant_id
-  object_id    = azurerm_function_app.functions.identity[0].principal_id
-
-  secret_permissions = [
-    "get"
-  ]
-}
-
 resource "azurerm_eventgrid_topic" "topic" {
   name                = "${var.prefix}-event-topic"
   location            = var.location
   resource_group_name = var.resource_group_name
 }
 
+resource "random_password" "event_api_key" {
+  length           = 16
+  special          = false
+}
+
+resource "azurerm_key_vault_secret" "event_api_key" {
+  name         = "IntegrationsApi--EventsApiKey"
+  value        = random_password.event_api_key.result
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 resource "azurerm_eventgrid_event_subscription" "sub" {
   name  = "${var.prefix}-provider-update-event-subscription"
   scope = azurerm_eventgrid_topic.topic.id
 
-  azure_function_endpoint {
-    function_id                       = "${azurerm_function_app.functions.id}/functions/${var.function_name_integration_event}"
+  webhook_endpoint {
+    url                               = "https://${azurerm_app_service.as.default_site_hostname}/v1/events?apiKey=${random_password.event_api_key.result}"
     max_events_per_batch              = 1 # default (added to prevent constant TF changes)
     preferred_batch_size_in_kilobytes = 64 # default (added to prevent constant TF changes)
   }

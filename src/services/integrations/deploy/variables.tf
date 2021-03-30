@@ -25,10 +25,6 @@ variable "container_image_name" {
   description = "The container image name"
 }
 
-variable "functions_container_image_name" {
-  description = "The functions container image name"
-}
-
 variable "container_registry_name" {
   description = "The container registry name"
 }
@@ -81,11 +77,6 @@ variable "fitbit_authentication_url" {
 
 variable "key_vault_name" {
   description = "The key vault name"
-}
-
-variable "function_name_integration_event" {
-  description = "The name of the integration event processor function"
-  default     = "IntegrationEventProcessor"
 }
 
 variable "iomt_event_hub_namespace" {
