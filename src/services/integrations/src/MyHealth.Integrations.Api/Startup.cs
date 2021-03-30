@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using MyHealth.Extensions.AspNetCore.Context;
 using MyHealth.Extensions.AspNetCore.Swagger;
 using MyHealth.Extensions.AspNetCore.Versioning;
+using MyHealth.Integrations.Api.Configuration;
 using MyHealth.Integrations.Api.Extensions;
 using MyHealth.Integrations.Core.Events;
 using MyHealth.Integrations.Core.Services;
@@ -44,6 +45,7 @@ namespace MyHealth.Integrations.Api
             services.AddSwagger(Configuration);
             services.AddUtility();
             services.AddVersioning();
+            services.Configure<IntegrationsApiSettings>(Configuration.GetSection("IntegrationsApi"));
             services.AddTransient<IIntegrationService, IntegrationService>();
             services.AddTransient<IEventHandler, EventHandler>();
 
