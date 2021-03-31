@@ -6,4 +6,4 @@ terraform apply -var-file="dev.tfvars"
 
 dotnet publish ../src/MyHealth.Web.App/MyHealth.Web.App.csproj -c Release
 
-az storage blob upload-batch --source "../src/MyHealth.Web.App/bin/Release/netstandard2.1/publish/wwwroot" --destination "`$web" --account-name "myhealthwebstorage"
+az storage blob upload-batch --source "../src/MyHealth.Web.App/bin/Release/net5.0/publish/wwwroot" --destination "`$web" --account-name "myhealthwebstorage"
