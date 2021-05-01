@@ -1,11 +1,12 @@
 ﻿@using MyHealth.Web.App.Areas.DataSharing.Models
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">@DataSharingAgreement.Name</h5>
-        <button class="btn btn-danger" @onclick="@DeleteDataSharingAgreementAsync">Delete</button>
-    </div>
-</div>
+<Card Bordered="false" Title=@DataSharingAgreement.Name>
+    <ActionTemplate>
+        <CardAction>
+            <Button Type="primary" Danger OnClick="@DeleteDataSharingAgreementAsync">Delete</Button>
+        </CardAction>
+    </ActionTemplate>
+</Card>
 
 @code {
     [Parameter]

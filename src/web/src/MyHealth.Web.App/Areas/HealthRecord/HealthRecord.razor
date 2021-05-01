@@ -4,39 +4,24 @@
 @using MyHealth.Web.App.Areas.HealthRecord.Client
 @using MyHealth.Web.App.Areas.HealthRecord.Models
 
-<h3>Health Record</h3>
-
-@if (_observations is null)
-{
-    <LoadingIndicator />
-}
-else if (!_observations.Any())
-{
-    <p>No observations found!</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Text</th>
-                <th scope="col">Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Observation observation in _observations)
-            {
-                <tr>
-                    <td>@observation.DateTime</td>
-                    <td>@observation.Text</td>
-                    <td>@observation.Value</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
+<PageContainer Title="Health Record">
+    @if (_observations is null)
+    {
+        <Spin />
+    }
+    else if (!_observations.Any())
+    {
+        <p>No observations found!</p>
+    }
+    else
+    {
+        <Table TItem="Observation" DataSource="@_observations">
+            <AntDesign.Column @bind-Field="@context.DateTime"></AntDesign.Column>
+            <AntDesign.Column @bind-Field="@context.Text"></AntDesign.Column>
+            <AntDesign.Column @bind-Field="@context.Value"></AntDesign.Column>
+        </Table>
+    }
+</PageContainer>
 
 @code {
     private IEnumerable<Observation> _observations;

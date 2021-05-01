@@ -1,0 +1,49 @@
+﻿@namespace MyHealth.Web.App
+@inherits LayoutComponentBase
+
+<AntDesign.Pro.Layout.BasicLayout Logo="@("https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg")"
+                                  MenuData="_menuData">
+    <RightContentRender>
+        <MyHealth.Web.App.Shared.LoginDisplay />
+    </RightContentRender>
+    <ChildContent>
+        @Body
+    </ChildContent>
+    <FooterRender></FooterRender>
+</AntDesign.Pro.Layout.BasicLayout>
+<SettingDrawer />
+
+@code
+{
+    private readonly MenuDataItem[] _menuData = 
+    {
+        new MenuDataItem
+        {
+            Path = "/",
+            Name = "Welcome",
+            Key = "welcome",
+            Icon = "smile",
+        },
+        new MenuDataItem
+        {
+            Path = "/sharing",
+            Name = "Data Sharing",
+            Key = "sharing",
+            Icon = "share-alt",
+        },
+        new MenuDataItem
+        {
+            Path = "/record",
+            Name = "Health Record",
+            Key = "record",
+            Icon = "profile",
+        },
+        new MenuDataItem
+        {
+            Path = "/integrations",
+            Name = "Integrations",
+            Key = "integrations",
+            Icon = "partition",
+        }
+    };
+}
