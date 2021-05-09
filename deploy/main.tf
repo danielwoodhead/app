@@ -1,9 +1,16 @@
 terraform {
   backend "azurerm" {}
+  required_version = ">= 0.15"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=2.58.0"
+    }
+  }
 }
 
 provider "azurerm" {
-  version = "=1.44.0"
+  features {}
 }
 
 data "azurerm_client_config" "current" {}
@@ -39,21 +46,19 @@ resource "azurerm_key_vault_access_policy" "kvp1" {
   object_id    = data.azuread_user.admin.id
 
   certificate_permissions = [
-    "backup", "create", "delete", "deleteissuers", "get", 
-    "getissuers", "import", "list", "listissuers", "managecontacts", 
-    "manageissuers", "purge", "recover", "restore", "setissuers", 
-    "update"
+    "Backup", "Create", "Delete", "DeleteIssuers", "Get", 
+    "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts", 
+    "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"
   ]
 
   key_permissions = [
-    "backup", "create", "decrypt", "delete", "encrypt", "get", 
-    "import", "list", "purge", "recover", "restore", "sign", 
-    "unwrapKey", "update", "verify", "wrapKey"
+    "Backup", "Create", "Decrypt", "Delete", "Encrypt", "Get", "Import", 
+    "List", "Purge", "Recover", "Restore", "Sign", "UnwrapKey", "Update",
+    "Verify", "WrapKey"
   ]
 
   secret_permissions = [
-    "backup", "delete", "get", "list", "purge", "recover", "restore",
-    "set"
+    "Backup", "Delete", "get", "list", "purge", "recover", "restore", "set"
   ]
 }
 
