@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>aa1694ef-d0c2-46ca-a041-8653087dc3ca</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CloudNative.CloudEvents.AspNetCore" Version="2.0.0-beta.2" />
+    <PackageReference Include="CloudNative.CloudEvents.SystemTextJson" Version="2.0.0-beta.2" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Swagger\MyHealth.Extensions.AspNetCore.Swagger.csproj" />
+    <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Versioning\MyHealth.Extensions.AspNetCore.Versioning.csproj" />
+    <ProjectReference Include="..\MyHealth.Events.Azure.EventGrid\MyHealth.Events.Azure.EventGrid.csproj" />
+    <ProjectReference Include="..\MyHealth.Events.Azure.TableStorage\MyHealth.Events.Azure.TableStorage.csproj" />
+    <ProjectReference Include="..\MyHealth.Events.EventIngestion\MyHealth.Events.EventIngestion.csproj" />
+  </ItemGroup>
+
+</Project>
