@@ -1,1 +1,0 @@
-﻿.\deploy.ps1 -subscription bc22730d-89ef-4562-9a78-dfb790976b9a -resourceGroupName DansMicroservices -location uksouth -serviceName DansMicroservices -dnsNamePrefix dan -createAcr $True -registryName DansContainerRegistry -nodeVMSize Standard_DS1_v2
