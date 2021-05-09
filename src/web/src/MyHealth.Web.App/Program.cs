@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AntDesign.Pro.Layout;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,9 @@ namespace MyHealth.Web.App
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+
+            builder.Services.AddAntDesign();
+            builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
 
             builder.AddDataSharing();
             builder.AddHealthRecord();

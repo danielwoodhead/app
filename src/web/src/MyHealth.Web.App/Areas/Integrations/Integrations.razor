@@ -5,23 +5,25 @@
 @using MyHealth.Web.App.Areas.Integrations.Client
 @using MyHealth.Web.App.Areas.Integrations.Models
 
-<h3>Integrations</h3>
-
-@if (_integrations is null)
-{
-    <LoadingIndicator />
-}
-else
-{
-    <div class="card-deck">
+<PageContainer Title="Integrations">
+    @if (_integrations is null)
+    {
+        <Spin />
+    }
+    else
+    {
+        <Row Type="flex" Gutter="24">
         @foreach (var integration in _integrations)
         {
-            <IntegrationCard Integration="@integration"
-                             OnCreateIntegration="@CreateIntegrationAsync"
-                             OnDeleteIntegration="@DeleteIntegrationAsync" />
+            <AntDesign.Col Span="8">
+                <IntegrationCard Integration="@integration"
+                                 OnCreateIntegration="@CreateIntegrationAsync"
+                                 OnDeleteIntegration="@DeleteIntegrationAsync" />
+            </AntDesign.Col>
         }
-    </div>
-}
+        </Row>
+    }
+    </PageContainer>
 
 @code {
     private IEnumerable<Integration> _integrations;

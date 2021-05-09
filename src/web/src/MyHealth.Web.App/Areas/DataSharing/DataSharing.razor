@@ -4,27 +4,28 @@
 @using MyHealth.Web.App.Areas.DataSharing.Client
 @using MyHealth.Web.App.Areas.DataSharing.Models
 
-<h3>Data Sharing</h3>
-
-@if (_dataSharingAgreements is null)
-{
-    <LoadingIndicator />
-}
-else if (!_dataSharingAgreements.Any())
-{
-    <p>You are not sharing your data</p>
-}
-else
-{
-    <div class="card-deck">
-        @foreach (var dataSharingAgreement in _dataSharingAgreements)
-        {
-            <DataSharingCard DataSharingAgreement="@dataSharingAgreement"
-                             OnDeleteDataSharingAgreement="@DeleteDataSharingAgreementAsync" />
-        }
-    </div>
-}
-
+<PageContainer Title="Data Sharing">
+    @if (_dataSharingAgreements is null)
+    {
+        <Spin />
+    }
+    else if (!_dataSharingAgreements.Any())
+    {
+        <p>You are not sharing your data</p>
+    }
+    else
+    {
+        <Row Type="flex" Gutter="24">
+            @foreach (var dataSharingAgreement in _dataSharingAgreements)
+            {
+                <AntDesign.Col Span="8">
+                    <DataSharingCard DataSharingAgreement="@dataSharingAgreement"
+                                     OnDeleteDataSharingAgreement="@DeleteDataSharingAgreementAsync" />
+                </AntDesign.Col>
+            }
+        </Row>
+    }
+</PageContainer>
 
 @code {
     private IEnumerable<DataSharingAgreement> _dataSharingAgreements;

@@ -1,20 +1,19 @@
 ﻿@using MyHealth.Web.App.Areas.Integrations.Models
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">@Integration.Provider</h5>
-        @if (Integration.Enabled)
-        {
-            <p class="card-text">Enabled</p>
-            <button class="btn btn-danger" @onclick="@DeleteIntegrationAsync">Delete</button>
-        }
-        else
-        {
-            <p class="card-text">Disabled</p>
-            <button class="btn btn-primary" @onclick="@CreateIntegrationAsync">Enable</button>
-        }
-    </div>
-</div>
+<Card Bordered="false" Title=@Integration.Provider.ToString()>
+    <ActionTemplate>
+        <CardAction>
+            @if (Integration.Enabled)
+            {
+                <Button Type="primary" Danger OnClick="@DeleteIntegrationAsync">Delete</Button>
+            }
+            else
+            {
+                <Button Type="primary" OnClick="@CreateIntegrationAsync">Enable</Button>
+            }
+        </CardAction>
+    </ActionTemplate>
+</Card>
 
 @code {
     [Parameter]
