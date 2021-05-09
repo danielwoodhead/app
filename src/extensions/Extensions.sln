@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.AspNetC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Caching.Distributed", "src\MyHealth.Extensions.Caching.Distributed\MyHealth.Extensions.Caching.Distributed.csproj", "{457854C2-1B7B-4D0F-A99E-B2D6CB47440B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Extensions.Fhir", "src\MyHealth.Extensions.Fhir\MyHealth.Extensions.Fhir.csproj", "{19BA06B4-9E6C-4FE3-98E5-8B2BEFE125F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Fhir", "src\MyHealth.Extensions.Fhir\MyHealth.Extensions.Fhir.csproj", "{19BA06B4-9E6C-4FE3-98E5-8B2BEFE125F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.Extensions.Testing.Xunit", "src\MyHealth.Extensions.Testing.Xunit\MyHealth.Extensions.Testing.Xunit.csproj", "{BEA43792-D044-460A-8E1C-EE762E1091CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{19BA06B4-9E6C-4FE3-98E5-8B2BEFE125F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19BA06B4-9E6C-4FE3-98E5-8B2BEFE125F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19BA06B4-9E6C-4FE3-98E5-8B2BEFE125F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA43792-D044-460A-8E1C-EE762E1091CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEA43792-D044-460A-8E1C-EE762E1091CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEA43792-D044-460A-8E1C-EE762E1091CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEA43792-D044-460A-8E1C-EE762E1091CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{E720F1BF-B966-4EAB-94EE-449C1CA32D76} = {070D4A9C-AE66-4F8C-908D-28233A54C0F5}
 		{457854C2-1B7B-4D0F-A99E-B2D6CB47440B} = {070D4A9C-AE66-4F8C-908D-28233A54C0F5}
 		{19BA06B4-9E6C-4FE3-98E5-8B2BEFE125F7} = {070D4A9C-AE66-4F8C-908D-28233A54C0F5}
+		{BEA43792-D044-460A-8E1C-EE762E1091CC} = {070D4A9C-AE66-4F8C-908D-28233A54C0F5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5F0C8B0-2B7D-4865-B54B-B5448F24582A}
