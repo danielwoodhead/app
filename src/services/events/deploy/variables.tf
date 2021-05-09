@@ -52,11 +52,12 @@ variable "event_grid_topics" {
     identifier = string
     resource_group_name = string
   }))
-  default = [
-    {
-      name = "dan-test"
-      identifier = "test"
-      resource_group_name = "DansApp"
-    }
-  ]
+  default = []
+  #default = [
+  #  {
+  #    name = "dan-test"
+  #    identifier = "test"
+  #    resource_group_name = "DansApp"
+  #  }
+  #]
 }
