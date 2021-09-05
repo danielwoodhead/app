@@ -10,7 +10,7 @@ WORKDIR /src
 COPY ["services/events/src/MyHealth.Events.Api/MyHealth.Events.Api.csproj", "services/events/src/MyHealth.Events.Api/"]
 COPY ["services/events/src/MyHealth.Events.EventIngestion/MyHealth.Events.EventIngestion.csproj", "services/events/src/MyHealth.Events.EventIngestion/"]
 COPY ["services/events/src/MyHealth.Events.Azure.EventGrid/MyHealth.Events.Azure.EventGrid.csproj", "services/events/src/MyHealth.Events.Azure.EventGrid/"]
-COPY ["services/events/src/MyHealth.Events.Azure.TableStorage/MyHealth.Events.Azure.TableStorage.csproj", "services/events/src/MyHealth.Events.Azure.TableStorage/"]
+COPY ["services/events/src/MyHealth.Events.Azure.BlobStorage/MyHealth.Events.Azure.BlobStorage.csproj", "services/events/src/MyHealth.Events.Azure.BlobStorage/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Swagger/MyHealth.Extensions.AspNetCore.Swagger.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Swagger/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Versioning/MyHealth.Extensions.AspNetCore.Versioning.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Versioning/"]
 

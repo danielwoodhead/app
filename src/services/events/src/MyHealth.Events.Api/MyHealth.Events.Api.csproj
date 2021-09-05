@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -19,8 +19,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Swagger\MyHealth.Extensions.AspNetCore.Swagger.csproj" />
     <ProjectReference Include="..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Versioning\MyHealth.Extensions.AspNetCore.Versioning.csproj" />
+    <ProjectReference Include="..\MyHealth.Events.Azure.BlobStorage\MyHealth.Events.Azure.BlobStorage.csproj" />
     <ProjectReference Include="..\MyHealth.Events.Azure.EventGrid\MyHealth.Events.Azure.EventGrid.csproj" />
-    <ProjectReference Include="..\MyHealth.Events.Azure.TableStorage\MyHealth.Events.Azure.TableStorage.csproj" />
     <ProjectReference Include="..\MyHealth.Events.EventIngestion\MyHealth.Events.EventIngestion.csproj" />
   </ItemGroup>
 

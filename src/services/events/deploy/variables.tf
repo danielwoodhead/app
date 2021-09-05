@@ -28,9 +28,17 @@ variable "application_insights_name" {
   description = "The Application Insights instance name"
 }
 
+variable "authentication_authority" {
+  description = "The authentication authority"
+}
+
+variable "authentication_audience" {
+  description = "The authentication audience"
+}
+
 variable "swagger_enabled" {
   description = "Should Swagger be enabled?"
-  type = bool
+  type        = bool
 }
 
 variable "swagger_authorization_url" {
@@ -48,8 +56,8 @@ variable "swagger_oauth_client_id" {
 variable "event_grid_topics" {
   description = "The event grid topics the application can publish to"
   type = list(object({
-    name = string
-    identifier = string
+    name                = string
+    identifier          = string
     resource_group_name = string
   }))
   default = []

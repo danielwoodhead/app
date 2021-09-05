@@ -10,7 +10,7 @@ namespace MyHealth.Events.EventIngestion.EventHandling.Handlers
         {
         }
 
-        public override string EventType => "com.example.someevent";
+        public override string EventType => "test";
         public override string TopicName => "test";
     }
 }

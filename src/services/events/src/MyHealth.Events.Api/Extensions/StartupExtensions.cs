@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using Azure;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyHealth.Events.Api.Configuration;
+using MyHealth.Events.Azure.BlobStorage.Configuration;
+using MyHealth.Events.Azure.BlobStorage.Extensions;
 using MyHealth.Events.Azure.EventGrid.Extensions;
-using MyHealth.Events.Azure.TableStorage.Configuration;
-using MyHealth.Events.Azure.TableStorage.Extensions;
 using MyHealth.Events.EventIngestion.EventHandling;
 using MyHealth.Events.EventIngestion.EventHandling.Handlers;
 using MyHealth.Events.EventIngestion.Services;
@@ -17,15 +18,39 @@ namespace MyHealth.Events.Api.Extensions
 {
     public static class StartupExtensions
     {
+        public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            // prevent mapping of 'sub' claim
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = configuration["Authentication:Authority"];
+                    options.Audience = configuration["Authentication:Audience"];
+                });
+
+            return services;
+        }
+
         public static IServiceCollection AddAzureClients(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAzureClients(builder =>
             {
+                builder.AddBlobServiceClient(configuration);
                 builder.AddAzureEventGrid(configuration);
-                builder.AddAzureTableStorage(configuration);
             });
 
             return services;
+        }
+
+        private static AzureClientFactoryBuilder AddBlobServiceClient(this AzureClientFactoryBuilder builder, IConfiguration configuration)
+        {
+            var blobStorageSettings = configuration.GetSection("BlobStorage").Get<BlobStorageSettings>();
+
+            builder.AddBlobServiceClient(blobStorageSettings.ConnectionString);
+
+            return builder;
         }
 
         private static AzureClientFactoryBuilder AddAzureEventGrid(this AzureClientFactoryBuilder builder, IConfiguration configuration)
@@ -43,15 +68,6 @@ namespace MyHealth.Events.Api.Extensions
             return builder;
         }
 
-        private static AzureClientFactoryBuilder AddAzureTableStorage(this AzureClientFactoryBuilder builder, IConfiguration configuration)
-        {
-            var tableStorageSettings = configuration.GetSection("TableStorage").Get<TableStorageSettings>();
-
-            builder.AddTableServiceClient(tableStorageSettings.ConnectionString);
-
-            return builder;
-        }
-
         public static IServiceCollection AddEventIngestion(this IServiceCollection services)
         {
             services.AddTransient<IEventService, EventService>();
@@ -64,8 +80,8 @@ namespace MyHealth.Events.Api.Extensions
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAzureClients(configuration);
+            services.AddAzureBlobStorage(configuration);
             services.AddAzureEventGrid();
-            services.AddAzureTableStorage(configuration);
 
             return services;
         }
