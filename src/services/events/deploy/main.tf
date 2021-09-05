@@ -54,11 +54,13 @@ locals {
     DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.cr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.cr.admin_password
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+    Authentication__Authority           = var.authentication_authority
+    Authentication__Audience            = var.authentication_audience
+    BlobStorage__ConnectionString       = azurerm_storage_account.storage.primary_connection_string
     Swagger__Enabled                    = var.swagger_enabled
     Swagger__AuthorizationUrl           = var.swagger_authorization_url
     Swagger__TokenUrl                   = var.swagger_token_url
     Swagger__OAuthClientId              = var.swagger_oauth_client_id
-    BlobStorage__ConnectionString       = azurerm_storage_account.storage.primary_connection_string
   }, local.topic_names, local.topic_uris, local.topic_keys)
 }
 

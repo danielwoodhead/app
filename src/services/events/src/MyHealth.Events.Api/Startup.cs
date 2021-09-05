@@ -25,6 +25,7 @@ namespace MyHealth.Events.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry();
+            services.AddAuthentication(Configuration);
             services.AddControllers(opts =>
             {
                 opts.InputFormatters.Insert(0, new CloudEventJsonInputFormatter(new JsonEventFormatter()));
@@ -55,7 +56,7 @@ namespace MyHealth.Events.Api
                 options.OAuthAppName = "MyHealth Events API";
             });
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

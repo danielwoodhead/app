@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "fb269287-cf7a-4bb7-9eaf-f556213e1279",
+		"name": "myhealth-events",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "event",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/cloudevents+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"specversion\": \"1.0\",\r\n    \"type\": \"test\",\r\n    \"source\": \"/mycontext\",\r\n    \"subject\": null,\r\n    \"id\": \"C234-1234-1234\",\r\n    \"time\": \"2018-04-05T17:31:00Z\",\r\n    \"comexampleextension1\": \"value\",\r\n    \"comexampleothervalue\": 5,\r\n    \"datacontenttype\": \"application/json\",\r\n    \"data\": {\r\n        \"appinfoA\": \"abc\",\r\n        \"appinfoB\": 123,\r\n        \"appinfoC\": true\r\n    }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/v1.0/events",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1.0",
+						"events"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "clientSecret",
+				"value": "{{clientSecret}}",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{clientId}}",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "{{tokenUrl}}",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "myhealth-events-api",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "client_credentials",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "event-api",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

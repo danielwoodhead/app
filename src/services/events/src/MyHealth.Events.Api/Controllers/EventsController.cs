@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CloudNative.CloudEvents;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyHealth.Events.EventIngestion.Services;
@@ -11,7 +12,7 @@ namespace MyHealth.Events.Api.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    //[Authorize]
+    [Authorize]
     [Route("v{version:apiVersion}/events")]
     public class EventsController : ControllerBase
     {

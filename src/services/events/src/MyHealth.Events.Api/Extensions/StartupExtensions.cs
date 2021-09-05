@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using Azure;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,21 @@ namespace MyHealth.Events.Api.Extensions
 {
     public static class StartupExtensions
     {
+        public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            // prevent mapping of 'sub' claim
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = configuration["Authentication:Authority"];
+                    options.Audience = configuration["Authentication:Audience"];
+                });
+
+            return services;
+        }
+
         public static IServiceCollection AddAzureClients(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAzureClients(builder =>

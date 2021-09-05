@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
@@ -64,6 +65,9 @@ namespace MyHealth.Events.Tests.Api.Events
                 .WithWebHostBuilder(builder =>
                     builder.ConfigureTestServices(services =>
                     {
+                        services
+                            .AddAuthentication("Test")
+                            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
                         services.AddTransient(s => eventHandlers);
                         services.AddTransient(s => Mock.Of<IEventRepository>());
                         services.AddTransient(s => Mock.Of<ITopicFactory>());
