@@ -15,6 +15,11 @@ namespace MyHealth.Events.Azure.EventGrid.Topics
 
         public ITopic Create(string name)
         {
+            if (name == "mock")
+            {
+                return new MockTopic();
+            }
+
             EventGridPublisherClient client = _clientFactory.CreateClient(name);
 
             return new EventGridTopic(client);
