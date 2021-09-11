@@ -1,35 +1,21 @@
-﻿using System;
-using System.Threading.Tasks;
-using IdentityModel.Client;
-using MyHealth.App.Api.Identity.Clients;
-using MyHealth.Extensions.AspNetCore.Context;
+﻿using System.Threading.Tasks;
+using MyHealth.App.Api.Core.Authentication;
 using MyHealth.Extensions.Fhir.Authentication;
 
 namespace MyHealth.App.Api.HealthRecord.Services
 {
     public class FhirAuthenticationService : IAuthenticationService
     {
-        private readonly ITokenClient _tokenClient;
-        private readonly IUserOperationContext _userContext;
+        private readonly ITokenService _tokenService;
 
-        public FhirAuthenticationService(ITokenClient tokenClient, IUserOperationContext userContext)
+        public FhirAuthenticationService(ITokenService tokenService)
         {
-            _tokenClient = tokenClient;
-            _userContext = userContext;
+            _tokenService = tokenService;
         }
 
         public async Task<string> GetAccessTokenAsync()
         {
-            string token = await _userContext.GetAccessTokenAsync();
-
-            TokenResponse response = await _tokenClient.GetDelegationTokenAsync(token);
-
-            if (response.IsError)
-            {
-                throw new Exception($"Failed to retrieve access token: {response.Error}");
-            }
-
-            return response.AccessToken;
+            return await _tokenService.GetDelegationTokenAsync();
         }
     }
 }

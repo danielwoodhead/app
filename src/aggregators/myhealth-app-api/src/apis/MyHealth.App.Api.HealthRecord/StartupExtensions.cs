@@ -12,6 +12,7 @@ namespace MyHealth.App.Api.HealthRecord
         public static IServiceCollection AddHealthRecordApi(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddContext();
+            services.AddMemoryCache();
             services.AddFhirClient<FhirAuthenticationService>(settings =>
             {
                 settings.BaseUrl = configuration.GetSection("FhirApi").GetValue<string>("BaseAddress");
