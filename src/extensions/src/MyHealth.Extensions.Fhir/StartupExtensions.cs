@@ -7,6 +7,15 @@ namespace MyHealth.Extensions.Fhir
 {
     public static class StartupExtensions
     {
+        public static IServiceCollection AddFhirClient<TAuthenticationService>(this IServiceCollection services, Action<FhirClientSettings> configure)
+            where TAuthenticationService : class, IAuthenticationService
+        {
+            services.AddScoped<IAuthenticationService, TAuthenticationService>();
+            services.AddFhirClient(configure);
+
+            return services;
+        }
+
         public static IServiceCollection AddFhirClient(this IServiceCollection services, Action<FhirClientSettings> configure)
         {
             var settings = new FhirClientSettings();
@@ -28,8 +37,9 @@ namespace MyHealth.Extensions.Fhir
                     services.AddMemoryCache();
                     services.AddHttpClient<IAuthenticationService, ClientCredentialsAuthenticationService>();
                     break;
+                case AuthenticationMode.Custom:
                 default:
-                    throw new ArgumentException($"Unsupported AuthenticationMode: '{settings.AuthenticationMode}'");
+                    break;
             }
 
             return services;

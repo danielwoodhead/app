@@ -57,7 +57,8 @@ resource "azurerm_app_service" "as" {
     Authentication__Audience                        = var.authentication_audience
     Cors__AllowedOrigins__0                         = var.front_end_origin
     Cors__AllowedOrigins__1                         = var.front_end_origin_local
-    HealthRecordApi__BaseAddress                    = var.health_record_api_base_address
+    FhirApi__BaseAddress                            = var.fhir_api_address
+    FhirApi__Timeout                                = var.fhir_api_timeout
     IdentityApi__BaseAddress                        = var.identity_api_base_address
     IdentityApi__TokenEndpoint                      = var.identity_api_token_endpoint
     IntegrationsApi__BaseAddress                    = var.integrations_api_base_address

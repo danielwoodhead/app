@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyHealth.App.Api.Core.DependencyInjection;
-using MyHealth.App.Api.HealthRecord.Clients;
-using MyHealth.App.Api.HealthRecord.Settings;
+using MyHealth.App.Api.HealthRecord.Services;
+using MyHealth.Extensions.AspNetCore.Context;
+using MyHealth.Extensions.Fhir;
 
 namespace MyHealth.App.Api.HealthRecord
 {
@@ -10,8 +11,14 @@ namespace MyHealth.App.Api.HealthRecord
     {
         public static IServiceCollection AddHealthRecordApi(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<HealthRecordApiSettings>(configuration.GetSection("HealthRecordApi"));
-            services.AddApiClient<IHealthRecordClient, HealthRecordClient>(configuration["HealthRecordApi:BaseAddress"]);
+            services.AddContext();
+            services.AddMemoryCache();
+            services.AddFhirClient<FhirAuthenticationService>(settings =>
+            {
+                settings.BaseUrl = configuration.GetSection("FhirApi").GetValue<string>("BaseAddress");
+                settings.Timeout = configuration.GetSection("FhirApi").GetValue<TimeSpan>("Timeout");
+            });
+            services.AddTransient<IHealthRecordService, HealthRecordService>();
 
             return services;
         }

@@ -36,12 +36,17 @@ variable "authentication_audience" {
   description = "The authentication audience"
 }
 
-variable "key_vault_name" {
-  description = "The key vault name"
+variable "fhir_api_address" {
+  description = "The FHIR API address"
 }
 
-variable "health_record_api_base_address" {
-  description = "The Health Record API base address"
+variable "fhir_api_timeout" {
+  description = "The FHIR API timeout"
+  default     = "00:00:30"
+}
+
+variable "key_vault_name" {
+  description = "The key vault name"
 }
 
 variable "identity_api_base_address" {
@@ -70,7 +75,7 @@ variable "front_end_origin_local" {
 
 variable "swagger_enabled" {
   description = "Should Swagger be enabled?"
-  type = bool
+  type        = bool
 }
 
 variable "swagger_authorization_url" {

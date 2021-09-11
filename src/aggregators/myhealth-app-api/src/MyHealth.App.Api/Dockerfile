@@ -12,8 +12,10 @@ COPY ["aggregators/myhealth-app-api/src/apis/MyHealth.App.Api.HealthRecord/MyHea
 COPY ["aggregators/myhealth-app-api/src/apis/MyHealth.App.Api.Identity/MyHealth.App.Api.Identity.csproj", "aggregators/myhealth-app-api/src/apis/MyHealth.App.Api.Identity/"]
 COPY ["aggregators/myhealth-app-api/src/apis/MyHealth.App.Api.Integrations/MyHealth.App.Api.Integrations.csproj", "aggregators/myhealth-app-api/src/apis/MyHealth.App.Api.Integrations/"]
 COPY ["aggregators/myhealth-app-api/src/MyHealth.App.Api.Core/MyHealth.App.Api.Core.csproj", "aggregators/myhealth-app-api/src/MyHealth.App.Api.Core/"]
+COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Context/MyHealth.Extensions.AspNetCore.Context.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Context/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Swagger/MyHealth.Extensions.AspNetCore.Swagger.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Swagger/"]
 COPY ["extensions/src/MyHealth.Extensions.AspNetCore.Versioning/MyHealth.Extensions.AspNetCore.Versioning.csproj", "extensions/src/MyHealth.Extensions.AspNetCore.Versioning/"]
+COPY ["extensions/src/MyHealth.Extensions.Fhir/MyHealth.Extensions.Fhir.csproj", "extensions/src/MyHealth.Extensions.Fhir/"]
 RUN dotnet restore "aggregators/myhealth-app-api/src/MyHealth.App.Api/MyHealth.App.Api.csproj"
 COPY . .
 WORKDIR "/src/aggregators/myhealth-app-api/src/MyHealth.App.Api"
