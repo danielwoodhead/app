@@ -15,6 +15,7 @@ namespace MyHealth.Extensions.Fhir
 
     public enum AuthenticationMode
     {
+        Custom,
         AuthenticatedUser,
         ClientCredentials
     }

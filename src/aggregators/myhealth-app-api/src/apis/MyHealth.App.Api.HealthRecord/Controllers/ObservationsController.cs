@@ -1,10 +1,8 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyHealth.App.Api.Core.Http;
-using MyHealth.App.Api.HealthRecord.Clients;
 using MyHealth.App.Api.HealthRecord.Models;
+using MyHealth.App.Api.HealthRecord.Services;
 
 namespace MyHealth.App.Api.HealthRecord.Controllers
 {
@@ -13,19 +11,19 @@ namespace MyHealth.App.Api.HealthRecord.Controllers
     [Authorize]
     public class ObservationsController : ControllerBase
     {
-        private readonly IHealthRecordClient _client;
+        private readonly IHealthRecordService _healthRecordService;
 
-        public ObservationsController(IHealthRecordClient client)
+        public ObservationsController(IHealthRecordService healthRecordService)
         {
-            _client = client;
+            _healthRecordService = healthRecordService;
         }
 
         [HttpGet]
         public async Task<ActionResult<SearchObservationsResponse>> GetObservations()
         {
-            using HttpResponseMessage response = await _client.GetObservationsAsync();
+            SearchObservationsResponse observations = await _healthRecordService.GetObservationsAsync();
 
-            return await response.ToResultAsync<SearchObservationsResponse>();
+            return Ok(observations);
         }
     }
 }

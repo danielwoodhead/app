@@ -9,7 +9,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\extensions\src\MyHealth.Extensions.AspNetCore.Context\MyHealth.Extensions.AspNetCore.Context.csproj" />
+    <ProjectReference Include="..\..\..\..\..\extensions\src\MyHealth.Extensions.Fhir\MyHealth.Extensions.Fhir.csproj" />
     <ProjectReference Include="..\..\MyHealth.App.Api.Core\MyHealth.App.Api.Core.csproj" />
+    <ProjectReference Include="..\MyHealth.App.Api.Identity\MyHealth.App.Api.Identity.csproj" />
   </ItemGroup>
 
 </Project>

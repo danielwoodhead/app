@@ -2,7 +2,7 @@
 
 namespace MyHealth.Extensions.Fhir.Authentication
 {
-    internal interface IAuthenticationService
+    public interface IAuthenticationService
     {
         Task<string> GetAccessTokenAsync();
     }

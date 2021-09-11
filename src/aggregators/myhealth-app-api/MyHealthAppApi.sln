@@ -15,13 +15,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.AspNetC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apis", "apis", "{F61DF128-AE8D-4324-B3DC-71DB52FC8B6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.App.Api.Integrations", "src\apis\MyHealth.App.Api.Integrations\MyHealth.App.Api.Integrations.csproj", "{AC0F9E80-89D3-44CB-AFB1-69928E500324}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.App.Api.Integrations", "src\apis\MyHealth.App.Api.Integrations\MyHealth.App.Api.Integrations.csproj", "{AC0F9E80-89D3-44CB-AFB1-69928E500324}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.App.Api.Identity", "src\apis\MyHealth.App.Api.Identity\MyHealth.App.Api.Identity.csproj", "{F7ABED44-1E09-4196-9FE3-58D038A291E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.App.Api.Identity", "src\apis\MyHealth.App.Api.Identity\MyHealth.App.Api.Identity.csproj", "{F7ABED44-1E09-4196-9FE3-58D038A291E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.App.Api.HealthRecord", "src\apis\MyHealth.App.Api.HealthRecord\MyHealth.App.Api.HealthRecord.csproj", "{AFABC5CE-73FC-4011-AFA3-EFFA4097E01E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.App.Api.HealthRecord", "src\apis\MyHealth.App.Api.HealthRecord\MyHealth.App.Api.HealthRecord.csproj", "{AFABC5CE-73FC-4011-AFA3-EFFA4097E01E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHealth.App.Api.Core", "src\MyHealth.App.Api.Core\MyHealth.App.Api.Core.csproj", "{60ADC6EA-A408-412C-AC13-76A4C3D21100}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.App.Api.Core", "src\MyHealth.App.Api.Core\MyHealth.App.Api.Core.csproj", "{60ADC6EA-A408-412C-AC13-76A4C3D21100}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.Fhir", "..\..\extensions\src\MyHealth.Extensions.Fhir\MyHealth.Extensions.Fhir.csproj", "{D0EFCDD2-B6F9-48A6-A565-777D0B96C085}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHealth.Extensions.AspNetCore.Context", "..\..\extensions\src\MyHealth.Extensions.AspNetCore.Context\MyHealth.Extensions.AspNetCore.Context.csproj", "{0363AB70-A431-44C2-BBC8-5EB332795C95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{60ADC6EA-A408-412C-AC13-76A4C3D21100}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60ADC6EA-A408-412C-AC13-76A4C3D21100}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60ADC6EA-A408-412C-AC13-76A4C3D21100}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0EFCDD2-B6F9-48A6-A565-777D0B96C085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0EFCDD2-B6F9-48A6-A565-777D0B96C085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0EFCDD2-B6F9-48A6-A565-777D0B96C085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0EFCDD2-B6F9-48A6-A565-777D0B96C085}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0363AB70-A431-44C2-BBC8-5EB332795C95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0363AB70-A431-44C2-BBC8-5EB332795C95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0363AB70-A431-44C2-BBC8-5EB332795C95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0363AB70-A431-44C2-BBC8-5EB332795C95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +82,8 @@ Global
 		{F7ABED44-1E09-4196-9FE3-58D038A291E3} = {F61DF128-AE8D-4324-B3DC-71DB52FC8B6C}
 		{AFABC5CE-73FC-4011-AFA3-EFFA4097E01E} = {F61DF128-AE8D-4324-B3DC-71DB52FC8B6C}
 		{60ADC6EA-A408-412C-AC13-76A4C3D21100} = {B275E4FA-0EA5-4844-AEAD-38AF8AB8E312}
+		{D0EFCDD2-B6F9-48A6-A565-777D0B96C085} = {4A43153C-AB1F-43AB-A6B5-0300B302842F}
+		{0363AB70-A431-44C2-BBC8-5EB332795C95} = {4A43153C-AB1F-43AB-A6B5-0300B302842F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E8DBA176-EFE0-483D-AE5D-CB90B8169D60}
