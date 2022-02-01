@@ -1,5 +1,4 @@
-az account set --subscription bc22730d-89ef-4562-9a78-dfb790976b9a
-
+az account set --subscription <subscription_id>
 # customize dockerignore to minimise the build context size
 $dockerIgnorePath = "../../../.dockerignore"
 $dockerIgnoreContent = "**`n!extensions`n!services/health-record`n**/.terraform`n**/.vs`n**/.bin`n**/.obj"
